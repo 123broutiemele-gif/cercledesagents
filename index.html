@@ -125,74 +125,72 @@
     <div id="message" class="message"></div>
   </div>
 
-  <script>
-    // ⚠️ Remplace UNIQUEMENT ces deux valeurs par les tiennes
-    const SUPABASE_URL = "https://quzgphbougaujzqrhjza.supabase.co/";          // Project URL
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1emdwaGJvdWdhdWp6cXJoanphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0NTY5MTUsImV4cCI6MjEwNDAzMjkxNX0.oKGi4geGQaidkn8Hp8du4VI8mRwAa3HsApX3hummN3I"; // Publishable / anon key
+<script>
+  // ⚠️ Tes clés
+  const SUPABASE_URL = "https://quzgphbougaujzqrhjza.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1emdwaGJvdWdhdWp6cXJoanphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0NTY5MTUsImV4cCI6MjEwNDAzMjkxNX0.oKGi4geGQaidkn8Hp8du4VI8mRwAa3HsApX3hummN3I";
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const form = document.getElementById("signup-form");
-    const messageEl = document.getElementById("message");
-    const submitBtn = document.getElementById("submit-btn");
+  const form = document.getElementById("signup-form");
+  const messageEl = document.getElementById("message");
+  const submitBtn = document.getElementById("submit-btn");
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      messageEl.style.display = "none";
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Création en cours…";
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    messageEl.style.display = "none";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Création en cours…";
 
-      const prenom = document.getElementById("prenom").value.trim();
-      const nom = document.getElementById("nom").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      const ville = document.getElementById("ville").value.trim();
-      const entreprise = document.getElementById("entreprise").value.trim();
-      const type_agent = document.getElementById("type_agent").value;
-      const presentation = document.getElementById("presentation").value.trim();
+    const prenom = document.getElementById("prenom").value.trim();
+    const nom = document.getElementById("nom").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const ville = document.getElementById("ville").value.trim();
+    const entreprise = document.getElementById("entreprise").value.trim();
+    const type_agent = document.getElementById("type_agent").value;
+    const presentation = document.getElementById("presentation").value.trim();
 
-      try {
-        // 1. Création du compte Auth
-        const { data: authData, error: authError } = await supabase.auth.signUp({
+    try {
+      // 1. Création du compte Auth
+      const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+        email,
+        password,
+      });
+
+      if (authError) throw authError;
+
+      const userId = authData.user.id;
+
+      // 2. Insertion du profil
+      const { error: profileError } = await supabaseClient
+        .from("profiles")
+        .insert({
+          id: userId,
+          prenom,
+          nom,
           email,
-          password,
+          ville,
+          entreprise: entreprise || null,
+          type_agent,
+          presentation: presentation || null,
         });
 
-        if (authError) throw authError;
+      if (profileError) throw profileError;
 
-        const userId = authData.user.id;
+      // Succès
+      messageEl.className = "message success";
+      messageEl.textContent = "Compte créé avec succès ! Vérifie ton e-mail pour confirmer.";
+      messageEl.style.display = "block";
+      form.reset();
 
-        // 2. Insertion du profil (table "profiles")
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .insert({
-            id: userId,
-            prenom,
-            nom,
-            email,
-            ville,
-            entreprise: entreprise || null,
-            type_agent,
-            presentation: presentation || null,
-          });
-
-        if (profileError) throw profileError;
-
-        // Succès
-        messageEl.className = "message success";
-        messageEl.textContent = "Compte créé avec succès ! Vérifie ton e-mail pour confirmer.";
-        messageEl.style.display = "block";
-        form.reset();
-
-      } catch (err) {
-        messageEl.className = "message error";
-        messageEl.textContent = err.message || "Une erreur est survenue.";
-        messageEl.style.display = "block";
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Créer mon compte";
-      }
-    });
-  </script>
-</body>
-                         </html>
+    } catch (err) {
+      messageEl.className = "message error";
+      messageEl.textContent = err.message || "Une erreur est survenue.";
+      messageEl.style.display = "block";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Créer mon compte";
+    }
+  });
+</script>
