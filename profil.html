@@ -28,7 +28,7 @@
     .container {
       width: 100%;
       max-width: 600px;
-      margin: 0 auto;
+      margin: auto;
     }
 
     .header {
@@ -77,8 +77,8 @@
     }
 
     .avatar {
-      width: 100px;
-      height: 100px;
+      width: 110px;
+      height: 110px;
       margin: 0 auto 15px;
       border-radius: 50%;
       background: #0f172a;
@@ -86,22 +86,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 42px;
+      font-size: 48px;
     }
 
     .profile-top h2 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
+      margin-top: 8px;
     }
 
     .badge {
       display: inline-block;
-      margin-top: 8px;
-      padding: 7px 14px;
+      margin-top: 10px;
+      padding: 8px 16px;
       border-radius: 999px;
       background: #172554;
       color: #facc15;
       border: 1px solid #facc15;
-      font-size: .85rem;
+      font-size: .9rem;
       font-weight: 700;
     }
 
@@ -112,15 +113,15 @@
     .info-item {
       background: #0f172a;
       border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 14px;
+      border-radius: 14px;
+      padding: 15px;
       margin-bottom: 12px;
     }
 
     .info-label {
       color: #94a3b8;
-      font-size: .82rem;
-      margin-bottom: 4px;
+      font-size: .85rem;
+      margin-bottom: 6px;
     }
 
     .info-value {
@@ -142,7 +143,7 @@
 
     button {
       width: 100%;
-      padding: 14px;
+      padding: 15px;
       border: none;
       border-radius: 12px;
       font-size: 1rem;
@@ -171,6 +172,7 @@
       border-radius: 12px;
       text-align: center;
       display: none;
+      line-height: 1.5;
     }
 
     .success {
@@ -193,11 +195,17 @@
       padding: 30px 10px;
     }
 
+    .edit-btn {
+      background: #0284c7;
+      color: white;
+    }
+
     footer {
       text-align: center;
       color: #94a3b8;
       margin-top: 20px;
       font-size: .9rem;
+      padding-bottom: 20px;
     }
 
     footer strong {
@@ -208,416 +216,536 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <header class="header">
+  <header class="header">
 
-      <div class="logo">
-        🛡️
+    <div class="logo">
+      🛡️
+    </div>
+
+    <h1>
+      CERCLE<span>DES</span>AGENTS
+    </h1>
+
+    <p>
+      Unis • Informés • Plus forts
+    </p>
+
+  </header>
+
+
+  <main class="card">
+
+    <div id="loading" class="loading">
+      Chargement de ton profil...
+    </div>
+
+
+    <div id="profile" style="display:none;">
+
+      <div class="profile-top">
+
+        <div class="avatar">
+          👤
+        </div>
+
+        <h2 id="nom-complet">
+          —
+        </h2>
+
+        <div class="badge" id="type-agent">
+          Agent
+        </div>
+
       </div>
 
-      <h1>
-        CERCLE<span>DES</span>AGENTS
-      </h1>
 
-      <p>
-        Unis • Informés • Plus forts
-      </p>
+      <div class="info">
 
-    </header>
+        <div class="info-item">
 
-
-    <main class="card">
-
-      <div id="loading" class="loading">
-        Chargement de ton profil...
-      </div>
-
-
-      <div id="profile" style="display:none;">
-
-        <div class="profile-top">
-
-          <div class="avatar">
-            👤
+          <div class="info-label">
+            📧 Adresse e-mail
           </div>
 
-          <h2 id="nom-complet">
+          <div class="info-value" id="email">
             —
-          </h2>
-
-          <div class="badge" id="type-agent">
-            —
           </div>
 
         </div>
 
 
-        <div class="info">
+        <div class="info-item">
 
-          <div class="info-item">
-
-            <div class="info-label">
-              📧 Adresse e-mail
-            </div>
-
-            <div class="info-value" id="email">
-              —
-            </div>
-
+          <div class="info-label">
+            📍 Ville
           </div>
 
-
-          <div class="info-item">
-
-            <div class="info-label">
-              📍 Ville
-            </div>
-
-            <div class="info-value" id="ville">
-              —
-            </div>
-
-          </div>
-
-
-          <div class="info-item">
-
-            <div class="info-label">
-              🏢 Entreprise
-            </div>
-
-            <div class="info-value" id="entreprise">
-              —
-            </div>
-
-          </div>
-
-
-          <div class="info-item">
-
-            <div class="info-label">
-              🛡️ Type d'agent
-            </div>
-
-            <div class="info-value" id="type-agent-detail">
-              —
-            </div>
-
-          </div>
-
-
-          <div class="info-item">
-
-            <div class="info-label">
-              📝 Présentation
-            </div>
-
-            <div class="info-value presentation" id="presentation">
-              —
-            </div>
-
+          <div class="info-value" id="ville">
+            Non renseignée
           </div>
 
         </div>
 
 
-        <div class="buttons">
+        <div class="info-item">
 
-          <button
-            class="home-btn"
-            onclick="window.location.href='index.html'"
-          >
-            🏠 Retour à l'accueil
-          </button>
+          <div class="info-label">
+            🏢 Entreprise
+          </div>
 
-          <button
-            class="logout-btn"
-            id="logout-btn"
-          >
-            🚪 Se déconnecter
-          </button>
+          <div class="info-value" id="entreprise">
+            Non renseignée
+          </div>
+
+        </div>
+
+
+        <div class="info-item">
+
+          <div class="info-label">
+            🛡️ Type d'agent
+          </div>
+
+          <div class="info-value" id="type-agent-detail">
+            Non renseigné
+          </div>
+
+        </div>
+
+
+        <div class="info-item">
+
+          <div class="info-label">
+            📝 Présentation
+          </div>
+
+          <div class="info-value presentation" id="presentation">
+            Aucune présentation renseignée.
+          </div>
 
         </div>
 
       </div>
 
 
-      <div id="message" class="message"></div>
+      <div class="buttons">
 
-    </main>
+        <button
+          class="edit-btn"
+          onclick="window.location.href='inscription.html'"
+        >
+          ✏️ Modifier mon profil
+        </button>
+
+        <button
+          class="home-btn"
+          onclick="window.location.href='index.html'"
+        >
+          🏠 Retour à l'accueil
+        </button>
+
+        <button
+          class="logout-btn"
+          id="logout-btn"
+        >
+          🚪 Se déconnecter
+        </button>
+
+      </div>
+
+    </div>
 
 
-    <footer>
-      Cercledesagents —
-      <strong>Unis • Informés • Plus forts</strong>
-    </footer>
+    <div id="message" class="message"></div>
 
-  </div>
+  </main>
+
+
+  <footer>
+    Cercledesagents —
+    <strong>Unis • Informés • Plus forts</strong>
+  </footer>
+
+</div>
 
 
 <script>
 
-  /* =========================================================
-     CONFIGURATION SUPABASE
-     ========================================================= */
+/* ============================================================
+   SUPABASE
+   ============================================================ */
 
-  const SUPABASE_URL =
-    "https://quzgphbougaujzqrhjza.supabase.co";
+const SUPABASE_URL =
+  "https://quzgphbougaujzqrhjza.supabase.co";
 
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
-
-
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
 
 
-  /* =========================================================
-     ELEMENTS DE LA PAGE
-     ========================================================= */
-
-  const loading =
-    document.getElementById("loading");
-
-  const profile =
-    document.getElementById("profile");
-
-  const message =
-    document.getElementById("message");
-
-  const logoutBtn =
-    document.getElementById("logout-btn");
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
 
-  /* =========================================================
-     AFFICHER UN MESSAGE
-     ========================================================= */
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
 
-  function showMessage(text, type) {
+const loading =
+  document.getElementById("loading");
 
-    message.textContent = text;
+const profile =
+  document.getElementById("profile");
 
-    message.className =
-      "message " + type;
+const message =
+  document.getElementById("message");
 
+const logoutBtn =
+  document.getElementById("logout-btn");
+
+
+/* ============================================================
+   MESSAGE
+   ============================================================ */
+
+function showMessage(text, type) {
+
+  message.textContent = text;
+
+  message.className =
+    "message " + type;
+
+}
+
+
+/* ============================================================
+   VALEUR DE SECOURS
+   ============================================================ */
+
+function valeur(data, metadata, champ, valeurDefaut) {
+
+  if (
+    data &&
+    data[champ] !== null &&
+    data[champ] !== undefined &&
+    String(data[champ]).trim() !== ""
+  ) {
+    return data[champ];
   }
 
-
-  /* =========================================================
-     CHARGER LE PROFIL
-     ========================================================= */
-
-  async function loadProfile() {
-
-    try {
-
-      /*
-       * On récupère l'utilisateur actuellement connecté
-       */
-
-      const {
-        data: {
-          user
-        },
-        error: userError
-      } = await supabaseClient.auth.getUser();
-
-
-      if (userError) {
-        throw userError;
-      }
-
-
-      /*
-       * Aucun utilisateur connecté
-       */
-
-      if (!user) {
-
-        window.location.href =
-          "connexion.html";
-
-        return;
-      }
-
-
-      /*
-       * Recherche du profil dans la table profiles
-       */
-
-      const {
-        data,
-        error
-      } = await supabaseClient
-        .from("profiles")
-        .select(
-          "id, prenom, nom, email, ville, entreprise, type_agent, presentation"
-        )
-        .eq("id", user.id)
-        .maybeSingle();
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      /*
-       * Le profil n'existe pas encore
-       */
-
-      if (!data) {
-
-        loading.style.display =
-          "none";
-
-        showMessage(
-          "Ton compte existe, mais ton profil n'a pas encore été trouvé.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      /*
-       * AFFICHAGE DES DONNÉES
-       */
-
-      document.getElementById(
-        "nom-complet"
-      ).textContent =
-        `${data.prenom || ""} ${data.nom || ""}`.trim();
-
-
-      document.getElementById(
-        "email"
-      ).textContent =
-        data.email || user.email || "Non renseigné";
-
-
-      document.getElementById(
-        "ville"
-      ).textContent =
-        data.ville || "Non renseignée";
-
-
-      document.getElementById(
-        "entreprise"
-      ).textContent =
-        data.entreprise || "Non renseignée";
-
-
-      document.getElementById(
-        "type-agent"
-      ).textContent =
-        data.type_agent || "Agent";
-
-
-      document.getElementById(
-        "type-agent-detail"
-      ).textContent =
-        data.type_agent || "Non renseigné";
-
-
-      document.getElementById(
-        "presentation"
-      ).textContent =
-        data.presentation || "Aucune présentation renseignée.";
-
-
-      /*
-       * On cache le chargement
-       * et on affiche le profil
-       */
-
-      loading.style.display =
-        "none";
-
-      profile.style.display =
-        "block";
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Erreur profil :",
-        error
-      );
-
-      loading.style.display =
-        "none";
-
-      showMessage(
-        "Impossible de charger ton profil : " +
-        (error.message || "erreur inconnue"),
-        "error"
-      );
-
-    }
-
+  if (
+    metadata &&
+    metadata[champ] !== null &&
+    metadata[champ] !== undefined &&
+    String(metadata[champ]).trim() !== ""
+  ) {
+    return metadata[champ];
   }
 
-
-  /* =========================================================
-     DÉCONNEXION
-     ========================================================= */
-
-  logoutBtn.addEventListener(
-    "click",
-    async () => {
-
-      logoutBtn.disabled = true;
-
-      logoutBtn.textContent =
-        "Déconnexion...";
+  return valeurDefaut;
+}
 
 
-      const {
-        error
-      } =
-        await supabaseClient.auth.signOut();
+/* ============================================================
+   CHARGEMENT DU PROFIL
+   ============================================================ */
+
+async function loadProfile() {
+
+  try {
+
+    /*
+     * 1 — Utilisateur connecté
+     */
+
+    const {
+      data: authData,
+      error: authError
+    } = await supabaseClient.auth.getUser();
 
 
-      if (error) {
-
-        logoutBtn.disabled =
-          false;
-
-        logoutBtn.textContent =
-          "🚪 Se déconnecter";
-
-        showMessage(
-          "Erreur lors de la déconnexion : " +
-          error.message,
-          "error"
-        );
-
-        return;
-      }
+    if (authError) {
+      throw authError;
+    }
 
 
-      /*
-       * Retour à la page de connexion
-       */
+    const user = authData.user;
+
+
+    /*
+     * Aucun utilisateur connecté
+     */
+
+    if (!user) {
 
       window.location.href =
         "connexion.html";
 
+      return;
     }
-  );
 
 
-  /* =========================================================
-     DÉMARRAGE
-     ========================================================= */
+    console.log("Utilisateur connecté :", user);
 
-  loadProfile();
+
+    /*
+     * 2 — Informations éventuellement
+     * enregistrées dans Auth
+     */
+
+    const metadata =
+      user.user_metadata || {};
+
+
+    console.log(
+      "Métadonnées utilisateur :",
+      metadata
+    );
+
+
+    /*
+     * 3 — Recherche du profil
+     */
+
+    const {
+      data: profileData,
+      error: profileError
+    } = await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
+
+
+    if (profileError) {
+
+      console.error(
+        "Erreur profiles :",
+        profileError
+      );
+
+      throw profileError;
+    }
+
+
+    console.log(
+      "Profil Supabase :",
+      profileData
+    );
+
+
+    /*
+     * 4 — Si aucune ligne profiles,
+     * on utilise quand même Auth.
+     */
+
+    const data =
+      profileData || {};
+
+
+    /*
+     * 5 — Récupération des valeurs
+     */
+
+    const prenom =
+      valeur(
+        data,
+        metadata,
+        "prenom",
+        ""
+      );
+
+    const nom =
+      valeur(
+        data,
+        metadata,
+        "nom",
+        ""
+      );
+
+    const email =
+      data.email ||
+      metadata.email ||
+      user.email ||
+      "Non renseigné";
+
+    const ville =
+      valeur(
+        data,
+        metadata,
+        "ville",
+        "Non renseignée"
+      );
+
+    const entreprise =
+      valeur(
+        data,
+        metadata,
+        "entreprise",
+        "Non renseignée"
+      );
+
+    const typeAgent =
+      valeur(
+        data,
+        metadata,
+        "type_agent",
+        "Agent"
+      );
+
+    const presentation =
+      valeur(
+        data,
+        metadata,
+        "presentation",
+        "Aucune présentation renseignée."
+      );
+
+
+    /*
+     * 6 — Nom complet
+     */
+
+    const nomComplet =
+      `${prenom} ${nom}`.trim();
+
+
+    document.getElementById(
+      "nom-complet"
+    ).textContent =
+      nomComplet || "Agent";
+
+
+    /*
+     * 7 — Affichage
+     */
+
+    document.getElementById(
+      "email"
+    ).textContent =
+      email;
+
+
+    document.getElementById(
+      "ville"
+    ).textContent =
+      ville;
+
+
+    document.getElementById(
+      "entreprise"
+    ).textContent =
+      entreprise;
+
+
+    document.getElementById(
+      "type-agent"
+    ).textContent =
+      typeAgent;
+
+
+    document.getElementById(
+      "type-agent-detail"
+    ).textContent =
+      typeAgent;
+
+
+    document.getElementById(
+      "presentation"
+    ).textContent =
+      presentation;
+
+
+    /*
+     * 8 — Affichage de la page
+     */
+
+    loading.style.display =
+      "none";
+
+    profile.style.display =
+      "block";
+
+
+  } catch (error) {
+
+    console.error(
+      "Erreur chargement profil :",
+      error
+    );
+
+    loading.style.display =
+      "none";
+
+
+    showMessage(
+      "Impossible de charger ton profil : " +
+      (error.message || "Erreur inconnue"),
+      "error"
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   DÉCONNEXION
+   ============================================================ */
+
+logoutBtn.addEventListener(
+  "click",
+  async () => {
+
+    logoutBtn.disabled =
+      true;
+
+    logoutBtn.textContent =
+      "Déconnexion...";
+
+
+    const {
+      error
+    } =
+      await supabaseClient.auth.signOut();
+
+
+    if (error) {
+
+      console.error(error);
+
+      logoutBtn.disabled =
+        false;
+
+      logoutBtn.textContent =
+        "🚪 Se déconnecter";
+
+      showMessage(
+        "Erreur lors de la déconnexion : " +
+        error.message,
+        "error"
+      );
+
+      return;
+    }
+
+
+    window.location.href =
+      "connexion.html";
+
+  }
+);
+
+
+/* ============================================================
+   DÉMARRAGE
+   ============================================================ */
+
+loadProfile();
 
 </script>
 
