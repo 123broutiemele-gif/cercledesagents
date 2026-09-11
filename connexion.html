@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cercle des Agents - Connexion</title>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top right, #075985 0%, transparent 35%),
+        linear-gradient(145deg, #0b1730, #17243a);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 430px;
+    }
+
+    /* LOGO */
+    .logo {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo-icon {
+      width: 82px;
+      height: 82px;
+      margin: auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffc400, #ff7a00);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 43px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+
+    .logo h1 {
+      margin-top: 15px;
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+    .logo h1 span {
+      color: #ffc400;
+    }
+
+    .logo p {
+      margin-top: 7px;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    /* CARTE */
+    .card {
+      background: rgba(30, 41, 59, 0.97);
+      border: 1px solid #334155;
+      border-radius: 22px;
+      padding: 28px 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    }
+
+    .card h2 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .intro {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    /* CHAMPS */
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #e2e8f0;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      border: 2px solid #334155;
+      background: #0f172a;
+      color: white;
+      font-size: 16px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #ffc400;
+      box-shadow: 0 0 0 3px rgba(255,196,0,0.12);
+    }
+
+    input::placeholder {
+      color: #64748b;
+    }
+
+    /* MOT DE PASSE */
+    .password-box {
+      position: relative;
+    }
+
+    .password-box input {
+      padding-right: 55px;
+    }
+
+    .show-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 21px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+    }
+
+    /* MOT DE PASSE OUBLIÉ */
+    .forgot {
+      text-align: right;
+      margin-top: -8px;
+      margin-bottom: 20px;
+    }
+
+    .forgot a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* BOUTON */
+    .login-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(90deg, #ffc400, #ff9d00);
+      color: #0f172a;
+      font-size: 17px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 7px 20px rgba(255,170,0,0.25);
+      transition: 0.2s;
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* MESSAGE */
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .success {
+      display: block;
+      background: #064e3b;
+      border: 1px solid #10b981;
+      color: #a7f3d0;
+    }
+
+    .error {
+      display: block;
+      background: #7f1d1d;
+      border: 1px solid #ef4444;
+      color: #fecaca;
+    }
+
+    /* INSCRIPTION */
+    .signup {
+      text-align: center;
+      margin-top: 24px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .signup a {
+      color: #ffc400;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      margin-top: 22px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .footer strong {
+      color: #ffc400;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- LOGO -->
+    <div class="logo">
+
+      <div class="logo-icon">
+        🛡️
+      </div>
+
+      <h1>
+        CERCLE<span>DES</span>AGENTS
+      </h1>
+
+      <p>
+        Unis • Informés • Plus forts
+      </p>
+
+    </div>
+
+
+    <!-- CARTE CONNEXION -->
+    <div class="card">
+
+      <h2>Bienvenue 👋</h2>
+
+      <p class="intro">
+        Connecte-toi à la communauté des agents
+        de sécurité privée.
+      </p>
+
+
+      <form id="login-form">
+
+        <!-- EMAIL -->
+        <div class="field">
+
+          <label for="email">
+            Adresse e-mail
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            placeholder="exemple@email.com"
+            required
+            autocomplete="email"
+          >
+
+        </div>
+
+
+        <!-- MOT DE PASSE -->
+        <div class="field">
+
+          <label for="password">
+            Mot de passe
+          </label>
+
+          <div class="password-box">
+
+            <input
+              type="password"
+              id="password"
+              placeholder="Votre mot de passe"
+              required
+              autocomplete="current-password"
+            >
+
+            <button
+              type="button"
+              class="show-password"
+              id="toggle-password"
+              aria-label="Afficher le mot de passe"
+            >
+              👁️
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- MOT DE PASSE OUBLIÉ -->
+        <div class="forgot">
+          <a href="#" id="forgot-password">
+            Mot de passe oublié ?
+          </a>
+        </div>
+
+
+        <!-- BOUTON -->
+        <button
+          type="submit"
+          class="login-btn"
+          id="login-btn"
+        >
+          🔐 Se connecter
+        </button>
+
+      </form>
+
+
+      <!-- MESSAGE -->
+      <div
+        id="message"
+        class="message"
+      ></div>
+
+
+      <!-- INSCRIPTION -->
+      <div class="signup">
+
+        Pas encore membre ?
+
+        <a href="inscription.html">
+          Créer un compte
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <div class="footer">
+
+      © 2026 <strong>Cercledesagents</strong><br>
+
+      Le réseau social des agents de sécurité privée
+
+    </div>
+
+  </div>
+
+
+<script>
+
+  /* =====================================================
+     CONFIGURATION SUPABASE
+     ===================================================== */
+
+  const SUPABASE_URL =
+    "https://quzgphbougaujzqrhjza.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+  /* =====================================================
+     ELEMENTS
+     ===================================================== */
+
+  const form =
+    document.getElementById("login-form");
+
+  const emailInput =
+    document.getElementById("email");
+
+  const passwordInput =
+    document.getElementById("password");
+
+  const loginBtn =
+    document.getElementById("login-btn");
+
+  const message =
+    document.getElementById("message");
+
+  const togglePassword =
+    document.getElementById("toggle-password");
+
+  const forgotPassword =
+    document.getElementById("forgot-password");
+
+
+  /* =====================================================
+     AFFICHER / MASQUER LE MOT DE PASSE
+     ===================================================== */
+
+  togglePassword.addEventListener(
+    "click",
+    () => {
+
+      if (passwordInput.type === "password") {
+
+        passwordInput.type = "text";
+
+        togglePassword.textContent = "🙈";
+
+      } else {
+
+        passwordInput.type = "password";
+
+        togglePassword.textContent = "👁️";
+
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     MESSAGE
+     ===================================================== */
+
+  function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className =
+      "message " + type;
+
+  }
+
+
+  /* =====================================================
+     CONNEXION
+     ===================================================== */
+
+  form.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+      message.className = "message";
+
+      message.textContent = "";
+
+      loginBtn.disabled = true;
+
+      loginBtn.textContent =
+        "Connexion en cours…";
+
+
+      const email =
+        emailInput.value.trim();
+
+      const password =
+        passwordInput.value;
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        if (!data.user) {
+
+          throw new Error(
+            "Impossible de récupérer votre compte."
+          );
+
+        }
+
+
+        /* ================================
+           CONNEXION RÉUSSIE
+           ================================ */
+
+        showMessage(
+          "✅ Connexion réussie ! Bienvenue dans Cercledesagents.",
+          "success"
+        );
+
+
+        /*
+          Pour le moment nous affichons
+          simplement le succès.
+
+          Lorsque nous créerons la page
+          d'accueil, nous remplacerons
+          cette ligne par :
+
+          window.location.href = "accueil.html";
+        */
+
+
+        setTimeout(() => {
+
+          window.location.href =
+            "accueil.html";
+
+        }, 1200);
+
+
+      } catch (error) {
+
+        console.error(error);
+
+
+        let text =
+          "Impossible de vous connecter.";
+
+
+        if (
+          error.message &&
+          error.message.toLowerCase().includes("invalid login credentials")
+        ) {
+
+          text =
+            "❌ E-mail ou mot de passe incorrect.";
+
+        }
+
+        else if (
+          error.message &&
+          error.message.toLowerCase().includes("email not confirmed")
+        ) {
+
+          text =
+            "📧 Votre adresse e-mail n'est pas encore confirmée. Vérifiez votre boîte e-mail.";
+
+        }
+
+        else if (error.message) {
+
+          text =
+            "❌ " + error.message;
+
+        }
+
+
+        showMessage(
+          text,
+          "error"
+        );
+
+      }
+
+
+      loginBtn.disabled = false;
+
+      loginBtn.textContent =
+        "🔐 Se connecter";
+
+    }
+  );
+
+
+  /* =====================================================
+     MOT DE PASSE OUBLIÉ
+     ===================================================== */
+
+  forgotPassword.addEventListener(
+    "click",
+    async (event) => {
+
+      event.preventDefault();
+
+
+      const email =
+        emailInput.value.trim();
+
+
+      if (!email) {
+
+        showMessage(
+          "📧 Entre d'abord ton adresse e-mail.",
+          "error"
+        );
+
+        emailInput.focus();
+
+        return;
+
+      }
+
+
+      try {
+
+        const {
+          error
+        } =
+          await supabaseClient.auth
+            .resetPasswordForEmail(
+              email,
+              {
+                redirectTo:
+                  window.location.origin +
+                  "/nouveau-mot-de-passe.html"
+              }
+            );
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        showMessage(
+          "📧 Un lien de réinitialisation a été envoyé à ton adresse e-mail.",
+          "success"
+        );
+
+
+      } catch (error) {
+
+        showMessage(
+          "❌ " +
+          (error.message ||
+            "Impossible d'envoyer le lien."),
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+
+</script>
+
+</body>
+</html>
