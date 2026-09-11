@@ -1,207 +1,415 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Cercle des Agents — Modifier mon profil</title>
 
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
+
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
       background:
-        radial-gradient(circle at top right, #075985 0%, transparent 35%),
-        linear-gradient(135deg, #0f172a, #172554);
+        radial-gradient(
+          circle at top right,
+          #075985 0%,
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          #0f172a,
+          #172554
+        );
+
       color: #f8fafc;
+
       min-height: 100vh;
+
       padding: 20px;
     }
 
+
     .container {
+
       width: 100%;
+
       max-width: 600px;
+
       margin: auto;
     }
+
+
+    /* =========================
+       HEADER
+       ========================= */
 
     .header {
+
       text-align: center;
-      padding: 20px 10px 25px;
+
+      padding:
+        20px
+        10px
+        25px;
     }
+
 
     .logo {
+
       width: 80px;
+
       height: 80px;
+
       margin: auto;
+
       border-radius: 50%;
-      background: linear-gradient(135deg, #facc15, #f97316);
+
+      background:
+        linear-gradient(
+          135deg,
+          #facc15,
+          #f97316
+        );
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: 42px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+
+      box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.35);
     }
 
+
     .header h1 {
+
       margin-top: 15px;
+
       font-size: 1.7rem;
+
       font-weight: 800;
     }
 
+
     .header h1 span {
+
       color: #facc15;
     }
 
+
     .header p {
+
       color: #94a3b8;
+
       margin-top: 5px;
     }
 
+
+    /* =========================
+       CARTE
+       ========================= */
+
     .card {
-      background: rgba(30, 41, 59, .97);
-      border: 1px solid #334155;
+
+      background:
+        rgba(30, 41, 59, .97);
+
+      border:
+        1px solid #334155;
+
       border-radius: 22px;
+
       padding: 25px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+
+      box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.35);
     }
 
+
     h2 {
+
       text-align: center;
+
       margin-bottom: 25px;
+
       font-size: 1.4rem;
     }
 
+
+    /* =========================
+       FORMULAIRE
+       ========================= */
+
     label {
+
       display: block;
+
       color: #cbd5e1;
+
       font-size: .9rem;
+
       font-weight: 700;
+
       margin-bottom: 7px;
     }
+
 
     input,
     select,
     textarea {
+
       width: 100%;
+
       padding: 14px;
+
       margin-bottom: 17px;
+
       border-radius: 12px;
-      border: 1px solid #475569;
+
+      border:
+        1px solid #475569;
+
       background: #0f172a;
+
       color: #f8fafc;
+
       font-size: 1rem;
     }
+
 
     input:focus,
     select:focus,
     textarea:focus {
+
       outline: none;
+
       border-color: #facc15;
-      box-shadow: 0 0 0 2px rgba(250,204,21,.15);
+
+      box-shadow:
+        0 0 0 2px
+        rgba(250,204,21,.15);
     }
 
+
     textarea {
+
       min-height: 120px;
+
       resize: vertical;
     }
 
+
+    /* =========================
+       EMAIL
+       ========================= */
+
     .email-info {
+
       background: #172554;
-      border: 1px solid #334155;
+
+      border:
+        1px solid #334155;
+
       color: #cbd5e1;
+
       padding: 13px;
+
       border-radius: 12px;
+
       margin-bottom: 20px;
+
       word-break: break-word;
     }
 
+
     .email-info strong {
+
       color: #facc15;
     }
 
+
+    /* =========================
+       BOUTONS
+       ========================= */
+
     button {
+
       width: 100%;
+
       padding: 15px;
+
       border: none;
+
       border-radius: 12px;
+
       font-size: 1rem;
+
       font-weight: 800;
+
       cursor: pointer;
+
       margin-top: 5px;
     }
 
+
     .save-btn {
-      background: linear-gradient(135deg, #facc15, #f59e0b);
+
+      background:
+        linear-gradient(
+          135deg,
+          #facc15,
+          #f59e0b
+        );
+
       color: #172554;
     }
 
+
     .save-btn:hover {
+
       filter: brightness(1.05);
     }
 
+
     .back-btn {
+
       background: #0284c7;
+
       color: white;
+
       margin-top: 12px;
     }
 
+
+    button:disabled {
+
+      opacity: .6;
+
+      cursor: not-allowed;
+    }
+
+
+    /* =========================
+       MESSAGES
+       ========================= */
+
     .message {
+
       display: none;
+
       margin-top: 18px;
+
       padding: 14px;
+
       border-radius: 12px;
+
       text-align: center;
+
       line-height: 1.5;
     }
 
+
     .success {
+
       display: block;
+
       background: #064e3b;
+
       color: #a7f3d0;
-      border: 1px solid #10b981;
+
+      border:
+        1px solid #10b981;
     }
+
 
     .error {
+
       display: block;
+
       background: #7f1d1d;
+
       color: #fecaca;
-      border: 1px solid #ef4444;
+
+      border:
+        1px solid #ef4444;
     }
 
+
     .loading {
+
       text-align: center;
+
       color: #94a3b8;
+
       padding: 30px;
     }
 
+
+    /* =========================
+       FOOTER
+       ========================= */
+
     footer {
+
       text-align: center;
+
       color: #94a3b8;
+
       margin-top: 20px;
+
       font-size: .85rem;
     }
 
+
     footer strong {
+
       color: #facc15;
     }
 
-    button:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
   </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
+
+
+  <!-- =========================
+       HEADER
+       ========================= -->
 
   <header class="header">
 
@@ -209,9 +417,11 @@
       🛡️
     </div>
 
+
     <h1>
       CERCLE<span>DES</span>AGENTS
     </h1>
+
 
     <p>
       Unis • Informés • Plus forts
@@ -220,26 +430,60 @@
   </header>
 
 
+
+  <!-- =========================
+       CARTE
+       ========================= -->
+
   <main class="card">
 
-    <h2>✏️ Modifier mon profil</h2>
 
-    <div id="loading" class="loading">
+    <h2>
+      ✏️ Modifier mon profil
+    </h2>
+
+
+    <!-- CHARGEMENT -->
+
+    <div
+      id="loading"
+      class="loading"
+    >
       Chargement de ton profil...
     </div>
 
 
-    <form id="profile-form" style="display:none;">
+
+    <!-- =========================
+         FORMULAIRE
+         ========================= -->
+
+    <form
+      id="profile-form"
+      style="display:none;"
+    >
+
+
+      <!-- EMAIL -->
 
       <div class="email-info">
+
         📧 Adresse e-mail :
-        <strong id="email-display">—</strong>
+
+        <strong id="email-display">
+          —
+        </strong>
+
       </div>
 
+
+
+      <!-- PRENOM -->
 
       <label for="prenom">
         Prénom *
       </label>
+
 
       <input
         type="text"
@@ -249,9 +493,13 @@
       >
 
 
+
+      <!-- NOM -->
+
       <label for="nom">
         Nom *
       </label>
+
 
       <input
         type="text"
@@ -261,9 +509,13 @@
       >
 
 
+
+      <!-- VILLE -->
+
       <label for="ville">
         📍 Ville *
       </label>
+
 
       <input
         type="text"
@@ -273,9 +525,13 @@
       >
 
 
+
+      <!-- ENTREPRISE -->
+
       <label for="entreprise">
         🏢 Entreprise
       </label>
+
 
       <input
         type="text"
@@ -284,47 +540,63 @@
       >
 
 
+
+      <!-- TYPE AGENT -->
+
       <label for="type_agent">
         🛡️ Type d'agent *
       </label>
 
-      <select id="type_agent" required>
+
+      <select
+        id="type_agent"
+        required
+      >
 
         <option value="">
           Choisir votre spécialité
         </option>
 
+
         <option value="commercial">
           Commercial
         </option>
+
 
         <option value="technique">
           Technique
         </option>
 
+
         <option value="support">
           Support
         </option>
+
 
         <option value="surveillance">
           Surveillance
         </option>
 
+
         <option value="gardiennage">
           Gardiennage
         </option>
+
 
         <option value="controle_acces">
           Contrôle d'accès
         </option>
 
+
         <option value="evenementiel">
           Événementiel
         </option>
 
+
         <option value="superviseur">
           Superviseur
         </option>
+
 
         <option value="autre">
           Autre
@@ -333,9 +605,13 @@
       </select>
 
 
+
+      <!-- PRESENTATION -->
+
       <label for="presentation">
         📝 Présentation
       </label>
+
 
       <textarea
         id="presentation"
@@ -343,118 +619,448 @@
       ></textarea>
 
 
+
+      <!-- ENREGISTRER -->
+
       <button
         type="submit"
         class="save-btn"
         id="save-btn"
       >
+
         💾 Enregistrer mes modifications
+
       </button>
 
+
+
+      <!-- RETOUR -->
 
       <button
         type="button"
         class="back-btn"
         onclick="window.location.href='profil.html'"
       >
+
         👤 Retour à mon profil
+
       </button>
+
 
     </form>
 
+
+
+    <!-- MESSAGE -->
 
     <div
       id="message"
       class="message"
     ></div>
 
+
   </main>
 
 
+
+  <!-- FOOTER -->
+
   <footer>
+
     Cercledesagents —
-    <strong>Unis • Informés • Plus forts</strong>
+
+    <strong>
+      Unis • Informés • Plus forts
+    </strong>
+
   </footer>
+
 
 </div>
 
 
+
 <script>
 
-  /* =====================================================
-     SUPABASE
-     ===================================================== */
 
-  const SUPABASE_URL =
-    "https://quzgphbougaujzqrhjza.supabase.co";
-
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+/* =====================================================
+   CONFIGURATION SUPABASE
+   ===================================================== */
 
 
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
+const SUPABASE_URL =
+  "https://quzgphbougaujzqrhjza.supabase.co";
 
 
-  /* =====================================================
-     ELEMENTS
-     ===================================================== */
-
-  const loading =
-    document.getElementById("loading");
-
-  const form =
-    document.getElementById("profile-form");
-
-  const message =
-    document.getElementById("message");
-
-  const saveBtn =
-    document.getElementById("save-btn");
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
 
 
-  /* =====================================================
-     MESSAGE
-     ===================================================== */
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth: {
 
-  function showMessage(text, type) {
+        /*
+         * Garder la session lorsque
+         * l'utilisateur change de page.
+         */
 
-    message.textContent = text;
+        persistSession: true,
 
-    message.className =
-      "message " + type;
+        autoRefreshToken: true,
+
+        detectSessionInUrl: true
+
+      }
+    }
+  );
+
+
+
+/* =====================================================
+   ELEMENTS
+   ===================================================== */
+
+
+const loading =
+  document.getElementById("loading");
+
+
+const form =
+  document.getElementById("profile-form");
+
+
+const message =
+  document.getElementById("message");
+
+
+const saveBtn =
+  document.getElementById("save-btn");
+
+
+
+/* =====================================================
+   AFFICHER UN MESSAGE
+   ===================================================== */
+
+
+function showMessage(
+  text,
+  type
+) {
+
+  message.textContent =
+    text;
+
+  message.className =
+    "message " + type;
+
+}
+
+
+
+/* =====================================================
+   RECUPERER LA SESSION
+   ===================================================== */
+
+
+async function getCurrentUser() {
+
+  /*
+   * Première méthode :
+   * récupération de la session locale.
+   */
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth.getSession();
+
+
+  if (error) {
+
+    throw error;
 
   }
 
 
-  /* =====================================================
-     CHARGEMENT DU PROFIL
-     ===================================================== */
+  /*
+   * Si une session existe,
+   * on récupère l'utilisateur.
+   */
 
-  async function loadProfile() {
+  if (
+    data &&
+    data.session &&
+    data.session.user
+  ) {
+
+    return data.session.user;
+
+  }
+
+
+  /*
+   * Deuxième vérification :
+   * demander directement à Supabase
+   * l'utilisateur actuellement connecté.
+   */
+
+  const {
+    data: userData,
+    error: userError
+  } =
+    await supabaseClient.auth.getUser();
+
+
+  if (userError) {
+
+    /*
+     * Si aucune session n'existe,
+     * on retourne simplement null.
+     */
+
+    if (
+      userError.message &&
+      userError.message
+        .toLowerCase()
+        .includes("auth session missing")
+    ) {
+
+      return null;
+
+    }
+
+    throw userError;
+
+  }
+
+
+  return userData.user || null;
+
+}
+
+
+
+/* =====================================================
+   CHARGEMENT DU PROFIL
+   ===================================================== */
+
+
+async function loadProfile() {
+
+  try {
+
+
+    /*
+     * Récupérer l'utilisateur connecté.
+     */
+
+    const user =
+      await getCurrentUser();
+
+
+    /*
+     * Aucun utilisateur connecté.
+     */
+
+    if (!user) {
+
+      window.location.href =
+        "connexion.html";
+
+      return;
+
+    }
+
+
+    /*
+     * Afficher l'adresse e-mail.
+     */
+
+    document.getElementById(
+      "email-display"
+    ).textContent =
+      user.email ||
+      "Non renseigné";
+
+
+
+    /*
+     * Récupérer le profil.
+     */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "prenom, nom, email, ville, entreprise, type_agent, presentation"
+        )
+        .eq(
+          "id",
+          user.id
+        )
+        .maybeSingle();
+
+
+    /*
+     * Erreur Supabase.
+     */
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+
+    /*
+     * Si le profil existe,
+     * remplir le formulaire.
+     */
+
+    if (data) {
+
+
+      document.getElementById(
+        "prenom"
+      ).value =
+        data.prenom || "";
+
+
+      document.getElementById(
+        "nom"
+      ).value =
+        data.nom || "";
+
+
+      document.getElementById(
+        "ville"
+      ).value =
+        data.ville || "";
+
+
+      document.getElementById(
+        "entreprise"
+      ).value =
+        data.entreprise || "";
+
+
+      document.getElementById(
+        "type_agent"
+      ).value =
+        data.type_agent || "";
+
+
+      document.getElementById(
+        "presentation"
+      ).value =
+        data.presentation || "";
+
+    }
+
+
+
+    /*
+     * Cacher le chargement.
+     */
+
+    loading.style.display =
+      "none";
+
+
+    /*
+     * Afficher le formulaire.
+     */
+
+    form.style.display =
+      "block";
+
+
+  }
+
+  catch (error) {
+
+
+    console.error(
+      "Erreur chargement profil :",
+      error
+    );
+
+
+    loading.style.display =
+      "none";
+
+
+    showMessage(
+      "Impossible de charger ton profil : " +
+      (
+        error.message ||
+        "erreur inconnue"
+      ),
+      "error"
+    );
+
+  }
+
+}
+
+
+
+/* =====================================================
+   ENREGISTREMENT DU PROFIL
+   ===================================================== */
+
+
+form.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+
+    /*
+     * Désactiver le bouton
+     */
+
+    saveBtn.disabled =
+      true;
+
+
+    saveBtn.textContent =
+      "⏳ Enregistrement...";
+
+
+    message.className =
+      "message";
+
+
+    message.textContent =
+      "";
+
+
 
     try {
 
-      const {
-        data: {
-          user
-        },
-        error: userError
-      } =
-        await supabaseClient.auth.getUser();
 
+      /*
+       * Récupérer la session.
+       */
 
-      if (userError) {
-        throw userError;
-      }
+      const user =
+        await getCurrentUser();
 
 
       /*
-       * Si personne n'est connecté,
-       * retour à la connexion.
+       * Vérifier l'utilisateur.
        */
 
       if (!user) {
@@ -463,329 +1069,268 @@
           "connexion.html";
 
         return;
+
       }
 
 
+
       /*
-       * Affichage de l'e-mail
+       * Récupérer les données
+       * du formulaire.
        */
 
-      document.getElementById(
-        "email-display"
-      ).textContent =
-        user.email || "Non renseigné";
+      const prenom =
+        document
+          .getElementById("prenom")
+          .value
+          .trim();
+
+
+      const nom =
+        document
+          .getElementById("nom")
+          .value
+          .trim();
+
+
+      const ville =
+        document
+          .getElementById("ville")
+          .value
+          .trim();
+
+
+      const entreprise =
+        document
+          .getElementById("entreprise")
+          .value
+          .trim();
+
+
+      const type_agent =
+        document
+          .getElementById("type_agent")
+          .value;
+
+
+      const presentation =
+        document
+          .getElementById("presentation")
+          .value
+          .trim();
+
 
 
       /*
-       * Recherche du profil
+       * Vérification prénom / nom / ville.
+       */
+
+      if (
+        !prenom ||
+        !nom ||
+        !ville
+      ) {
+
+        throw new Error(
+          "Veuillez renseigner le prénom, le nom et la ville."
+        );
+
+      }
+
+
+
+      /*
+       * Vérification du type d'agent.
+       */
+
+      if (!type_agent) {
+
+        throw new Error(
+          "Veuillez choisir votre type d'agent."
+        );
+
+      }
+
+
+
+      /*
+       * ENREGISTREMENT SUPABASE
+       *
+       * Si le profil existe :
+       * il est mis à jour.
+       *
+       * S'il n'existe pas :
+       * il est créé.
        */
 
       const {
-        data,
         error
       } =
         await supabaseClient
           .from("profiles")
-          .select(
-            "prenom, nom, email, ville, entreprise, type_agent, presentation"
-          )
-          .eq("id", user.id)
-          .maybeSingle();
+          .upsert(
 
+            {
 
-      if (error) {
-        throw error;
-      }
+              id:
+                user.id,
+
+              prenom:
+                prenom,
+
+              nom:
+                nom,
+
+              email:
+                user.email,
+
+              ville:
+                ville,
+
+              entreprise:
+                entreprise ||
+                null,
+
+              type_agent:
+                type_agent,
+
+              presentation:
+                presentation ||
+                null
+
+            },
+
+            {
+              onConflict:
+                "id"
+            }
+
+          );
+
 
 
       /*
-       * Remplissage du formulaire
+       * Vérifier l'erreur.
        */
 
-      if (data) {
+      if (error) {
 
-        document.getElementById(
-          "prenom"
-        ).value =
-          data.prenom || "";
-
-
-        document.getElementById(
-          "nom"
-        ).value =
-          data.nom || "";
-
-
-        document.getElementById(
-          "ville"
-        ).value =
-          data.ville || "";
-
-
-        document.getElementById(
-          "entreprise"
-        ).value =
-          data.entreprise || "";
-
-
-        document.getElementById(
-          "type_agent"
-        ).value =
-          data.type_agent || "";
-
-
-        document.getElementById(
-          "presentation"
-        ).value =
-          data.presentation || "";
+        throw error;
 
       }
 
 
-      loading.style.display =
-        "none";
 
-      form.style.display =
-        "block";
+      /*
+       * Message de succès.
+       */
+
+      showMessage(
+        "✅ Profil enregistré avec succès !",
+        "success"
+      );
+
+
+
+      /*
+       * Retour au profil.
+       */
+
+      setTimeout(
+        function() {
+
+          window.location.href =
+            "profil.html";
+
+        },
+        1000
+      );
+
 
     }
 
     catch (error) {
 
-      console.error(error);
 
-      loading.style.display =
-        "none";
+      console.error(
+        "Erreur sauvegarde profil :",
+        error
+      );
+
 
       showMessage(
-        "Impossible de charger ton profil : " +
-        (error.message || "erreur inconnue"),
+        "❌ " +
+        (
+          error.message ||
+          "Impossible d'enregistrer le profil."
+        ),
         "error"
       );
 
     }
 
-  }
 
-
-  /* =====================================================
-     ENREGISTREMENT
-     ===================================================== */
-
-  form.addEventListener(
-    "submit",
-    async function(e) {
-
-      e.preventDefault();
+    finally {
 
 
       saveBtn.disabled =
-        true;
+        false;
+
 
       saveBtn.textContent =
-        "⏳ Enregistrement...";
-
-
-      message.style.display =
-        "none";
-
-
-      try {
-
-        /*
-         * Vérification de la session
-         */
-
-        const {
-          data: {
-            user
-          },
-          error: userError
-        } =
-          await supabaseClient.auth.getUser();
-
-
-        if (userError) {
-          throw userError;
-        }
-
-
-        if (!user) {
-
-          window.location.href =
-            "connexion.html";
-
-          return;
-        }
-
-
-        /*
-         * Récupération des valeurs
-         */
-
-        const prenom =
-          document.getElementById(
-            "prenom"
-          ).value.trim();
-
-
-        const nom =
-          document.getElementById(
-            "nom"
-          ).value.trim();
-
-
-        const ville =
-          document.getElementById(
-            "ville"
-          ).value.trim();
-
-
-        const entreprise =
-          document.getElementById(
-            "entreprise"
-          ).value.trim();
-
-
-        const type_agent =
-          document.getElementById(
-            "type_agent"
-          ).value;
-
-
-        const presentation =
-          document.getElementById(
-            "presentation"
-          ).value.trim();
-
-
-        /*
-         * Validation
-         */
-
-        if (!prenom || !nom || !ville) {
-
-          throw new Error(
-            "Veuillez renseigner le prénom, le nom et la ville."
-          );
-
-        }
-
-
-        if (!type_agent) {
-
-          throw new Error(
-            "Veuillez choisir votre type d'agent."
-          );
-
-        }
-
-
-        /*
-         * UPSERT
-         *
-         * Si le profil existe :
-         * mise à jour.
-         *
-         * S'il n'existe pas :
-         * création.
-         */
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("profiles")
-            .upsert(
-              {
-                id: user.id,
-                prenom: prenom,
-                nom: nom,
-                email: user.email,
-                ville: ville,
-                entreprise:
-                  entreprise || null,
-                type_agent:
-                  type_agent,
-                presentation:
-                  presentation || null
-              },
-              {
-                onConflict: "id"
-              }
-            );
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        /*
-         * Succès
-         */
-
-        showMessage(
-          "✅ Profil enregistré avec succès !",
-          "success"
-        );
-
-
-        /*
-         * Retour automatique
-         * au profil après 1 seconde.
-         */
-
-        setTimeout(
-          function() {
-
-            window.location.href =
-              "profil.html";
-
-          },
-          1000
-        );
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "Erreur sauvegarde :",
-          error
-        );
-
-
-        showMessage(
-          "❌ " +
-          (error.message ||
-            "Impossible d'enregistrer le profil."),
-          "error"
-        );
-
-      }
-
-      finally {
-
-        saveBtn.disabled =
-          false;
-
-        saveBtn.textContent =
-          "💾 Enregistrer mes modifications";
-
-      }
+        "💾 Enregistrer mes modifications";
 
     }
-  );
+
+  }
+);
 
 
-  /* =====================================================
-     DÉMARRAGE
-     ===================================================== */
 
-  loadProfile();
+/* =====================================================
+   SURVEILLER LA SESSION SUPABASE
+   ===================================================== */
+
+
+supabaseClient.auth.onAuthStateChange(
+  function(event, session) {
+
+    console.log(
+      "État authentification :",
+      event
+    );
+
+
+    /*
+     * Si Supabase signale explicitement
+     * une déconnexion, retour connexion.
+     */
+
+    if (
+      event === "SIGNED_OUT"
+    ) {
+
+      window.location.href =
+        "connexion.html";
+
+    }
+
+  }
+);
+
+
+
+/* =====================================================
+   DEMARRAGE
+   ===================================================== */
+
+
+loadProfile();
+
 
 </script>
 
+
 </body>
+
 </html>
