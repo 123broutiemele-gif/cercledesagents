@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cercle des Agents — Mon profil</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top right, #075985 0%, transparent 35%),
+        linear-gradient(135deg, #0f172a, #172554);
+      color: #f8fafc;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      padding: 25px 10px;
+    }
+
+    .logo {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #facc15, #f97316);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    .header h1 span {
+      color: #facc15;
+    }
+
+    .header p {
+      color: #94a3b8;
+      margin-top: 6px;
+    }
+
+    .card {
+      background: rgba(30, 41, 59, .96);
+      border: 1px solid #334155;
+      border-radius: 22px;
+      padding: 25px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+
+    .profile-top {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: #0f172a;
+      border: 4px solid #facc15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+    }
+
+    .profile-top h2 {
+      font-size: 1.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: #172554;
+      color: #facc15;
+      border: 1px solid #facc15;
+      font-size: .85rem;
+      font-weight: 700;
+    }
+
+    .info {
+      margin-top: 20px;
+    }
+
+    .info-item {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .info-label {
+      color: #94a3b8;
+      font-size: .82rem;
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      color: #f8fafc;
+      font-size: 1rem;
+      word-break: break-word;
+    }
+
+    .presentation {
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .buttons {
+      margin-top: 25px;
+      display: grid;
+      gap: 12px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .home-btn {
+      background: #facc15;
+      color: #172554;
+    }
+
+    .logout-btn {
+      background: #dc2626;
+      color: white;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+      display: none;
+    }
+
+    .success {
+      display: block;
+      background: #064e3b;
+      color: #a7f3d0;
+      border: 1px solid #10b981;
+    }
+
+    .error {
+      display: block;
+      background: #7f1d1d;
+      color: #fecaca;
+      border: 1px solid #ef4444;
+    }
+
+    .loading {
+      text-align: center;
+      color: #94a3b8;
+      padding: 30px 10px;
+    }
+
+    footer {
+      text-align: center;
+      color: #94a3b8;
+      margin-top: 20px;
+      font-size: .9rem;
+    }
+
+    footer strong {
+      color: #facc15;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <header class="header">
+
+      <div class="logo">
+        🛡️
+      </div>
+
+      <h1>
+        CERCLE<span>DES</span>AGENTS
+      </h1>
+
+      <p>
+        Unis • Informés • Plus forts
+      </p>
+
+    </header>
+
+
+    <main class="card">
+
+      <div id="loading" class="loading">
+        Chargement de ton profil...
+      </div>
+
+
+      <div id="profile" style="display:none;">
+
+        <div class="profile-top">
+
+          <div class="avatar">
+            👤
+          </div>
+
+          <h2 id="nom-complet">
+            —
+          </h2>
+
+          <div class="badge" id="type-agent">
+            —
+          </div>
+
+        </div>
+
+
+        <div class="info">
+
+          <div class="info-item">
+
+            <div class="info-label">
+              📧 Adresse e-mail
+            </div>
+
+            <div class="info-value" id="email">
+              —
+            </div>
+
+          </div>
+
+
+          <div class="info-item">
+
+            <div class="info-label">
+              📍 Ville
+            </div>
+
+            <div class="info-value" id="ville">
+              —
+            </div>
+
+          </div>
+
+
+          <div class="info-item">
+
+            <div class="info-label">
+              🏢 Entreprise
+            </div>
+
+            <div class="info-value" id="entreprise">
+              —
+            </div>
+
+          </div>
+
+
+          <div class="info-item">
+
+            <div class="info-label">
+              🛡️ Type d'agent
+            </div>
+
+            <div class="info-value" id="type-agent-detail">
+              —
+            </div>
+
+          </div>
+
+
+          <div class="info-item">
+
+            <div class="info-label">
+              📝 Présentation
+            </div>
+
+            <div class="info-value presentation" id="presentation">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+          <button
+            class="home-btn"
+            onclick="window.location.href='index.html'"
+          >
+            🏠 Retour à l'accueil
+          </button>
+
+          <button
+            class="logout-btn"
+            id="logout-btn"
+          >
+            🚪 Se déconnecter
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div id="message" class="message"></div>
+
+    </main>
+
+
+    <footer>
+      Cercledesagents —
+      <strong>Unis • Informés • Plus forts</strong>
+    </footer>
+
+  </div>
+
+
+<script>
+
+  /* =========================================================
+     CONFIGURATION SUPABASE
+     ========================================================= */
+
+  const SUPABASE_URL =
+    "https://quzgphbougaujzqrhjza.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+  /* =========================================================
+     ELEMENTS DE LA PAGE
+     ========================================================= */
+
+  const loading =
+    document.getElementById("loading");
+
+  const profile =
+    document.getElementById("profile");
+
+  const message =
+    document.getElementById("message");
+
+  const logoutBtn =
+    document.getElementById("logout-btn");
+
+
+  /* =========================================================
+     AFFICHER UN MESSAGE
+     ========================================================= */
+
+  function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className =
+      "message " + type;
+
+  }
+
+
+  /* =========================================================
+     CHARGER LE PROFIL
+     ========================================================= */
+
+  async function loadProfile() {
+
+    try {
+
+      /*
+       * On récupère l'utilisateur actuellement connecté
+       */
+
+      const {
+        data: {
+          user
+        },
+        error: userError
+      } = await supabaseClient.auth.getUser();
+
+
+      if (userError) {
+        throw userError;
+      }
+
+
+      /*
+       * Aucun utilisateur connecté
+       */
+
+      if (!user) {
+
+        window.location.href =
+          "connexion.html";
+
+        return;
+      }
+
+
+      /*
+       * Recherche du profil dans la table profiles
+       */
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .from("profiles")
+        .select(
+          "id, prenom, nom, email, ville, entreprise, type_agent, presentation"
+        )
+        .eq("id", user.id)
+        .maybeSingle();
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      /*
+       * Le profil n'existe pas encore
+       */
+
+      if (!data) {
+
+        loading.style.display =
+          "none";
+
+        showMessage(
+          "Ton compte existe, mais ton profil n'a pas encore été trouvé.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      /*
+       * AFFICHAGE DES DONNÉES
+       */
+
+      document.getElementById(
+        "nom-complet"
+      ).textContent =
+        `${data.prenom || ""} ${data.nom || ""}`.trim();
+
+
+      document.getElementById(
+        "email"
+      ).textContent =
+        data.email || user.email || "Non renseigné";
+
+
+      document.getElementById(
+        "ville"
+      ).textContent =
+        data.ville || "Non renseignée";
+
+
+      document.getElementById(
+        "entreprise"
+      ).textContent =
+        data.entreprise || "Non renseignée";
+
+
+      document.getElementById(
+        "type-agent"
+      ).textContent =
+        data.type_agent || "Agent";
+
+
+      document.getElementById(
+        "type-agent-detail"
+      ).textContent =
+        data.type_agent || "Non renseigné";
+
+
+      document.getElementById(
+        "presentation"
+      ).textContent =
+        data.presentation || "Aucune présentation renseignée.";
+
+
+      /*
+       * On cache le chargement
+       * et on affiche le profil
+       */
+
+      loading.style.display =
+        "none";
+
+      profile.style.display =
+        "block";
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Erreur profil :",
+        error
+      );
+
+      loading.style.display =
+        "none";
+
+      showMessage(
+        "Impossible de charger ton profil : " +
+        (error.message || "erreur inconnue"),
+        "error"
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     DÉCONNEXION
+     ========================================================= */
+
+  logoutBtn.addEventListener(
+    "click",
+    async () => {
+
+      logoutBtn.disabled = true;
+
+      logoutBtn.textContent =
+        "Déconnexion...";
+
+
+      const {
+        error
+      } =
+        await supabaseClient.auth.signOut();
+
+
+      if (error) {
+
+        logoutBtn.disabled =
+          false;
+
+        logoutBtn.textContent =
+          "🚪 Se déconnecter";
+
+        showMessage(
+          "Erreur lors de la déconnexion : " +
+          error.message,
+          "error"
+        );
+
+        return;
+      }
+
+
+      /*
+       * Retour à la page de connexion
+       */
+
+      window.location.href =
+        "connexion.html";
+
+    }
+  );
+
+
+  /* =========================================================
+     DÉMARRAGE
+     ========================================================= */
+
+  loadProfile();
+
+</script>
+
+</body>
+</html>
