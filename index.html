@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cercle des Agents – Inscription</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cercledesagents — Inscription</title>
+
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #0f172a;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(
+        135deg,
+        #0b2f63 0%,
+        #172b4d 55%,
+        #f58220 100%
+      );
       color: #e2e8f0;
       min-height: 100vh;
       display: flex;
@@ -17,180 +31,640 @@
       justify-content: center;
       padding: 20px;
     }
+
     .card {
-      background: #1e293b;
-      border-radius: 16px;
-      padding: 32px;
       width: 100%;
-      max-width: 440px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      max-width: 460px;
+      background: #1e293b;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
     }
+
+    .logo {
+      width: 75px;
+      height: 75px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: #ffc400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
     h1 {
-      font-size: 1.6rem;
-      margin-bottom: 8px;
       text-align: center;
+      font-size: 1.7rem;
+      color: #ffc400;
+      margin-bottom: 5px;
+      font-weight: 800;
     }
-    p.subtitle {
+
+    .subtitle {
       text-align: center;
-      color: #94a3b8;
-      margin-bottom: 28px;
+      color: #cbd5e1;
+      margin-bottom: 25px;
       font-size: 0.95rem;
+      line-height: 1.4;
     }
+
+    .slogan {
+      text-align: center;
+      color: #f58220;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
     label {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 7px;
       font-size: 0.9rem;
-      color: #cbd5e1;
+      font-weight: 600;
+      color: #e2e8f0;
     }
-    input, select, textarea {
+
+    input,
+    select,
+    textarea {
       width: 100%;
-      padding: 12px 14px;
-      margin-bottom: 16px;
-      border: 1px solid #334155;
-      border-radius: 10px;
+      padding: 13px 14px;
+      margin-bottom: 17px;
+      border: 1px solid #475569;
+      border-radius: 11px;
       background: #0f172a;
-      color: #f1f5f9;
+      color: #f8fafc;
       font-size: 1rem;
     }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #38bdf8;
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #64748b;
     }
-    textarea { min-height: 90px; resize: vertical; }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #ffc400;
+      box-shadow: 0 0 0 2px rgba(255, 196, 0, 0.15);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .password-info {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-top: -10px;
+      margin-bottom: 15px;
+    }
+
     button {
       width: 100%;
-      padding: 14px;
-      background: #0ea5e9;
-      color: white;
+      padding: 15px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
+      background: #ffc400;
+      color: #0b2f63;
       font-size: 1.05rem;
-      font-weight: 600;
+      font-weight: 800;
       cursor: pointer;
-      margin-top: 8px;
+      margin-top: 5px;
+      transition: 0.2s;
     }
-    button:hover { background: #0284c7; }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    button:hover {
+      background: #f5b900;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .message {
-      margin-top: 16px;
-      padding: et 12px;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 0.95rem;
       display: none;
+      margin-top: 18px;
+      padding: 13px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.92rem;
+      line-height: 1.4;
     }
-    .success { background: #064e3b; color: #6ee7b7; }
-    .error { background: #7f1d1d; color: #fca5a5; }
+
+    .success {
+      background: #064e3b;
+      color: #a7f3d0;
+      border: 1px solid #10b981;
+    }
+
+    .error {
+      background: #7f1d1d;
+      color: #fecaca;
+      border: 1px solid #ef4444;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #94a3b8;
+      font-size: 0.85rem;
+    }
+
+    .footer span {
+      color: #ffc400;
+      font-weight: 700;
+    }
+
+    .required {
+      color: #f58220;
+    }
   </style>
 </head>
+
 <body>
+
   <div class="card">
-    <h1>Cercle des Agents</h1>
-    <p class="subtitle">Crée ton compte agent</p>
 
+    <!-- LOGO -->
+    <div class="logo">🛡️</div>
+
+    <!-- TITRE -->
+    <h1>CERCLEDESAGENTS</h1>
+
+    <p class="subtitle">
+      Le réseau social professionnel des agents de sécurité privée
+    </p>
+
+    <div class="slogan">
+      Unis • Informés • Plus forts
+    </div>
+
+    <!-- FORMULAIRE -->
     <form id="signup-form">
-      <label>Prénom</label>
-      <input type="text" id="prenom" required placeholder="Jean">
 
-      <label>Nom</label>
-      <input type="text" id="nom" required placeholder="Dupont">
+      <!-- PRÉNOM -->
+      <label for="prenom">
+        Prénom <span class="required">*</span>
+      </label>
 
-      <label>E-mail</label>
-      <input type="email" id="email" required placeholder="jean@exemple.com">
+      <input
+        type="text"
+        id="prenom"
+        required
+        autocomplete="given-name"
+        placeholder="Ex. Jean"
+      >
 
-      <label>Mot de passe (min. 6 caractères)</label>
-      <input type="password" id="password" required minlength="6" placeholder="••••••••">
+      <!-- NOM -->
+      <label for="nom">
+        Nom <span class="required">*</span>
+      </label>
 
-      <label>Ville</label>
-      <input type="text" id="ville" required placeholder="Paris">
+      <input
+        type="text"
+        id="nom"
+        required
+        autocomplete="family-name"
+        placeholder="Ex. Kouassi"
+      >
 
-      <label>Entreprise</label>
-      <input type="text" id="entreprise" placeholder="Nom de l’entreprise (optionnel)">
+      <!-- EMAIL -->
+      <label for="email">
+        Adresse e-mail <span class="required">*</span>
+      </label>
 
-      <label>Type d’agent</label>
+      <input
+        type="email"
+        id="email"
+        required
+        autocomplete="email"
+        placeholder="exemple@email.com"
+      >
+
+      <!-- MOT DE PASSE -->
+      <label for="password">
+        Mot de passe <span class="required">*</span>
+      </label>
+
+      <input
+        type="password"
+        id="password"
+        required
+        minlength="6"
+        autocomplete="new-password"
+        placeholder="Minimum 6 caractères"
+      >
+
+      <div class="password-info">
+        Utilise un mot de passe difficile à deviner.
+      </div>
+
+      <!-- VILLE -->
+      <label for="ville">
+        Ville <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="ville"
+        required
+        autocomplete="address-level2"
+        placeholder="Ex. Abidjan"
+      >
+
+      <!-- ENTREPRISE -->
+      <label for="entreprise">
+        Entreprise
+      </label>
+
+      <input
+        type="text"
+        id="entreprise"
+        autocomplete="organization"
+        placeholder="Ex. Nom de l'entreprise"
+      >
+
+      <!-- TYPE D'AGENT -->
+      <label for="type_agent">
+        Type d'agent <span class="required">*</span>
+      </label>
+
       <select id="type_agent" required>
-        <option value="">Choisir…</option>
-        <option value="commercial">Commercial</option>
-        <option value="technique">Technique</option>
-        <option value="support">Support</option>
-        <option value="autre">Autre</option>
+
+        <option value="">
+          Choisir votre spécialité
+        </option>
+
+        <option value="agent_de_securite">
+          Agent de sécurité
+        </option>
+
+        <option value="gardiennage">
+          Gardiennage
+        </option>
+
+        <option value="surveillance">
+          Surveillance
+        </option>
+
+        <option value="controle_acces">
+          Contrôle d'accès
+        </option>
+
+        <option value="evenementiel">
+          Sécurité événementielle
+        </option>
+
+        <option value="superviseur">
+          Superviseur
+        </option>
+
+        <option value="agent_mobile">
+          Agent mobile
+        </option>
+
+        <option value="autre">
+          Autre
+        </option>
+
       </select>
 
-      <label>Présentation</label>
-      <textarea id="presentation" placeholder="Quelques mots sur toi…"></textarea>
+      <!-- PRÉSENTATION -->
+      <label for="presentation">
+        Présentation
+      </label>
 
-      <button type="submit" id="submit-btn">Créer mon compte</button>
+      <textarea
+        id="presentation"
+        placeholder="Présente-toi en quelques mots..."
+      ></textarea>
+
+      <!-- BOUTON -->
+      <button
+        type="submit"
+        id="submit-btn"
+      >
+        Créer mon compte
+      </button>
+
     </form>
 
-    <div id="message" class="message"></div>
+    <!-- MESSAGE -->
+    <div
+      id="message"
+      class="message"
+      role="alert"
+    ></div>
+
+    <!-- PIED DE PAGE -->
+    <div class="footer">
+      Cercledesagents —
+      <span>Unis • Informés • Plus forts</span>
+    </div>
+
   </div>
 
+
 <script>
-  // ⚠️ Tes clés
-  const SUPABASE_URL = "https://quzgphbougaujzqrhjza.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1emdwaGJvdWdhdWp6cXJoanphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0NTY5MTUsImV4cCI6MjEwNDAzMjkxNX0.oKGi4geGQaidkn8Hp8du4VI8mRwAa3HsApX3hummN3I";
 
-  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  /*
+   * =====================================================
+   * CONFIGURATION SUPABASE
+   * =====================================================
+   */
 
-  const form = document.getElementById("signup-form");
-  const messageEl = document.getElementById("message");
-  const submitBtn = document.getElementById("submit-btn");
+  const SUPABASE_URL =
+    "https://quzgphbougaujzqrhjza.supabase.co";
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    messageEl.style.display = "none";
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Création en cours…";
+  const SUPABASE_ANON_KEY =
+    "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
 
-    const prenom = document.getElementById("prenom").value.trim();
-    const nom = document.getElementById("nom").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const ville = document.getElementById("ville").value.trim();
-    const entreprise = document.getElementById("entreprise").value.trim();
-    const type_agent = document.getElementById("type_agent").value;
-    const presentation = document.getElementById("presentation").value.trim();
 
-    try {
-      // 1. Création du compte Auth
-      const { data: authData, error: authError } = await supabaseClient.auth.signUp({
-        email,
-        password,
-      });
+  /*
+   * Création du client Supabase
+   */
 
-      if (authError) throw authError;
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
 
-      const userId = authData.user.id;
 
-      // 2. Insertion du profil
-      const { error: profileError } = await supabaseClient
-        .from("profiles")
-        .insert({
-          id: userId,
-          prenom,
-          nom,
-          email,
-          ville,
-          entreprise: entreprise || null,
-          type_agent,
-          presentation: presentation || null,
+  /*
+   * Éléments HTML
+   */
+
+  const form =
+    document.getElementById("signup-form");
+
+  const messageEl =
+    document.getElementById("message");
+
+  const submitBtn =
+    document.getElementById("submit-btn");
+
+
+  /*
+   * Afficher un message
+   */
+
+  function showMessage(message, type) {
+
+    messageEl.className =
+      "message " + type;
+
+    messageEl.textContent =
+      message;
+
+    messageEl.style.display =
+      "block";
+  }
+
+
+  /*
+   * =====================================================
+   * INSCRIPTION
+   * =====================================================
+   */
+
+  form.addEventListener(
+    "submit",
+    async function(e) {
+
+      e.preventDefault();
+
+
+      /*
+       * Masquer l'ancien message
+       */
+
+      messageEl.style.display =
+        "none";
+
+
+      /*
+       * Désactiver le bouton
+       */
+
+      submitBtn.disabled =
+        true;
+
+      submitBtn.textContent =
+        "Création du compte...";
+
+
+      /*
+       * Récupérer les données
+       */
+
+      const prenom =
+        document
+          .getElementById("prenom")
+          .value
+          .trim();
+
+      const nom =
+        document
+          .getElementById("nom")
+          .value
+          .trim();
+
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim()
+          .toLowerCase();
+
+      const password =
+        document
+          .getElementById("password")
+          .value;
+
+      const ville =
+        document
+          .getElementById("ville")
+          .value
+          .trim();
+
+      const entreprise =
+        document
+          .getElementById("entreprise")
+          .value
+          .trim();
+
+      const type_agent =
+        document
+          .getElementById("type_agent")
+          .value;
+
+      const presentation =
+        document
+          .getElementById("presentation")
+          .value
+          .trim();
+
+
+      /*
+       * Vérification du mot de passe
+       */
+
+      if (password.length < 6) {
+
+        showMessage(
+          "Le mot de passe doit contenir au moins 6 caractères.",
+          "error"
+        );
+
+        submitBtn.disabled =
+          false;
+
+        submitBtn.textContent =
+          "Créer mon compte";
+
+        return;
+      }
+
+
+      try {
+
+        /*
+         * Nom complet
+         */
+
+        const full_name =
+          prenom + " " + nom;
+
+
+        /*
+         * =================================================
+         * CRÉATION DU COMPTE AUTH
+         * =================================================
+         *
+         * IMPORTANT :
+         *
+         * Nous ne faisons PAS :
+         *
+         * supabase.from("profiles").insert(...)
+         *
+         * Le trigger Supabase s'occupe automatiquement
+         * de créer le profil.
+         */
+
+        const {
+          data,
+          error
+        } =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: password,
+
+          options: {
+
+            data: {
+
+              full_name:
+                full_name,
+
+              city:
+                ville,
+
+              company:
+                entreprise || null,
+
+              agent_type:
+                type_agent,
+
+              bio:
+                presentation || null
+
+            }
+
+          }
+
         });
 
-      if (profileError) throw profileError;
 
-      // Succès
-      messageEl.className = "message success";
-      messageEl.textContent = "Compte créé avec succès ! Vérifie ton e-mail pour confirmer.";
-      messageEl.style.display = "block";
-      form.reset();
+        /*
+         * Vérifier l'erreur Supabase
+         */
 
-    } catch (err) {
-      messageEl.className = "message error";
-      messageEl.textContent = err.message || "Une erreur est survenue.";
-      messageEl.style.display = "block";
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Créer mon compte";
+        if (error) {
+          throw error;
+        }
+
+
+        /*
+         * Vérifier que l'utilisateur existe
+         */
+
+        if (!data || !data.user) {
+
+          throw new Error(
+            "Le compte n'a pas pu être créé."
+          );
+
+        }
+
+
+        /*
+         * SUCCÈS
+         */
+
+        showMessage(
+          "Compte créé avec succès ! Vérifie ton adresse e-mail pour confirmer ton compte.",
+          "success"
+        );
+
+
+        /*
+         * Réinitialiser le formulaire
+         */
+
+        form.reset();
+
+
+      } catch (err) {
+
+        console.error(
+          "Erreur inscription :",
+          err
+        );
+
+
+        showMessage(
+          err.message ||
+          "Une erreur est survenue pendant la création du compte.",
+          "error"
+        );
+
+
+      } finally {
+
+        /*
+         * Réactiver le bouton
+         */
+
+        submitBtn.disabled =
+          false;
+
+        submitBtn.textContent =
+          "Créer mon compte";
+
+      }
+
     }
-  });
+  );
+
 </script>
+
+</body>
+</html>
