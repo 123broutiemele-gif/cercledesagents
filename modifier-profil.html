@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cercle des Agents — Modifier mon profil</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top right, #075985 0%, transparent 35%),
+        linear-gradient(135deg, #0f172a, #172554);
+      color: #f8fafc;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px 10px 25px;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin: auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #facc15, #f97316);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    .header h1 {
+      margin-top: 15px;
+      font-size: 1.7rem;
+      font-weight: 800;
+    }
+
+    .header h1 span {
+      color: #facc15;
+    }
+
+    .header p {
+      color: #94a3b8;
+      margin-top: 5px;
+    }
+
+    .card {
+      background: rgba(30, 41, 59, .97);
+      border: 1px solid #334155;
+      border-radius: 22px;
+      padding: 25px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 1.4rem;
+    }
+
+    label {
+      display: block;
+      color: #cbd5e1;
+      font-size: .9rem;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 17px;
+      border-radius: 12px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #f8fafc;
+      font-size: 1rem;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #facc15;
+      box-shadow: 0 0 0 2px rgba(250,204,21,.15);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .email-info {
+      background: #172554;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      padding: 13px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      word-break: break-word;
+    }
+
+    .email-info strong {
+      color: #facc15;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .save-btn {
+      background: linear-gradient(135deg, #facc15, #f59e0b);
+      color: #172554;
+    }
+
+    .save-btn:hover {
+      filter: brightness(1.05);
+    }
+
+    .back-btn {
+      background: #0284c7;
+      color: white;
+      margin-top: 12px;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .success {
+      display: block;
+      background: #064e3b;
+      color: #a7f3d0;
+      border: 1px solid #10b981;
+    }
+
+    .error {
+      display: block;
+      background: #7f1d1d;
+      color: #fecaca;
+      border: 1px solid #ef4444;
+    }
+
+    .loading {
+      text-align: center;
+      color: #94a3b8;
+      padding: 30px;
+    }
+
+    footer {
+      text-align: center;
+      color: #94a3b8;
+      margin-top: 20px;
+      font-size: .85rem;
+    }
+
+    footer strong {
+      color: #facc15;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <header class="header">
+
+    <div class="logo">
+      🛡️
+    </div>
+
+    <h1>
+      CERCLE<span>DES</span>AGENTS
+    </h1>
+
+    <p>
+      Unis • Informés • Plus forts
+    </p>
+
+  </header>
+
+
+  <main class="card">
+
+    <h2>✏️ Modifier mon profil</h2>
+
+    <div id="loading" class="loading">
+      Chargement de ton profil...
+    </div>
+
+
+    <form id="profile-form" style="display:none;">
+
+      <div class="email-info">
+        📧 Adresse e-mail :
+        <strong id="email-display">—</strong>
+      </div>
+
+
+      <label for="prenom">
+        Prénom *
+      </label>
+
+      <input
+        type="text"
+        id="prenom"
+        required
+        placeholder="Ex. Jean"
+      >
+
+
+      <label for="nom">
+        Nom *
+      </label>
+
+      <input
+        type="text"
+        id="nom"
+        required
+        placeholder="Ex. Dupont"
+      >
+
+
+      <label for="ville">
+        📍 Ville *
+      </label>
+
+      <input
+        type="text"
+        id="ville"
+        required
+        placeholder="Ex. Abidjan"
+      >
+
+
+      <label for="entreprise">
+        🏢 Entreprise
+      </label>
+
+      <input
+        type="text"
+        id="entreprise"
+        placeholder="Ex. GSP Sécurité"
+      >
+
+
+      <label for="type_agent">
+        🛡️ Type d'agent *
+      </label>
+
+      <select id="type_agent" required>
+
+        <option value="">
+          Choisir votre spécialité
+        </option>
+
+        <option value="commercial">
+          Commercial
+        </option>
+
+        <option value="technique">
+          Technique
+        </option>
+
+        <option value="support">
+          Support
+        </option>
+
+        <option value="surveillance">
+          Surveillance
+        </option>
+
+        <option value="gardiennage">
+          Gardiennage
+        </option>
+
+        <option value="controle_acces">
+          Contrôle d'accès
+        </option>
+
+        <option value="evenementiel">
+          Événementiel
+        </option>
+
+        <option value="superviseur">
+          Superviseur
+        </option>
+
+        <option value="autre">
+          Autre
+        </option>
+
+      </select>
+
+
+      <label for="presentation">
+        📝 Présentation
+      </label>
+
+      <textarea
+        id="presentation"
+        placeholder="Présente-toi en quelques mots..."
+      ></textarea>
+
+
+      <button
+        type="submit"
+        class="save-btn"
+        id="save-btn"
+      >
+        💾 Enregistrer mes modifications
+      </button>
+
+
+      <button
+        type="button"
+        class="back-btn"
+        onclick="window.location.href='profil.html'"
+      >
+        👤 Retour à mon profil
+      </button>
+
+    </form>
+
+
+    <div
+      id="message"
+      class="message"
+    ></div>
+
+  </main>
+
+
+  <footer>
+    Cercledesagents —
+    <strong>Unis • Informés • Plus forts</strong>
+  </footer>
+
+</div>
+
+
+<script>
+
+  /* =====================================================
+     SUPABASE
+     ===================================================== */
+
+  const SUPABASE_URL =
+    "https://quzgphbougaujzqrhjza.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+  /* =====================================================
+     ELEMENTS
+     ===================================================== */
+
+  const loading =
+    document.getElementById("loading");
+
+  const form =
+    document.getElementById("profile-form");
+
+  const message =
+    document.getElementById("message");
+
+  const saveBtn =
+    document.getElementById("save-btn");
+
+
+  /* =====================================================
+     MESSAGE
+     ===================================================== */
+
+  function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className =
+      "message " + type;
+
+  }
+
+
+  /* =====================================================
+     CHARGEMENT DU PROFIL
+     ===================================================== */
+
+  async function loadProfile() {
+
+    try {
+
+      const {
+        data: {
+          user
+        },
+        error: userError
+      } =
+        await supabaseClient.auth.getUser();
+
+
+      if (userError) {
+        throw userError;
+      }
+
+
+      /*
+       * Si personne n'est connecté,
+       * retour à la connexion.
+       */
+
+      if (!user) {
+
+        window.location.href =
+          "connexion.html";
+
+        return;
+      }
+
+
+      /*
+       * Affichage de l'e-mail
+       */
+
+      document.getElementById(
+        "email-display"
+      ).textContent =
+        user.email || "Non renseigné";
+
+
+      /*
+       * Recherche du profil
+       */
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("profiles")
+          .select(
+            "prenom, nom, email, ville, entreprise, type_agent, presentation"
+          )
+          .eq("id", user.id)
+          .maybeSingle();
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      /*
+       * Remplissage du formulaire
+       */
+
+      if (data) {
+
+        document.getElementById(
+          "prenom"
+        ).value =
+          data.prenom || "";
+
+
+        document.getElementById(
+          "nom"
+        ).value =
+          data.nom || "";
+
+
+        document.getElementById(
+          "ville"
+        ).value =
+          data.ville || "";
+
+
+        document.getElementById(
+          "entreprise"
+        ).value =
+          data.entreprise || "";
+
+
+        document.getElementById(
+          "type_agent"
+        ).value =
+          data.type_agent || "";
+
+
+        document.getElementById(
+          "presentation"
+        ).value =
+          data.presentation || "";
+
+      }
+
+
+      loading.style.display =
+        "none";
+
+      form.style.display =
+        "block";
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      loading.style.display =
+        "none";
+
+      showMessage(
+        "Impossible de charger ton profil : " +
+        (error.message || "erreur inconnue"),
+        "error"
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     ENREGISTREMENT
+     ===================================================== */
+
+  form.addEventListener(
+    "submit",
+    async function(e) {
+
+      e.preventDefault();
+
+
+      saveBtn.disabled =
+        true;
+
+      saveBtn.textContent =
+        "⏳ Enregistrement...";
+
+
+      message.style.display =
+        "none";
+
+
+      try {
+
+        /*
+         * Vérification de la session
+         */
+
+        const {
+          data: {
+            user
+          },
+          error: userError
+        } =
+          await supabaseClient.auth.getUser();
+
+
+        if (userError) {
+          throw userError;
+        }
+
+
+        if (!user) {
+
+          window.location.href =
+            "connexion.html";
+
+          return;
+        }
+
+
+        /*
+         * Récupération des valeurs
+         */
+
+        const prenom =
+          document.getElementById(
+            "prenom"
+          ).value.trim();
+
+
+        const nom =
+          document.getElementById(
+            "nom"
+          ).value.trim();
+
+
+        const ville =
+          document.getElementById(
+            "ville"
+          ).value.trim();
+
+
+        const entreprise =
+          document.getElementById(
+            "entreprise"
+          ).value.trim();
+
+
+        const type_agent =
+          document.getElementById(
+            "type_agent"
+          ).value;
+
+
+        const presentation =
+          document.getElementById(
+            "presentation"
+          ).value.trim();
+
+
+        /*
+         * Validation
+         */
+
+        if (!prenom || !nom || !ville) {
+
+          throw new Error(
+            "Veuillez renseigner le prénom, le nom et la ville."
+          );
+
+        }
+
+
+        if (!type_agent) {
+
+          throw new Error(
+            "Veuillez choisir votre type d'agent."
+          );
+
+        }
+
+
+        /*
+         * UPSERT
+         *
+         * Si le profil existe :
+         * mise à jour.
+         *
+         * S'il n'existe pas :
+         * création.
+         */
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("profiles")
+            .upsert(
+              {
+                id: user.id,
+                prenom: prenom,
+                nom: nom,
+                email: user.email,
+                ville: ville,
+                entreprise:
+                  entreprise || null,
+                type_agent:
+                  type_agent,
+                presentation:
+                  presentation || null
+              },
+              {
+                onConflict: "id"
+              }
+            );
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        /*
+         * Succès
+         */
+
+        showMessage(
+          "✅ Profil enregistré avec succès !",
+          "success"
+        );
+
+
+        /*
+         * Retour automatique
+         * au profil après 1 seconde.
+         */
+
+        setTimeout(
+          function() {
+
+            window.location.href =
+              "profil.html";
+
+          },
+          1000
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Erreur sauvegarde :",
+          error
+        );
+
+
+        showMessage(
+          "❌ " +
+          (error.message ||
+            "Impossible d'enregistrer le profil."),
+          "error"
+        );
+
+      }
+
+      finally {
+
+        saveBtn.disabled =
+          false;
+
+        saveBtn.textContent =
+          "💾 Enregistrer mes modifications";
+
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     DÉMARRAGE
+     ===================================================== */
+
+  loadProfile();
+
+</script>
+
+</body>
+</html>
