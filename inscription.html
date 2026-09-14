@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cercle des Agents - Inscription</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #f8fafc;
+
+      background:
+        radial-gradient(circle at top, #075985 0%, transparent 38%),
+        linear-gradient(135deg, #071a35 0%, #0f172a 55%, #172554 100%);
+
+      padding: 20px 12px 40px;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 160px;
+      height: 18px;
+      background: #facc15;
+      transform: rotate(-45deg);
+      z-index: -1;
+      opacity: 0.9;
+    }
+
+    body::before {
+      top: 35px;
+      left: -55px;
+    }
+
+    body::after {
+      bottom: 50px;
+      right: -55px;
+      background: #f97316;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 650px;
+      margin: auto;
+    }
+
+    /* =========================
+       EN-TÊTE
+    ========================== */
+
+    .header {
+      text-align: center;
+      padding: 10px 10px 25px;
+    }
+
+    .logo-container {
+      width: 135px;
+      height: 135px;
+      margin: 0 auto 18px;
+
+      border-radius: 50%;
+      background: #facc15;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      box-shadow:
+        0 0 0 5px rgba(250, 204, 21, 0.15),
+        0 10px 35px rgba(0, 0, 0, 0.35);
+
+      overflow: hidden;
+    }
+
+    /*
+      IMPORTANT :
+      Mets ton image de l'aigle dans le même dépôt GitHub
+      et appelle-la exactement :
+
+      logo-aigle.png
+    */
+
+    .logo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .brand {
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      color: #facc15;
+      line-height: 1.15;
+    }
+
+    .brand span {
+      color: #f8fafc;
+    }
+
+    .subtitle {
+      margin-top: 12px;
+      font-size: 19px;
+      line-height: 1.45;
+      color: #cbd5e1;
+    }
+
+    .motto {
+      margin-top: 25px;
+      font-size: 21px;
+      font-weight: bold;
+      color: #f97316;
+    }
+
+    /* =========================
+       CARTE
+    ========================== */
+
+    .card {
+      background: rgba(15, 35, 65, 0.94);
+
+      border: 1px solid rgba(56, 189, 248, 0.35);
+
+      border-radius: 22px;
+
+      padding: 28px 22px;
+
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        inset 0 0 30px rgba(14, 165, 233, 0.04);
+    }
+
+    /* =========================
+       FORMULAIRE
+    ========================== */
+
+    .field {
+      margin-bottom: 21px;
+    }
+
+    label {
+      display: block;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 9px;
+      color: #f1f5f9;
+    }
+
+    label .required {
+      color: #f97316;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+
+      border: 2px solid #334155;
+
+      border-radius: 15px;
+
+      background: #0b1428;
+
+      color: #f8fafc;
+
+      font-size: 18px;
+
+      padding: 17px 18px;
+
+      outline: none;
+
+      transition: 0.2s;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #64748b;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #0ea5e9;
+
+      box-shadow:
+        0 0 0 3px rgba(14, 165, 233, 0.12);
+    }
+
+    select {
+      appearance: auto;
+      cursor: pointer;
+    }
+
+    select option {
+      background: #0f172a;
+      color: white;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .help {
+      margin-top: 7px;
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    /* =========================
+       BOUTON
+    ========================== */
+
+    .submit-btn {
+      width: 100%;
+
+      margin-top: 8px;
+
+      padding: 18px 15px;
+
+      border: none;
+      border-radius: 16px;
+
+      background: linear-gradient(
+        135deg,
+        #facc15,
+        #f59e0b
+      );
+
+      color: #172554;
+
+      font-size: 21px;
+      font-weight: 900;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 8px 25px rgba(250, 204, 21, 0.2);
+
+      transition: 0.2s;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* =========================
+       MESSAGE
+    ========================== */
+
+    #message {
+      display: none;
+
+      margin-top: 18px;
+
+      padding: 15px;
+
+      border-radius: 12px;
+
+      font-size: 16px;
+
+      line-height: 1.5;
+
+      text-align: center;
+    }
+
+    .success {
+      display: block !important;
+
+      background: rgba(34, 197, 94, 0.12);
+
+      border: 1px solid rgba(34, 197, 94, 0.5);
+
+      color: #86efac;
+    }
+
+    .error {
+      display: block !important;
+
+      background: rgba(239, 68, 68, 0.12);
+
+      border: 1px solid rgba(239, 68, 68, 0.5);
+
+      color: #fca5a5;
+    }
+
+    /* =========================
+       CONNEXION
+    ========================== */
+
+    .login-link {
+      text-align: center;
+      margin-top: 22px;
+      color: #94a3b8;
+      font-size: 16px;
+    }
+
+    .login-link a {
+      color: #facc15;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    .footer {
+      text-align: center;
+
+      margin-top: 22px;
+
+      color: #94a3b8;
+
+      font-size: 15px;
+
+      line-height: 1.5;
+    }
+
+    .footer strong {
+      color: #facc15;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 500px) {
+
+      body {
+        padding: 10px 0 30px;
+      }
+
+      .page {
+        width: 100%;
+      }
+
+      .header {
+        padding: 5px 15px 22px;
+      }
+
+      .logo-container {
+        width: 120px;
+        height: 120px;
+      }
+
+      .brand {
+        font-size: 29px;
+      }
+
+      .subtitle {
+        font-size: 17px;
+      }
+
+      .motto {
+        font-size: 19px;
+      }
+
+      .card {
+        border-radius: 0 0 25px 25px;
+        padding: 25px 22px;
+      }
+
+      label {
+        font-size: 17px;
+      }
+
+      input,
+      select,
+      textarea {
+        font-size: 17px;
+      }
+
+      .submit-btn {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- =========================
+       EN-TÊTE
+  ========================== -->
+
+  <header class="header">
+
+    <div class="logo-container">
+
+      <!--
+        TON LOGO AIGLE
+
+        Le fichier doit s'appeler :
+        logo-aigle.png
+
+        et être placé à la racine du dépôt
+        cercledesagents.
+      -->
+
+      <img
+        src="logo-aigle.png"
+        alt="Logo Cercle des Agents - Aigle"
+      >
+
+    </div>
+
+    <h1 class="brand">
+      CERCLE <span>DES</span> AGENTS
+    </h1>
+
+    <p class="subtitle">
+      Le réseau social professionnel des<br>
+      agents de sécurité privée
+    </p>
+
+    <p class="motto">
+      Unis • Informés • Plus forts
+    </p>
+
+  </header>
+
+
+  <!-- =========================
+       FORMULAIRE
+  ========================== -->
+
+  <main class="card">
+
+    <form id="registrationForm">
+
+      <!-- PRÉNOM -->
+
+      <div class="field">
+
+        <label for="prenom">
+          Prénom <span class="required">*</span>
+        </label>
+
+        <input
+          type="text"
+          id="prenom"
+          name="prenom"
+          placeholder="Ex. Jean"
+          autocomplete="given-name"
+          required
+        >
+
+      </div>
+
+
+      <!-- NOM -->
+
+      <div class="field">
+
+        <label for="nom">
+          Nom <span class="required">*</span>
+        </label>
+
+        <input
+          type="text"
+          id="nom"
+          name="nom"
+          placeholder="Ex. Kouassi"
+          autocomplete="family-name"
+          required
+        >
+
+      </div>
+
+
+      <!-- EMAIL -->
+
+      <div class="field">
+
+        <label for="email">
+          Adresse e-mail <span class="required">*</span>
+        </label>
+
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="exemple@email.com"
+          autocomplete="email"
+          required
+        >
+
+      </div>
+
+
+      <!-- MOT DE PASSE -->
+
+      <div class="field">
+
+        <label for="password">
+          Mot de passe <span class="required">*</span>
+        </label>
+
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Minimum 6 caractères"
+          minlength="6"
+          autocomplete="new-password"
+          required
+        >
+
+        <p class="help">
+          Utilise un mot de passe difficile à deviner.
+        </p>
+
+      </div>
+
+
+      <!-- VILLE -->
+
+      <div class="field">
+
+        <label for="ville">
+          Ville <span class="required">*</span>
+        </label>
+
+        <input
+          type="text"
+          id="ville"
+          name="ville"
+          placeholder="Ex. Abidjan"
+          autocomplete="address-level2"
+          required
+        >
+
+      </div>
+
+
+      <!-- ENTREPRISE -->
+
+      <div class="field">
+
+        <label for="entreprise">
+          Entreprise
+        </label>
+
+        <input
+          type="text"
+          id="entreprise"
+          name="entreprise"
+          placeholder="Ex. Nom de l'entreprise"
+          autocomplete="organization"
+        >
+
+      </div>
+
+
+      <!-- TYPE D'AGENT -->
+
+      <div class="field">
+
+        <label for="type_agent">
+          Type d'agent <span class="required">*</span>
+        </label>
+
+        <select
+          id="type_agent"
+          name="type_agent"
+          required
+        >
+
+          <option value="">
+            Choisir votre spécialité
+          </option>
+
+          <option value="commercial">
+            Agent commercial
+          </option>
+
+          <option value="technique">
+            Agent technique
+          </option>
+
+          <option value="support">
+            Agent de support
+          </option>
+
+          <option value="surveillance">
+            Agent de surveillance
+          </option>
+
+          <option value="gardiennage">
+            Agent de gardiennage
+          </option>
+
+          <option value="controle_acces">
+            Agent de contrôle d'accès
+          </option>
+
+          <option value="evenementiel">
+            Agent événementiel
+          </option>
+
+          <option value="superviseur">
+            Superviseur
+          </option>
+
+          <!-- NOUVELLE OPTION -->
+
+          <option value="surete">
+            Agent de sûreté
+          </option>
+
+          <option value="autre">
+            Autre
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- PRÉSENTATION -->
+
+      <div class="field">
+
+        <label for="presentation">
+          Présentation
+        </label>
+
+        <textarea
+          id="presentation"
+          name="presentation"
+          placeholder="Présente-toi en quelques mots..."
+        ></textarea>
+
+      </div>
+
+
+      <!-- BOUTON -->
+
+      <button
+        type="submit"
+        id="submitBtn"
+        class="submit-btn"
+      >
+        📝 Créer mon compte
+      </button>
+
+    </form>
+
+
+    <!-- MESSAGE -->
+
+    <div id="message"></div>
+
+
+    <!-- LIEN CONNEXION -->
+
+    <div class="login-link">
+
+      Tu as déjà un compte ?
+
+      <a href="connexion.html">
+        Se connecter
+      </a>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer class="footer">
+
+    Cercledesagents —
+
+    <strong>
+      Unis • Informés • Plus forts
+    </strong>
+
+  </footer>
+
+</div>
+
+
+<script>
+
+  /* =========================================
+     CONFIGURATION SUPABASE
+  ========================================== */
+
+  const SUPABASE_URL =
+    "https://quzgphbougaujzqrhjza.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+
+  /* =========================================
+     ELEMENTS
+  ========================================== */
+
+  const form =
+    document.getElementById("registrationForm");
+
+  const submitBtn =
+    document.getElementById("submitBtn");
+
+  const message =
+    document.getElementById("message");
+
+
+  /* =========================================
+     AFFICHER UN MESSAGE
+  ========================================== */
+
+  function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className = type;
+
+    message.style.display = "block";
+
+  }
+
+
+  /* =========================================
+     INSCRIPTION
+  ========================================== */
+
+  form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+
+    submitBtn.disabled = true;
+
+    submitBtn.textContent =
+      "Création du compte...";
+
+
+    message.style.display = "none";
+
+
+    /* Récupération des données */
+
+    const prenom =
+      document.getElementById("prenom").value.trim();
+
+    const nom =
+      document.getElementById("nom").value.trim();
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+    const ville =
+      document.getElementById("ville").value.trim();
+
+    const entreprise =
+      document.getElementById("entreprise").value.trim();
+
+    const type_agent =
+      document.getElementById("type_agent").value;
+
+    const presentation =
+      document.getElementById("presentation").value.trim();
+
+
+    /* Vérification du mot de passe */
+
+    if (password.length < 6) {
+
+      showMessage(
+        "Le mot de passe doit contenir au moins 6 caractères.",
+        "error"
+      );
+
+      submitBtn.disabled = false;
+
+      submitBtn.textContent =
+        "📝 Créer mon compte";
+
+      return;
+    }
+
+
+    try {
+
+      /* =====================================
+         CRÉATION DU COMPTE SUPABASE
+      ====================================== */
+
+      const {
+        data,
+        error
+      } = await supabaseClient.auth.signUp({
+
+        email: email,
+
+        password: password,
+
+        options: {
+
+          /*
+            Ces informations sont également
+            envoyées dans les métadonnées du
+            compte Auth.
+          */
+
+          data: {
+
+            prenom: prenom,
+
+            nom: nom,
+
+            ville: ville,
+
+            entreprise: entreprise,
+
+            type_agent: type_agent,
+
+            presentation: presentation
+
+          },
+
+          /*
+            Retour après confirmation de
+            l'adresse e-mail.
+          */
+
+          emailRedirectTo:
+            window.location.origin +
+            "/cercledesagents/connexion.html"
+
+        }
+
+      });
+
+
+      /* =====================================
+         ERREUR SUPABASE
+      ====================================== */
+
+      if (error) {
+
+        console.error(
+          "Erreur inscription :",
+          error
+        );
+
+        showMessage(
+          "Impossible de créer le compte : " +
+          error.message,
+          "error"
+        );
+
+        submitBtn.disabled = false;
+
+        submitBtn.textContent =
+          "📝 Créer mon compte";
+
+        return;
+      }
+
+
+      /* =====================================
+         VÉRIFICATION DE L'UTILISATEUR
+      ====================================== */
+
+      const user =
+        data?.user;
+
+
+      if (!user) {
+
+        showMessage(
+          "Le compte n'a pas pu être créé. Réessaie.",
+          "error"
+        );
+
+        submitBtn.disabled = false;
+
+        submitBtn.textContent =
+          "📝 Créer mon compte";
+
+        return;
+      }
+
+
+      /* =====================================
+         ENREGISTREMENT DU PROFIL
+      ======================================
+
+         Si Supabase fournit une session
+         immédiatement, on enregistre les
+         informations dans profiles.
+
+         Si la confirmation e-mail est activée,
+         Supabase peut retourner user sans session.
+         Dans ce cas, les métadonnées envoyées
+         ci-dessus restent associées au compte.
+      */
+
+      if (data.session) {
+
+        const {
+          error: profileError
+        } = await supabaseClient
+          .from("profiles")
+          .upsert(
+
+            {
+
+              id: user.id,
+
+              prenom: prenom,
+
+              nom: nom,
+
+              email: email,
+
+              ville: ville,
+
+              entreprise: entreprise,
+
+              type_agent: type_agent,
+
+              presentation: presentation
+
+            },
+
+            {
+              onConflict: "id"
+            }
+
+          );
+
+
+        if (profileError) {
+
+          console.error(
+            "Erreur profil :",
+            profileError
+          );
+
+          showMessage(
+            "Le compte a été créé, mais certaines informations du profil n'ont pas pu être enregistrées : " +
+            profileError.message,
+            "error"
+          );
+
+          submitBtn.disabled = false;
+
+          submitBtn.textContent =
+            "📝 Créer mon compte";
+
+          return;
+        }
+
+      }
+
+
+      /* =====================================
+         SUCCÈS
+      ====================================== */
+
+      if (data.session) {
+
+        showMessage(
+          "🎉 Compte créé avec succès ! Redirection vers la connexion...",
+          "success"
+        );
+
+        setTimeout(function() {
+
+          window.location.href =
+            "connexion.html";
+
+        }, 1800);
+
+      } else {
+
+        /*
+          Cas où la confirmation e-mail
+          est activée dans Supabase.
+        */
+
+        showMessage(
+          "✅ Compte créé ! Vérifie ta boîte e-mail pour confirmer ton adresse, puis connecte-toi.",
+          "success"
+        );
+
+        submitBtn.disabled = false;
+
+        submitBtn.textContent =
+          "📝 Compte créé";
+
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        "Erreur inattendue :",
+        error
+      );
+
+      showMessage(
+        "Une erreur inattendue s'est produite. Vérifie ta connexion Internet et réessaie.",
+        "error"
+      );
+
+      submitBtn.disabled = false;
+
+      submitBtn.textContent =
+        "📝 Créer mon compte";
+
+    }
+
+  });
+
+</script>
+
+</body>
+</html>
