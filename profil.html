@@ -1,1503 +1,1438 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Cercle des Agents — Profil</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top, #075985 0%, transparent 35%),
-        linear-gradient(145deg, #0f172a, #172554);
-      color: #f8fafc;
-      min-height: 100vh;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font-family: inherit;
-    }
-
-    /* =========================
-       TOPBAR
-    ========================= */
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      height: 68px;
-      background: rgba(15, 23, 42, .94);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-      border-radius: 12px;
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .brand-name {
-      font-weight: 800;
-      font-size: 17px;
-    }
-
-    .brand-slogan {
-      font-size: 11px;
-      color: #cbd5e1;
-      margin-top: 2px;
-    }
-
-    .top-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .top-btn {
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(255,255,255,.06);
-      color: white;
-      border-radius: 10px;
-      padding: 9px 12px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .top-btn:hover {
-      background: rgba(255,255,255,.12);
-    }
-
-    /* =========================
-       PAGE
-    ========================= */
-
-    .page {
-      max-width: 1120px;
-      margin: auto;
-      padding: 25px 15px 110px;
-    }
-
-    .back {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      color: #cbd5e1;
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
-
-    .back:hover {
-      color: #facc15;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 300px;
-      gap: 20px;
-      align-items: start;
-    }
-
-    /* =========================
-       PROFILE CARD
-    ========================= */
-
-    .profile-card {
-      background: rgba(15, 23, 42, .86);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 22px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,.25);
-    }
-
-    .cover {
-      height: 150px;
-      background:
-        radial-gradient(circle at 20% 30%, rgba(14,165,233,.45), transparent 30%),
-        radial-gradient(circle at 80% 20%, rgba(250,204,21,.20), transparent 25%),
-        linear-gradient(135deg, #082f49, #1e3a8a);
-      position: relative;
-    }
-
-    .profile-main {
-      padding: 0 25px 25px;
-    }
-
-    .avatar-wrapper {
-      margin-top: -65px;
-      position: relative;
-      width: 130px;
-      height: 130px;
-    }
-
-    .avatar,
-    .avatar-placeholder {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      border: 5px solid #0f172a;
-    }
-
-    .avatar {
-      object-fit: cover;
-      background: #1e293b;
-      display: block;
-    }
-
-    .avatar-placeholder {
-      background: linear-gradient(135deg, #1e40af, #0f172a);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 45px;
-      font-weight: 800;
-    }
-
-    .online {
-      position: absolute;
-      right: 6px;
-      bottom: 8px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #22c55e;
-      border: 4px solid #0f172a;
-    }
-
-    .profile-name {
-      margin: 15px 0 5px;
-      font-size: 28px;
-      font-weight: 800;
-      line-height: 1.15;
-    }
-
-    .verified {
-      color: #38bdf8;
-      font-size: 18px;
-    }
-
-    .agent-type {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(250,204,21,.10);
-      border: 1px solid rgba(250,204,21,.25);
-      color: #fde68a;
-      padding: 7px 11px;
-      border-radius: 999px;
-      font-size: 13px;
-      margin-top: 7px;
-    }
-
-    .info-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 25px;
-    }
-
-    .info {
-      background: rgba(255,255,255,.045);
-      border: 1px solid rgba(255,255,255,.07);
-      border-radius: 14px;
-      padding: 14px;
-    }
-
-    .info-label {
-      color: #94a3b8;
-      font-size: 12px;
-      margin-bottom: 5px;
-    }
-
-    .info-value {
-      font-size: 15px;
-      font-weight: 600;
-      word-break: break-word;
-    }
-
-    .presentation {
-      margin-top: 15px;
-      background: rgba(255,255,255,.045);
-      border: 1px solid rgba(255,255,255,.07);
-      border-radius: 14px;
-      padding: 17px;
-    }
-
-    .presentation-title {
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .presentation-text {
-      color: #cbd5e1;
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
-
-    /* =========================
-       STATS
-    ========================= */
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      margin-top: 20px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-
-    .stat {
-      padding: 17px 10px;
-      text-align: center;
-    }
-
-    .stat:not(:last-child) {
-      border-right: 1px solid rgba(255,255,255,.08);
-    }
-
-    .stat-number {
-      font-size: 21px;
-      font-weight: 800;
-    }
-
-    .stat-label {
-      color: #94a3b8;
-      font-size: 12px;
-      margin-top: 3px;
-    }
-
-    /* =========================
-       BUTTONS
-    ========================= */
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 12px;
-      padding: 12px 17px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .btn-primary {
-      background: #facc15;
-      color: #111827;
-    }
-
-    .btn-primary:hover {
-      background: #fde047;
-    }
-
-    .btn-secondary {
-      background: rgba(255,255,255,.07);
-      color: white;
-      border: 1px solid rgba(255,255,255,.1);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255,255,255,.12);
-    }
-
-    /* =========================
-       PUBLICATIONS
-    ========================= */
-
-    .posts-section {
-      margin-top: 20px;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .section-title {
-      font-size: 21px;
-      font-weight: 800;
-    }
-
-    .section-count {
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    .post-card {
-      background: rgba(15,23,42,.86);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
-      margin-bottom: 15px;
-      overflow: hidden;
-    }
-
-    .post-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px;
-    }
-
-    .post-author {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .post-avatar,
-    .post-avatar-placeholder {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      flex: 0 0 44px;
-      border: 2px solid rgba(255,255,255,.08);
-    }
-
-    .post-avatar {
-      object-fit: cover;
-    }
-
-    .post-avatar-placeholder {
-      background: #1e3a8a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
-
-    .post-author-info {
-      min-width: 0;
-    }
-
-    .post-author-name {
-      font-weight: 800;
-      font-size: 14px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .post-date {
-      color: #94a3b8;
-      font-size: 11px;
-      margin-top: 3px;
-    }
-
-    .post-menu {
-      color: #94a3b8;
-      font-size: 20px;
-    }
-
-    .post-content {
-      padding: 0 15px 15px;
-      line-height: 1.65;
-      color: #e2e8f0;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .post-image-wrap {
-      background: #020617;
-      width: 100%;
-    }
-
-    .post-image {
-      width: 100%;
-      max-height: 560px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .image-error {
-      display: none;
-      padding: 35px 15px;
-      text-align: center;
-      color: #64748b;
-      font-size: 13px;
-    }
-
-    .post-location {
-      padding: 0 15px 12px;
-      color: #7dd3fc;
-      font-size: 13px;
-    }
-
-    .post-location a {
-      color: #7dd3fc;
-    }
-
-    .post-stats {
-      padding: 11px 15px;
-      border-top: 1px solid rgba(255,255,255,.06);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    .post-actions {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .post-action {
-      border: 0;
-      background: transparent;
-      color: #cbd5e1;
-      padding: 12px 5px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    .post-action:hover {
-      background: rgba(255,255,255,.05);
-      color: #facc15;
-    }
-
-    .empty-posts {
-      background: rgba(15,23,42,.75);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
-      padding: 45px 20px;
-      text-align: center;
-      color: #94a3b8;
-    }
-
-    .empty-icon {
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
-
-    /* =========================
-       SIDEBAR
-    ========================= */
-
-    .side-card {
-      background: rgba(15,23,42,.82);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 20px;
-      padding: 20px;
-      height: fit-content;
-      position: sticky;
-      top: 88px;
-    }
-
-    .side-title {
-      font-size: 17px;
-      font-weight: 800;
-      margin-bottom: 15px;
-    }
-
-    .side-item {
-      display: flex;
-      gap: 11px;
-      margin: 15px 0;
-      color: #cbd5e1;
-      line-height: 1.45;
-      font-size: 14px;
-    }
-
-    .side-icon {
-      font-size: 20px;
-    }
-
-    /* =========================
-       LOADING
-    ========================= */
-
-    .loading {
-      text-align: center;
-      padding: 70px 20px;
-      color: #cbd5e1;
-    }
-
-    .spinner {
-      width: 38px;
-      height: 38px;
-      border: 4px solid rgba(255,255,255,.15);
-      border-top-color: #facc15;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 15px;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .error {
-      padding: 30px;
-      text-align: center;
-      color: #fecaca;
-      background: rgba(127,29,29,.18);
-      border: 1px solid rgba(248,113,113,.2);
-      border-radius: 16px;
-    }
-
-    /* =========================
-       MOBILE NAV
-    ========================= */
-
-    .mobile-nav {
-      display: none;
-      position: fixed;
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-      z-index: 200;
-      background: rgba(15,23,42,.95);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 18px;
-      padding: 8px;
-      grid-template-columns: repeat(3, 1fr);
-      box-shadow: 0 10px 35px rgba(0,0,0,.35);
-    }
-
-    .mobile-nav a {
-      text-align: center;
-      padding: 8px 4px;
-      border-radius: 12px;
-      color: #cbd5e1;
-      font-size: 11px;
-    }
-
-    .mobile-nav a span {
-      display: block;
-      font-size: 20px;
-      margin-bottom: 2px;
-    }
-
-    .mobile-nav a.active {
-      background: rgba(250,204,21,.12);
-      color: #facc15;
-    }
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
-    @media (max-width: 800px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .side-card {
-        display: none;
-      }
-    }
-
-    @media (max-width: 600px) {
-
-      .topbar {
-        padding: 7px 10px;
-      }
-
-      .brand img {
-        width: 42px;
-        height: 42px;
-      }
-
-      .brand-name {
-        font-size: 15px;
-      }
-
-      .brand-slogan {
-        font-size: 9px;
-      }
-
-      .top-btn {
-        padding: 8px 9px;
-        font-size: 12px;
-      }
-
-      .page {
-        padding: 18px 10px 105px;
-      }
-
-      .cover {
-        height: 125px;
-      }
-
-      .profile-main {
-        padding: 0 17px 20px;
-      }
-
-      .avatar-wrapper,
-      .avatar,
-      .avatar-placeholder {
-        width: 110px;
-        height: 110px;
-      }
-
-      .avatar-wrapper {
-        margin-top: -55px;
-      }
-
-      .profile-name {
-        font-size: 23px;
-      }
-
-      .info-list {
-        grid-template-columns: 1fr;
-      }
-
-      .actions {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .post-image {
-        max-height: 450px;
-      }
-
-      .mobile-nav {
-        display: grid;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cercle des Agents — Profil</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#f8fafc;
+  background:
+    radial-gradient(circle at top,#075985 0%,transparent 35%),
+    linear-gradient(145deg,#0f172a,#172554);
+  min-height:100vh;
+}
+
+button{font-family:inherit}
+a{text-decoration:none;color:inherit}
+
+/* ================= TOPBAR ================= */
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  height:68px;
+  padding:8px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(15,23,42,.95);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border-radius:12px;
+}
+
+.brand-name{
+  font-size:17px;
+  font-weight:800;
+}
+
+.brand-slogan{
+  font-size:11px;
+  color:#cbd5e1;
+  margin-top:2px;
+}
+
+.top-actions{
+  display:flex;
+  gap:8px;
+}
+
+.top-btn{
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  border-radius:10px;
+  padding:9px 12px;
+  cursor:pointer;
+}
+
+/* ================= PAGE ================= */
+
+.page{
+  width:min(1120px,100%);
+  margin:auto;
+  padding:22px 15px 110px;
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:15px;
+  color:#cbd5e1;
+  font-size:14px;
+}
+
+.back:hover{
+  color:#facc15;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 300px;
+  gap:20px;
+  align-items:start;
+}
+
+/* ================= PROFILE ================= */
+
+.profile-card{
+  background:rgba(15,23,42,.88);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.cover{
+  height:150px;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(14,165,233,.45),transparent 30%),
+    radial-gradient(circle at 80% 20%,rgba(250,204,21,.2),transparent 25%),
+    linear-gradient(135deg,#082f49,#1e3a8a);
+}
+
+.profile-body{
+  padding:0 25px 25px;
+}
+
+.avatar-box{
+  width:130px;
+  height:130px;
+  margin-top:-65px;
+  position:relative;
+}
+
+.avatar,
+.avatar-placeholder{
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  border:5px solid #0f172a;
+}
+
+.avatar{
+  object-fit:cover;
+  background:#1e293b;
+}
+
+.avatar-placeholder{
+  background:linear-gradient(135deg,#1e40af,#0f172a);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  font-weight:800;
+}
+
+.online{
+  position:absolute;
+  right:5px;
+  bottom:8px;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:#22c55e;
+  border:4px solid #0f172a;
+}
+
+.profile-name{
+  margin:15px 0 6px;
+  font-size:28px;
+  line-height:1.2;
+}
+
+.verified{
+  color:#38bdf8;
+}
+
+.agent-type{
+  display:inline-block;
+  margin-top:5px;
+  padding:7px 12px;
+  border-radius:999px;
+  color:#fde68a;
+  background:rgba(250,204,21,.1);
+  border:1px solid rgba(250,204,21,.25);
+  font-size:13px;
+}
+
+.info-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:22px;
+}
+
+.info{
+  padding:14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.07);
+}
+
+.info-label{
+  color:#94a3b8;
+  font-size:12px;
+  margin-bottom:6px;
+}
+
+.info-value{
+  font-size:15px;
+  font-weight:600;
+  word-break:break-word;
+}
+
+.presentation{
+  margin-top:15px;
+  padding:17px;
+  border-radius:14px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.07);
+}
+
+.presentation-title{
+  font-weight:800;
+  margin-bottom:9px;
+}
+
+.presentation-text{
+  color:#cbd5e1;
+  line-height:1.6;
+  white-space:pre-wrap;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  margin-top:20px;
+  border-top:1px solid rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.stat{
+  text-align:center;
+  padding:16px 8px;
+}
+
+.stat:not(:last-child){
+  border-right:1px solid rgba(255,255,255,.08);
+}
+
+.stat-number{
+  font-size:21px;
+  font-weight:800;
+}
+
+.stat-label{
+  color:#94a3b8;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:20px;
+}
+
+.btn{
+  border:0;
+  border-radius:12px;
+  padding:12px 16px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.primary{
+  background:#facc15;
+  color:#111827;
+}
+
+.secondary{
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.1);
+}
+
+/* ================= POSTS ================= */
+
+.posts-section{
+  margin-top:20px;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.section-title{
+  font-size:21px;
+  font-weight:800;
+}
+
+.section-count{
+  color:#94a3b8;
+  font-size:13px;
+}
+
+.post{
+  background:rgba(15,23,42,.88);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  overflow:hidden;
+  margin-bottom:15px;
+}
+
+.post-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:15px;
+}
+
+.post-avatar,
+.post-avatar-placeholder{
+  width:45px;
+  height:45px;
+  min-width:45px;
+  border-radius:50%;
+}
+
+.post-avatar{
+  object-fit:cover;
+}
+
+.post-avatar-placeholder{
+  background:#1e3a8a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+}
+
+.post-author{
+  font-weight:800;
+  font-size:14px;
+}
+
+.post-date{
+  color:#94a3b8;
+  font-size:11px;
+  margin-top:3px;
+}
+
+.post-content{
+  padding:0 15px 15px;
+  color:#e2e8f0;
+  line-height:1.65;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+.post-image{
+  width:100%;
+  max-height:600px;
+  object-fit:contain;
+  display:block;
+  background:#020617;
+}
+
+.post-image-error{
+  display:none;
+  text-align:center;
+  padding:30px;
+  color:#64748b;
+}
+
+.post-location{
+  padding:12px 15px;
+  color:#7dd3fc;
+  font-size:13px;
+}
+
+.post-stats{
+  padding:11px 15px;
+  color:#94a3b8;
+  border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:13px;
+}
+
+.post-actions{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+
+.post-action{
+  border:0;
+  background:transparent;
+  color:#cbd5e1;
+  padding:13px 5px;
+  cursor:pointer;
+}
+
+.post-action:hover{
+  background:rgba(255,255,255,.05);
+  color:#facc15;
+}
+
+.empty{
+  text-align:center;
+  padding:45px 20px;
+  border-radius:18px;
+  background:rgba(15,23,42,.8);
+  border:1px solid rgba(255,255,255,.08);
+  color:#94a3b8;
+}
+
+.empty-icon{
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+/* ================= SIDEBAR ================= */
+
+.side{
+  background:rgba(15,23,42,.84);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  padding:20px;
+  position:sticky;
+  top:88px;
+}
+
+.side-title{
+  font-weight:800;
+  font-size:17px;
+  margin-bottom:15px;
+}
+
+.side-item{
+  display:flex;
+  gap:10px;
+  margin:15px 0;
+  color:#cbd5e1;
+  font-size:14px;
+  line-height:1.45;
+}
+
+/* ================= LOADING ================= */
+
+.loading{
+  padding:60px 20px;
+  text-align:center;
+  color:#cbd5e1;
+}
+
+.spinner{
+  width:38px;
+  height:38px;
+  margin:0 auto 15px;
+  border:4px solid rgba(255,255,255,.15);
+  border-top-color:#facc15;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.error{
+  padding:30px;
+  text-align:center;
+  border-radius:16px;
+  background:rgba(127,29,29,.2);
+  color:#fecaca;
+}
+
+/* ================= MOBILE ================= */
+
+.mobile-nav{
+  display:none;
+  position:fixed;
+  left:10px;
+  right:10px;
+  bottom:10px;
+  z-index:200;
+  padding:8px;
+  grid-template-columns:repeat(3,1fr);
+  background:rgba(15,23,42,.96);
+  backdrop-filter:blur(15px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:18px;
+}
+
+.mobile-nav a{
+  text-align:center;
+  padding:7px;
+  color:#cbd5e1;
+  font-size:11px;
+}
+
+.mobile-nav span{
+  display:block;
+  font-size:20px;
+  margin-bottom:2px;
+}
+
+.mobile-nav .active{
+  color:#facc15;
+  background:rgba(250,204,21,.1);
+  border-radius:12px;
+}
+
+@media(max-width:800px){
+
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .side{
+    display:none;
+  }
+}
+
+@media(max-width:600px){
+
+  .topbar{
+    padding:7px 10px;
+  }
+
+  .brand img{
+    width:42px;
+    height:42px;
+  }
+
+  .brand-name{
+    font-size:15px;
+  }
+
+  .brand-slogan{
+    font-size:9px;
+  }
+
+  .top-btn{
+    padding:8px;
+    font-size:12px;
+  }
+
+  .page{
+    padding:18px 10px 105px;
+  }
+
+  .cover{
+    height:125px;
+  }
+
+  .profile-body{
+    padding:0 17px 20px;
+  }
+
+  .avatar-box,
+  .avatar,
+  .avatar-placeholder{
+    width:110px;
+    height:110px;
+  }
+
+  .avatar-box{
+    margin-top:-55px;
+  }
+
+  .profile-name{
+    font-size:23px;
+  }
+
+  .info-grid{
+    grid-template-columns:1fr;
+  }
+
+  .actions{
+    flex-direction:column;
+  }
+
+  .btn{
+    width:100%;
+  }
+
+  .mobile-nav{
+    display:grid;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- =========================
-       TOPBAR
-  ========================= -->
+<header class="topbar">
 
-  <header class="topbar">
+  <a href="accueil.html" class="brand">
 
-    <a href="accueil.html" class="brand">
+    <img
+      src="logo-aigle.png"
+      alt="Cercle des Agents"
+    >
 
-      <img
-        src="logo-aigle.png"
-        alt="Logo Cercle des Agents"
-        onerror="this.style.display='none'"
-      >
-
-      <div class="brand-text">
-
-        <div class="brand-name">
-          Cercle des Agents
-        </div>
-
-        <div class="brand-slogan">
-          Unis • Informés • Plus forts
-        </div>
-
+    <div>
+      <div class="brand-name">
+        Cercle des Agents
       </div>
 
-    </a>
-
-    <div class="top-actions">
-
-      <button
-        class="top-btn"
-        onclick="location.href='accueil.html'"
-      >
-        🏠 Accueil
-      </button>
-
-      <button
-        class="top-btn"
-        onclick="location.href='membres.html'"
-      >
-        👥 Membres
-      </button>
-
+      <div class="brand-slogan">
+        Unis • Informés • Plus forts
+      </div>
     </div>
 
-  </header>
+  </a>
 
+  <div class="top-actions">
 
-  <!-- =========================
-       PAGE
-  ========================= -->
-
-  <main class="page">
-
-    <a
-      href="membres.html"
-      class="back"
+    <button
+      class="top-btn"
+      onclick="location.href='accueil.html'"
     >
-      ← Retour aux membres
-    </a>
+      🏠 Accueil
+    </button>
 
-
-    <div
-      id="loading"
-      class="loading"
+    <button
+      class="top-btn"
+      onclick="location.href='membres.html'"
     >
+      👥 Membres
+    </button>
 
-      <div class="spinner"></div>
+  </div>
 
-      Chargement du profil...
-
-    </div>
-
-
-    <div
-      id="errorBox"
-      style="display:none;"
-    ></div>
+</header>
 
 
-    <div
-      id="profileContent"
-      style="display:none;"
-    >
+<main class="page">
 
-      <div class="grid">
-
-
-        <!-- =========================
-             COLONNE PRINCIPALE
-        ========================= -->
-
-        <div>
+  <a
+    href="membres.html"
+    class="back"
+  >
+    ← Retour aux membres
+  </a>
 
 
-          <!-- =========================
-               PROFIL
-          ========================= -->
+  <div
+    id="loading"
+    class="loading"
+  >
 
-          <section class="profile-card">
+    <div class="spinner"></div>
 
-            <div class="cover"></div>
+    Chargement du profil...
 
-            <div class="profile-main">
+  </div>
 
 
-              <!-- AVATAR -->
+  <div
+    id="errorBox"
+    style="display:none"
+  ></div>
 
-              <div class="avatar-wrapper">
 
-                <div
-                  id="avatarPlaceholder"
-                  class="avatar-placeholder"
-                >
-                  👤
+  <div
+    id="content"
+    style="display:none"
+  >
+
+    <div class="layout">
+
+
+      <!-- ================= PROFIL ================= -->
+
+      <div>
+
+        <section class="profile-card">
+
+          <div class="cover"></div>
+
+          <div class="profile-body">
+
+            <div class="avatar-box">
+
+              <div
+                id="avatarPlaceholder"
+                class="avatar-placeholder"
+              >
+                👤
+              </div>
+
+              <img
+                id="avatar"
+                class="avatar"
+                style="display:none"
+                alt="Photo de profil"
+              >
+
+              <div class="online"></div>
+
+            </div>
+
+
+            <h1 class="profile-name">
+
+              <span id="fullName">
+                Agent
+              </span>
+
+              <span class="verified">
+                ✓
+              </span>
+
+            </h1>
+
+
+            <div
+              id="agentType"
+              class="agent-type"
+            >
+              🛡️ Agent de sécurité privée
+            </div>
+
+
+            <div class="info-grid">
+
+              <div class="info">
+
+                <div class="info-label">
+                  📍 Ville
                 </div>
 
-                <img
-                  id="avatar"
-                  class="avatar"
-                  alt="Photo de profil"
-                  style="display:none;"
+                <div
+                  id="ville"
+                  class="info-value"
                 >
-
-                <div class="online"></div>
+                  Non renseignée
+                </div>
 
               </div>
 
 
-              <!-- NOM -->
+              <div class="info">
 
-              <h1 class="profile-name">
+                <div class="info-label">
+                  🏢 Entreprise
+                </div>
 
-                <span id="fullName">
-                  Agent
-                </span>
+                <div
+                  id="entreprise"
+                  class="info-value"
+                >
+                  Non renseignée
+                </div>
 
-                <span class="verified">
+              </div>
+
+            </div>
+
+
+            <div class="presentation">
+
+              <div class="presentation-title">
+                📝 Présentation
+              </div>
+
+              <div
+                id="presentation"
+                class="presentation-text"
+              >
+                Aucune présentation renseignée.
+              </div>
+
+            </div>
+
+
+            <div class="stats">
+
+              <div class="stat">
+
+                <div
+                  id="postCount"
+                  class="stat-number"
+                >
+                  0
+                </div>
+
+                <div class="stat-label">
+                  Publications
+                </div>
+
+              </div>
+
+
+              <div class="stat">
+
+                <div class="stat-number">
+                  🛡️
+                </div>
+
+                <div class="stat-label">
+                  Profession
+                </div>
+
+              </div>
+
+
+              <div class="stat">
+
+                <div class="stat-number">
                   ✓
-                </span>
+                </div>
 
-              </h1>
+                <div class="stat-label">
+                  Membre
+                </div>
+
+              </div>
+
+            </div>
 
 
-              <!-- TYPE -->
+            <div class="actions">
 
-              <div
-                id="agentType"
-                class="agent-type"
+              <button
+                id="editBtn"
+                class="btn primary"
+                style="display:none"
+                onclick="location.href='modifier-profil.html'"
               >
-                🛡️ Agent de sécurité privée
-              </div>
+                ✏️ Modifier mon profil
+              </button>
 
 
-              <!-- INFORMATIONS -->
-
-              <div class="info-list">
-
-                <div class="info">
-
-                  <div class="info-label">
-                    📍 Ville
-                  </div>
-
-                  <div
-                    id="ville"
-                    class="info-value"
-                  >
-                    Non renseignée
-                  </div>
-
-                </div>
-
-
-                <div class="info">
-
-                  <div class="info-label">
-                    🏢 Entreprise
-                  </div>
-
-                  <div
-                    id="entreprise"
-                    class="info-value"
-                  >
-                    Non renseignée
-                  </div>
-
-                </div>
-
-              </div>
-
-
-              <!-- PRÉSENTATION -->
-
-              <div class="presentation">
-
-                <div class="presentation-title">
-                  📝 Présentation
-                </div>
-
-                <div
-                  id="presentation"
-                  class="presentation-text"
-                >
-                  Aucune présentation renseignée.
-                </div>
-
-              </div>
-
-
-              <!-- STATISTIQUES -->
-
-              <div class="stats">
-
-                <div class="stat">
-
-                  <div
-                    id="postCount"
-                    class="stat-number"
-                  >
-                    0
-                  </div>
-
-                  <div class="stat-label">
-                    Publications
-                  </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                  <div class="stat-number">
-                    🛡️
-                  </div>
-
-                  <div class="stat-label">
-                    Profession
-                  </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                  <div class="stat-number">
-                    ✓
-                  </div>
-
-                  <div class="stat-label">
-                    Membre
-                  </div>
-
-                </div>
-
-              </div>
-
-
-              <!-- ACTIONS -->
-
-              <div class="actions">
-
-                <button
-                  id="editBtn"
-                  class="btn btn-primary"
-                  style="display:none;"
-                  onclick="location.href='modifier-profil.html'"
-                >
-                  ✏️ Modifier mon profil
-                </button>
-
-                <button
-                  id="messageBtn"
-                  class="btn btn-secondary"
-                  style="display:none;"
-                  onclick="showComingSoon('La messagerie privée arrive dans la prochaine étape.')"
-                >
-                  💬 Contacter
-                </button>
-
-                <button
-                  class="btn btn-secondary"
-                  onclick="location.href='membres.html'"
-                >
-                  👥 Voir les membres
-                </button>
-
-                <button
-                  class="btn btn-secondary"
-                  onclick="location.href='accueil.html'"
-                >
-                  🏠 Accueil
-                </button>
-
-              </div>
-
-            </div>
-
-          </section>
-
-
-          <!-- =========================
-               PUBLICATIONS
-          ========================= -->
-
-          <section class="posts-section">
-
-            <div class="section-header">
-
-              <div class="section-title">
-                📰 Publications
-              </div>
-
-              <div
-                id="sectionCount"
-                class="section-count"
+              <button
+                id="messageBtn"
+                class="btn secondary"
+                style="display:none"
+                onclick="alert('💬 La messagerie privée sera activée dans une prochaine étape.')"
               >
-                0 publication
-              </div>
-
-            </div>
+                💬 Contacter
+              </button>
 
 
-            <div id="postsContainer">
-
-              <div class="loading">
-
-                <div class="spinner"></div>
-
-                Chargement des publications...
-
-              </div>
-
-            </div>
-
-          </section>
+              <button
+                class="btn secondary"
+                onclick="location.href='membres.html'"
+              >
+                👥 Membres
+              </button>
 
 
-        </div>
+              <button
+                class="btn secondary"
+                onclick="location.href='accueil.html'"
+              >
+                🏠 Accueil
+              </button>
 
-
-        <!-- =========================
-             SIDEBAR
-        ========================= -->
-
-        <aside class="side-card">
-
-          <div class="side-title">
-            🛡️ Cercle des Agents
-          </div>
-
-
-          <div class="side-item">
-
-            <div class="side-icon">
-              👥
-            </div>
-
-            <div>
-              Une communauté professionnelle
-              réservée aux agents de sécurité privée.
             </div>
 
           </div>
 
+        </section>
 
-          <div class="side-item">
 
-            <div class="side-icon">
-              🤝
+        <!-- ================= PUBLICATIONS ================= -->
+
+        <section class="posts-section">
+
+          <div class="section-head">
+
+            <div class="section-title">
+              📰 Publications
             </div>
 
-            <div>
-              Échangez avec d'autres agents
-              et développez votre réseau professionnel.
+            <div
+              id="sectionCount"
+              class="section-count"
+            >
+              0 publication
             </div>
 
           </div>
 
 
-          <div class="side-item">
+          <div id="postsContainer">
 
-            <div class="side-icon">
-              📢
-            </div>
+            <div class="loading">
 
-            <div>
-              Partagez vos informations,
-              expériences et actualités professionnelles.
-            </div>
+              <div class="spinner"></div>
 
-          </div>
+              Chargement des publications...
 
-
-          <div class="side-item">
-
-            <div class="side-icon">
-              🔐
-            </div>
-
-            <div>
-              Les informations affichées
-              correspondent aux données du profil.
             </div>
 
           </div>
 
-
-          <div class="side-item">
-
-            <div class="side-icon">
-              📰
-            </div>
-
-            <div>
-              Retrouvez ici les publications
-              de cet agent.
-            </div>
-
-          </div>
-
-        </aside>
+        </section>
 
       </div>
 
+
+      <!-- ================= SIDEBAR ================= -->
+
+      <aside class="side">
+
+        <div class="side-title">
+          🛡️ Cercle des Agents
+        </div>
+
+
+        <div class="side-item">
+          👥
+          <span>
+            Une communauté professionnelle
+            réservée aux agents de sécurité privée.
+          </span>
+        </div>
+
+
+        <div class="side-item">
+          🤝
+          <span>
+            Échangez avec d'autres agents
+            et développez votre réseau.
+          </span>
+        </div>
+
+
+        <div class="side-item">
+          📢
+          <span>
+            Partagez vos informations,
+            expériences et actualités.
+          </span>
+        </div>
+
+
+        <div class="side-item">
+          📰
+          <span>
+            Retrouvez ici les publications
+            de cet agent.
+          </span>
+        </div>
+
+      </aside>
+
     </div>
 
-  </main>
+  </div>
+
+</main>
 
 
-  <!-- =========================
-       MOBILE NAV
-  ========================= -->
+<nav class="mobile-nav">
 
-  <nav class="mobile-nav">
+  <a
+    href="accueil.html"
+    class="active"
+  >
+    <span>🏠</span>
+    Accueil
+  </a>
 
-    <a
-      href="accueil.html"
-      class="active"
-    >
-      <span>🏠</span>
-      Accueil
-    </a>
+  <a href="membres.html">
+    <span>👥</span>
+    Membres
+  </a>
 
-    <a href="membres.html">
-      <span>👥</span>
-      Membres
-    </a>
+  <a
+    id="mobileProfile"
+    href="profil.html"
+  >
+    <span>👤</span>
+    Profil
+  </a>
 
-    <a id="mobileProfileLink" href="profil.html">
-      <span>👤</span>
-      Profil
-    </a>
-
-  </nav>
+</nav>
 
 
-  <script>
+<script>
 
-    /* =====================================================
-       SUPABASE
-    ===================================================== */
+/* =========================================================
+   SUPABASE
+========================================================= */
 
-    const SUPABASE_URL =
-      "https://quzgphbougaujzqrhjza.supabase.co";
+const SUPABASE_URL =
+  "https://quzgphbougaujzqrhjza.supabase.co";
 
-    const SUPABASE_KEY =
-      "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+const SUPABASE_KEY =
+  "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
 
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+let currentUser = null;
+let profileId = null;
+let profileData = null;
+
+
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+
+function escapeHtml(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+function escapeJs(value){
+
+  return String(value)
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/"/g,'\\"')
+    .replace(/\n/g,"\\n")
+    .replace(/\r/g,"\\r");
+}
+
+
+function fullName(profile){
+
+  const prenom =
+    (profile?.prenom || "").trim();
+
+  const nom =
+    (profile?.nom || "").trim();
+
+  return (
+    `${prenom} ${nom}`.trim()
+    || "Agent du Cercle"
+  );
+}
+
+
+function initials(profile){
+
+  const p =
+    (profile?.prenom || "").trim();
+
+  const n =
+    (profile?.nom || "").trim();
+
+  return (
+    (p.charAt(0) + n.charAt(0))
+      .toUpperCase()
+    || "A"
+  );
+}
+
+
+function agentType(type){
+
+  const types = {
+
+    surete:"Agent de sûreté",
+    securite:"Agent de sécurité",
+    gardiennage:"Agent de gardiennage",
+    controle:"Agent de contrôle",
+    vigile:"Agent de surveillance",
+    chef:"Chef d'équipe",
+    superviseur:"Superviseur",
+    autre:"Professionnel de la sécurité"
+
+  };
+
+  return (
+    types[type] ||
+    type ||
+    "Agent de sécurité privée"
+  );
+}
+
+
+/* =========================================================
+   URL AVATAR
+========================================================= */
+
+function avatarUrl(path){
+
+  if(!path){
+    return null;
+  }
+
+  let p =
+    String(path).trim();
+
+  if(!p){
+    return null;
+  }
+
+  if(
+    p.startsWith("http://") ||
+    p.startsWith("https://")
+  ){
+    return p;
+  }
+
+  p =
+    p.replace(/^\/+/,"");
+
+  p =
+    p.replace(
+      /^storage\/v1\/object\/public\/avatars\//,
+      ""
+    );
+
+  p =
+    p.replace(
+      /^avatars\//,
+      ""
+    );
+
+  const {data} =
+    supabaseClient
+      .storage
+      .from("avatars")
+      .getPublicUrl(p);
+
+  return data?.publicUrl || null;
+}
+
+
+/* =========================================================
+   URL PHOTO PUBLICATION
+========================================================= */
+
+function postImageUrl(path){
+
+  if(!path){
+    return null;
+  }
+
+  let p =
+    String(path).trim();
+
+  if(!p){
+    return null;
+  }
+
+  if(
+    p.startsWith("http://") ||
+    p.startsWith("https://")
+  ){
+    return p;
+  }
+
+  p =
+    p.replace(/^\/+/,"");
+
+  p =
+    p.replace(
+      /^storage\/v1\/object\/public\/post-images\//,
+      ""
+    );
+
+  p =
+    p.replace(
+      /^post-images\//,
+      ""
+    );
+
+  p =
+    p.replace(
+      /^public\/post-images\//,
+      ""
+    );
+
+  const {data} =
+    supabaseClient
+      .storage
+      .from("post-images")
+      .getPublicUrl(p);
+
+  return data?.publicUrl || null;
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function formatDate(value){
+
+  if(!value){
+    return "";
+  }
+
+  const d =
+    new Date(value);
+
+  if(Number.isNaN(d.getTime())){
+    return "";
+  }
+
+  return d.toLocaleString(
+    "fr-FR",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+}
+
+
+/* =========================================================
+   CHARGER LE PROFIL
+========================================================= */
+
+async function loadProfile(){
+
+  try{
+
+    const {
+      data:authData,
+      error:authError
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
+
+
+    if(
+      authError ||
+      !authData?.user
+    ){
+
+      location.href =
+        "connexion.html";
+
+      return;
+    }
+
+
+    currentUser =
+      authData.user;
+
+
+    const params =
+      new URLSearchParams(
+        window.location.search
       );
 
 
-    let currentUser = null;
-    let profileUserId = null;
-    let currentProfile = null;
+    /*
+     * Si ?id= existe :
+     * afficher le membre demandé.
+     *
+     * Sinon :
+     * afficher son propre profil.
+     */
+
+    profileId =
+      params.get("id") ||
+      currentUser.id;
 
 
-    /* =====================================================
-       ESCAPE HTML
-    ===================================================== */
+    document.getElementById(
+      "mobileProfile"
+    ).href =
+      `profil.html?id=${encodeURIComponent(
+        currentUser.id
+      )}`;
 
-    function escapeHtml(value) {
 
-      if (
-        value === null ||
-        value === undefined
-      ) {
-        return "";
-      }
+    const {
+      data:profile,
+      error
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select("*")
+        .eq("id",profileId)
+        .maybeSingle();
 
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
 
+    if(error){
+      throw error;
     }
 
 
-    /* =====================================================
-       NOM COMPLET
-    ===================================================== */
+    if(!profile){
 
-    function getFullName(profile) {
+      showError(
+        "Profil introuvable."
+      );
 
-      const prenom =
-        (profile.prenom || "").trim();
-
-      const nom =
-        (profile.nom || "").trim();
-
-      const full =
-        `${prenom} ${nom}`.trim();
-
-      return full ||
-        "Agent du Cercle";
-
+      return;
     }
 
 
-    /* =====================================================
-       INITIALES
-    ===================================================== */
-
-    function getInitials(profile) {
-
-      const prenom =
-        (profile.prenom || "").trim();
-
-      const nom =
-        (profile.nom || "").trim();
-
-      const first =
-        prenom.charAt(0);
-
-      const second =
-        nom.charAt(0);
-
-      return (
-        first +
-        second
-      ).toUpperCase() || "A";
-
-    }
+    profileData =
+      profile;
 
 
-    /* =====================================================
-       TYPE AGENT
-    ===================================================== */
+    renderProfile(profile);
 
-    function formatAgentType(type) {
 
-      const types = {
+    /*
+     * IMPORTANT :
+     * charger les publications APRÈS
+     * avoir obtenu l'ID du profil.
+     */
 
-        "surete":
-          "Agent de sûreté",
+    await loadProfilePosts(
+      profileId
+    );
 
-        "securite":
-          "Agent de sécurité",
 
-        "gardiennage":
-          "Agent de gardiennage",
+  }catch(error){
 
-        "controle":
-          "Agent de contrôle",
+    console.error(
+      "Erreur profil:",
+      error
+    );
 
-        "vigile":
-          "Agent de surveillance",
+    showError(
+      "Impossible de charger le profil.<br><br>" +
+      escapeHtml(
+        error.message ||
+        "Erreur inconnue"
+      )
+    );
 
-        "chef":
-          "Chef d'équipe",
+  }
+}
 
-        "superviseur":
-          "Superviseur",
 
-        "autre":
-          "Professionnel de la sécurité"
+/* =========================================================
+   AFFICHER PROFIL
+========================================================= */
+
+function renderProfile(profile){
+
+  document.getElementById(
+    "fullName"
+  ).textContent =
+    fullName(profile);
+
+
+  document.getElementById(
+    "agentType"
+  ).textContent =
+    "🛡️ " +
+    agentType(profile.type_agent);
+
+
+  document.getElementById(
+    "ville"
+  ).textContent =
+    profile.ville ||
+    "Non renseignée";
+
+
+  document.getElementById(
+    "entreprise"
+  ).textContent =
+    profile.entreprise ||
+    "Non renseignée";
+
+
+  document.getElementById(
+    "presentation"
+  ).textContent =
+    profile.presentation ||
+    "Aucune présentation renseignée.";
+
+
+  /*
+   * Avatar
+   */
+
+  const avatar =
+    document.getElementById(
+      "avatar"
+    );
+
+  const placeholder =
+    document.getElementById(
+      "avatarPlaceholder"
+    );
+
+
+  const url =
+    avatarUrl(
+      profile.avatar_path
+    );
+
+
+  if(url){
+
+    avatar.src = url;
+
+    avatar.onload =
+      function(){
+
+        avatar.style.display =
+          "block";
+
+        placeholder.style.display =
+          "none";
 
       };
 
-      return (
-        types[type] ||
-        type ||
-        "Agent de sécurité privée"
-      );
-
-    }
-
-
-    /* =====================================================
-       AVATAR URL
-    ===================================================== */
-
-    function getAvatarUrl(path) {
-
-      if (!path) {
-        return null;
-      }
-
-      let cleanPath =
-        String(path).trim();
-
-      if (!cleanPath) {
-        return null;
-      }
-
-
-      /*
-       * URL déjà complète
-       */
-
-      if (
-        cleanPath.startsWith("http://") ||
-        cleanPath.startsWith("https://")
-      ) {
-        return cleanPath;
-      }
-
-
-      cleanPath =
-        cleanPath.replace(/^\/+/, "");
-
-
-      /*
-       * Formats possibles
-       */
-
-      cleanPath =
-        cleanPath.replace(
-          /^storage\/v1\/object\/public\/avatars\//,
-          ""
-        );
-
-      cleanPath =
-        cleanPath.replace(
-          /^avatars\//,
-          ""
-        );
-
-
-      const {
-        data
-      } =
-        supabaseClient
-          .storage
-          .from("avatars")
-          .getPublicUrl(cleanPath);
-
-
-      return (
-        data?.publicUrl ||
-        null
-      );
-
-    }
-
-
-    /* =====================================================
-       POST IMAGE URL
-    ===================================================== */
-
-    function getPostImageUrl(path) {
-
-      if (!path) {
-        return null;
-      }
-
-      let cleanPath =
-        String(path).trim();
-
-      if (!cleanPath) {
-        return null;
-      }
-
-
-      /*
-       * URL complète
-       */
-
-      if (
-        cleanPath.startsWith("http://") ||
-        cleanPath.startsWith("https://")
-      ) {
-        return cleanPath;
-      }
-
-
-      cleanPath =
-        cleanPath.replace(/^\/+/, "");
-
-
-      /*
-       * Nettoyage des différentes formes
-       */
-
-      cleanPath =
-        cleanPath.replace(
-          /^storage\/v1\/object\/public\/post-images\//,
-          ""
-        );
-
-      cleanPath =
-        cleanPath.replace(
-          /^post-images\//,
-          ""
-        );
-
-      cleanPath =
-        cleanPath.replace(
-          /^public\/post-images\//,
-          ""
-        );
-
-
-      const {
-        data
-      } =
-        supabaseClient
-          .storage
-          .from("post-images")
-          .getPublicUrl(cleanPath);
-
-
-      return (
-        data?.publicUrl ||
-        null
-      );
-
-    }
-
-
-    /* =====================================================
-       DATE
-    ===================================================== */
-
-    function formatDate(dateString) {
-
-      if (!dateString) {
-        return "";
-      }
-
-      const date =
-        new Date(dateString);
-
-      if (
-        Number.isNaN(
-          date.getTime()
-        )
-      ) {
-        return "";
-      }
-
-      return date.toLocaleString(
-        "fr-FR",
-        {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit"
-        }
-      );
-
-    }
-
-
-    /* =====================================================
-       AVATAR PRINCIPAL
-    ===================================================== */
-
-    function displayAvatar(profile) {
-
-      const avatar =
-        document.getElementById(
-          "avatar"
-        );
-
-      const placeholder =
-        document.getElementById(
-          "avatarPlaceholder"
-        );
-
-      const url =
-        getAvatarUrl(
-          profile.avatar_path
-        );
-
-
-      if (!url) {
+    avatar.onerror =
+      function(){
 
         avatar.style.display =
           "none";
@@ -1506,1144 +1441,883 @@
           "flex";
 
         placeholder.textContent =
-          getInitials(profile);
+          initials(profile);
 
-        return;
-      }
+      };
 
+  }else{
 
-      avatar.src = url;
+    avatar.style.display =
+      "none";
 
+    placeholder.style.display =
+      "flex";
 
-      avatar.onload =
-        function() {
+    placeholder.textContent =
+      initials(profile);
 
-          avatar.style.display =
-            "block";
-
-          placeholder.style.display =
-            "none";
-
-        };
+  }
 
 
-      avatar.onerror =
-        function() {
+  /*
+   * Propre profil / autre membre
+   */
 
-          avatar.style.display =
-            "none";
+  if(
+    currentUser &&
+    profile.id === currentUser.id
+  ){
 
-          placeholder.style.display =
-            "flex";
+    document.getElementById(
+      "editBtn"
+    ).style.display =
+      "inline-block";
 
-          placeholder.textContent =
-            getInitials(profile);
+  }else{
 
-        };
+    document.getElementById(
+      "messageBtn"
+    ).style.display =
+      "inline-block";
 
-    }
+  }
 
 
-    /* =====================================================
-       AVATAR PUBLICATION
-    ===================================================== */
+  document.getElementById(
+    "loading"
+  ).style.display =
+    "none";
 
-    function createPostAvatar(profile) {
 
-      const url =
-        getAvatarUrl(
-          profile?.avatar_path
+  document.getElementById(
+    "content"
+  ).style.display =
+    "block";
+}
+
+
+/* =========================================================
+   PUBLICATIONS DU PROFIL
+========================================================= */
+
+async function loadProfilePosts(userId){
+
+  const container =
+    document.getElementById(
+      "postsContainer"
+    );
+
+
+  /*
+   * On affiche d'abord un chargement.
+   */
+
+  container.innerHTML = `
+    <div class="loading">
+
+      <div class="spinner"></div>
+
+      Chargement des publications...
+
+    </div>
+  `;
+
+
+  try{
+
+    /*
+     * REQUÊTE PRINCIPALE
+     *
+     * C'est ici que nous récupérons
+     * les publications appartenant
+     * à l'utilisateur du profil.
+     */
+
+    const {
+      data:posts,
+      error
+    } =
+      await supabaseClient
+        .from("posts")
+        .select(`
+          id,
+          user_id,
+          content,
+          image_url,
+          created_at,
+          location_name,
+          location_lat,
+          location_lng,
+          location_type
+        `)
+        .eq(
+          "user_id",
+          userId
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
         );
 
 
-      if (url) {
+    if(error){
+      throw error;
+    }
 
-        return `
-          <img
-            class="post-avatar"
-            src="${escapeHtml(url)}"
-            alt="Photo de ${escapeHtml(
-              getFullName(profile)
-            )}"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-          >
 
-          <div
-            class="post-avatar-placeholder"
-            style="display:none;"
-          >
-            ${escapeHtml(
-              getInitials(profile)
-            )}
+    const list =
+      posts || [];
+
+
+    /*
+     * COMPTEUR
+     */
+
+    document.getElementById(
+      "postCount"
+    ).textContent =
+      list.length;
+
+
+    document.getElementById(
+      "sectionCount"
+    ).textContent =
+      list.length === 1
+        ? "1 publication"
+        : `${list.length} publications`;
+
+
+    /*
+     * AUCUNE PUBLICATION
+     */
+
+    if(list.length === 0){
+
+      container.innerHTML = `
+
+        <div class="empty">
+
+          <div class="empty-icon">
+            📰
           </div>
-        `;
 
-      }
+          <strong>
+            Aucune publication
+          </strong>
 
+          <div style="margin-top:8px">
+            Cet agent n'a encore publié
+            aucun contenu.
+          </div>
 
-      return `
-        <div class="post-avatar-placeholder">
-          ${escapeHtml(
-            getInitials(profile)
-          )}
         </div>
+
       `;
 
+      return;
     }
 
 
-    /* =====================================================
-       AUTH + PROFIL
-    ===================================================== */
+    /*
+     * CONSTRUCTION DES PUBLICATIONS
+     */
 
-    async function loadProfile() {
-
-      try {
-
-        const {
-          data: authData,
-          error: authError
-        } =
-          await supabaseClient
-            .auth
-            .getUser();
+    let html = "";
 
 
-        if (
-          authError ||
-          !authData?.user
-        ) {
+    for(
+      const post of list
+    ){
 
-          location.href =
-            "connexion.html";
-
-          return;
-
-        }
-
-
-        currentUser =
-          authData.user;
-
-
-        /*
-         * ID présent dans l'URL ?
-         *
-         * profil.html?id=XXXX
-         *
-         * Sinon :
-         *
-         * profil.html
-         */
-
-        const params =
-          new URLSearchParams(
-            window.location.search
-          );
-
-
-        profileUserId =
-          params.get("id") ||
-          currentUser.id;
-
-
-        /*
-         * Lien profil mobile
-         */
-
-        const mobileProfileLink =
-          document.getElementById(
-            "mobileProfileLink"
-          );
-
-        if (mobileProfileLink) {
-
-          mobileProfileLink.href =
-            `profil.html?id=${encodeURIComponent(
-              currentUser.id
-            )}`;
-
-        }
-
-
-        /*
-         * Charger le profil
-         */
-
-        const {
-          data: profile,
-          error: profileError
-        } =
-          await supabaseClient
-            .from("profiles")
-            .select("*")
-            .eq(
-              "id",
-              profileUserId
-            )
-            .maybeSingle();
-
-
-        if (profileError) {
-          throw profileError;
-        }
-
-
-        if (!profile) {
-
-          showError(
-            "Ce profil n'existe pas ou n'est plus disponible."
-          );
-
-          return;
-
-        }
-
-
-        currentProfile =
-          profile;
-
-
-        renderProfile(profile);
-
-
-        /*
-         * Charger publications
-         */
-
-        await loadPosts(
-          profileUserId
+      html +=
+        await buildPost(
+          post
         );
-
-
-      } catch (error) {
-
-        console.error(
-          "Erreur profil :",
-          error
-        );
-
-
-        showError(
-          "Impossible de charger ce profil.<br><br>" +
-          escapeHtml(
-            error.message ||
-            "Erreur inconnue"
-          )
-        );
-
-      }
 
     }
 
 
-    /* =====================================================
-       AFFICHER PROFIL
-    ===================================================== */
+    /*
+     * IMPORTANT :
+     * insertion des publications
+     * dans le conteneur.
+     */
 
-    function renderProfile(profile) {
+    container.innerHTML =
+      html;
 
-      const fullName =
-        getFullName(profile);
 
+    /*
+     * Mise à jour des statistiques
+     */
 
-      document.getElementById(
-        "fullName"
-      ).textContent =
-        fullName;
+    for(
+      const post of list
+    ){
 
-
-      document.getElementById(
-        "agentType"
-      ).innerHTML =
-        "🛡️ " +
-        escapeHtml(
-          formatAgentType(
-            profile.type_agent
-          )
-        );
-
-
-      document.getElementById(
-        "ville"
-      ).textContent =
-        profile.ville ||
-        "Non renseignée";
-
-
-      document.getElementById(
-        "entreprise"
-      ).textContent =
-        profile.entreprise ||
-        "Non renseignée";
-
-
-      document.getElementById(
-        "presentation"
-      ).textContent =
-        profile.presentation ||
-        "Aucune présentation renseignée.";
-
-
-      displayAvatar(profile);
-
-
-      /*
-       * Notre propre profil
-       */
-
-      const isOwnProfile =
-        currentUser &&
-        profile.id === currentUser.id;
-
-
-      if (isOwnProfile) {
-
-        document.getElementById(
-          "editBtn"
-        ).style.display =
-          "inline-block";
-
-      } else {
-
-        document.getElementById(
-          "messageBtn"
-        ).style.display =
-          "inline-block";
-
-      }
-
-
-      document.getElementById(
-        "loading"
-      ).style.display =
-        "none";
-
-
-      document.getElementById(
-        "profileContent"
-      ).style.display =
-        "block";
-
-    }
-
-
-    /* =====================================================
-       CHARGER PUBLICATIONS
-    ===================================================== */
-
-    async function loadPosts(userId) {
-
-      const container =
-        document.getElementById(
-          "postsContainer"
-        );
-
-
-      try {
-
-        /*
-         * Récupération des publications
-         * de cet agent uniquement.
-         */
-
-        const {
-          data: posts,
-          error
-        } =
-          await supabaseClient
-            .from("posts")
-            .select(`
-              id,
-              user_id,
-              content,
-              image_url,
-              created_at,
-              location_name,
-              location_lat,
-              location_lng,
-              location_type
-            `)
-            .eq(
-              "user_id",
-              userId
-            )
-            .order(
-              "created_at",
-              {
-                ascending: false
-              }
-            )
-            .limit(50);
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        const safePosts =
-          posts || [];
-
-
-        document.getElementById(
-          "postCount"
-        ).textContent =
-          safePosts.length;
-
-
-        document.getElementById(
-          "sectionCount"
-        ).textContent =
-          safePosts.length +
-          (
-            safePosts.length <= 1
-              ? " publication"
-              : " publications"
-          );
-
-
-        if (!safePosts.length) {
-
-          container.innerHTML = `
-            <div class="empty-posts">
-
-              <div class="empty-icon">
-                📰
-              </div>
-
-              <strong>
-                Aucune publication pour le moment
-              </strong>
-
-              <div style="margin-top:8px;">
-                Les publications de cet agent
-                apparaîtront ici.
-              </div>
-
-            </div>
-          `;
-
-          return;
-        }
-
-
-        /*
-         * Profil de l'auteur
-         */
-
-        let authorProfile =
-          currentProfile;
-
-
-        /*
-         * Afficher toutes les publications
-         */
-
-        const htmlParts = [];
-
-
-        for (
-          const post of safePosts
-        ) {
-
-          const html =
-            await renderPost(
-              post,
-              authorProfile
-            );
-
-          htmlParts.push(html);
-
-        }
-
-
-        container.innerHTML =
-          htmlParts.join("");
-
-
-        /*
-         * Récupérer les statistiques
-         */
-
-        for (
-          const post of safePosts
-        ) {
-
-          await refreshPostStats(
-            post.id
-          );
-
-        }
-
-
-      } catch (error) {
-
-        console.error(
-          "Erreur publications:",
-          error
-        );
-
-
-        container.innerHTML = `
-          <div class="error">
-
-            ❌ Impossible de charger
-            les publications.
-
-            <br><br>
-
-            ${escapeHtml(
-              error.message ||
-              "Erreur inconnue"
-            )}
-
-          </div>
-        `;
-
-      }
-
-    }
-
-
-    /* =====================================================
-       RENDRE UNE PUBLICATION
-    ===================================================== */
-
-    async function renderPost(
-      post,
-      profile
-    ) {
-
-      const fullName =
-        getFullName(profile);
-
-
-      const imageUrl =
-        getPostImageUrl(
-          post.image_url
-        );
-
-
-      let imageHtml = "";
-
-
-      if (imageUrl) {
-
-        imageHtml = `
-          <div class="post-image-wrap">
-
-            <img
-              class="post-image"
-              src="${escapeHtml(imageUrl)}"
-              alt="Photo de publication"
-              onerror="handlePostImageError(this)"
-            >
-
-            <div class="image-error">
-              🖼️ Photo indisponible
-            </div>
-
-          </div>
-        `;
-
-      }
-
-
-      let locationHtml = "";
-
-
-      if (
-        post.location_name &&
-        String(post.location_name).trim()
-      ) {
-
-        /*
-         * On affiche le nom du lieu.
-         *
-         * On n'expose pas automatiquement
-         * les coordonnées GPS exactes.
-         */
-
-        locationHtml = `
-          <div class="post-location">
-            📍 ${escapeHtml(
-              post.location_name
-            )}
-          </div>
-        `;
-
-      }
-
-
-      return `
-        <article
-          class="post-card"
-          id="post-${escapeHtml(post.id)}"
-        >
-
-          <div class="post-header">
-
-            <div class="post-author">
-
-              ${createPostAvatar(profile)}
-
-              <div class="post-author-info">
-
-                <div class="post-author-name">
-                  ${escapeHtml(fullName)}
-                  <span class="verified">
-                    ✓
-                  </span>
-                </div>
-
-                <div class="post-date">
-                  ${escapeHtml(
-                    formatDate(
-                      post.created_at
-                    )
-                  )}
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="post-menu">
-              ⋮
-            </div>
-
-          </div>
-
-
-          ${
-            post.content
-              ? `
-                <div class="post-content">
-                  ${escapeHtml(
-                    post.content
-                  )}
-                </div>
-              `
-              : ""
-          }
-
-
-          ${imageHtml}
-
-
-          ${locationHtml}
-
-
-          <div
-            class="post-stats"
-            id="stats-${escapeHtml(post.id)}"
-          >
-            ❤️ 0 • 💬 0
-          </div>
-
-
-          <div class="post-actions">
-
-            <button
-              class="post-action"
-              onclick="likePost('${escapeJs(post.id)}')"
-            >
-              ❤️ J'aime
-            </button>
-
-            <button
-              class="post-action"
-              onclick="commentPost('${escapeJs(post.id)}')"
-            >
-              💬 Commenter
-            </button>
-
-            <button
-              class="post-action"
-              onclick="sharePost('${escapeJs(post.id)}')"
-            >
-              📤 Partager
-            </button>
-
-          </div>
-
-        </article>
-      `;
-
-    }
-
-
-    /* =====================================================
-       ESCAPE JAVASCRIPT
-    ===================================================== */
-
-    function escapeJs(value) {
-
-      return String(value)
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'")
-        .replace(/"/g, '\\"')
-        .replace(/\n/g, "\\n")
-        .replace(/\r/g, "\\r");
-
-    }
-
-
-    /* =====================================================
-       IMAGE ERREUR
-    ===================================================== */
-
-    function handlePostImageError(img) {
-
-      img.style.display =
-        "none";
-
-
-      const errorBox =
-        img.parentElement
-          ?.querySelector(
-            ".image-error"
-          );
-
-
-      if (errorBox) {
-
-        errorBox.style.display =
-          "block";
-
-      }
-
-    }
-
-
-    /* =====================================================
-       STATISTIQUES PUBLICATION
-    ===================================================== */
-
-    async function refreshPostStats(
-      postId
-    ) {
-
-      try {
-
-        const {
-          count: likeCount,
-          error: likeError
-        } =
-          await supabaseClient
-            .from("likes")
-            .select(
-              "id",
-              {
-                count: "exact",
-                head: true
-              }
-            )
-            .eq(
-              "post_id",
-              postId
-            );
-
-
-        const {
-          count: commentCount,
-          error: commentError
-        } =
-          await supabaseClient
-            .from("comments")
-            .select(
-              "id",
-              {
-                count: "exact",
-                head: true
-              }
-            )
-            .eq(
-              "post_id",
-              postId
-            );
-
-
-        if (
-          likeError ||
-          commentError
-        ) {
-
-          console.error(
-            likeError ||
-            commentError
-          );
-
-          return;
-
-        }
-
-
-        const stats =
-          document.getElementById(
-            `stats-${postId}`
-          );
-
-
-        if (!stats) {
-          return;
-        }
-
-
-        stats.textContent =
-          `❤️ ${likeCount || 0} • 💬 ${commentCount || 0}`;
-
-      } catch (error) {
-
-        console.error(
-          "Erreur stats:",
-          error
-        );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       LIKE
-    ===================================================== */
-
-    async function likePost(postId) {
-
-      if (!currentUser) {
-        return;
-      }
-
-
-      try {
-
-        const {
-          data: existing,
-          error: findError
-        } =
-          await supabaseClient
-            .from("likes")
-            .select("id")
-            .eq(
-              "post_id",
-              postId
-            )
-            .eq(
-              "user_id",
-              currentUser.id
-            )
-            .maybeSingle();
-
-
-        if (findError) {
-          throw findError;
-        }
-
-
-        if (existing) {
-
-          const {
-            error
-          } =
-            await supabaseClient
-              .from("likes")
-              .delete()
-              .eq(
-                "id",
-                existing.id
-              );
-
-
-          if (error) {
-            throw error;
-          }
-
-        } else {
-
-          const {
-            error
-          } =
-            await supabaseClient
-              .from("likes")
-              .insert({
-
-                post_id:
-                  postId,
-
-                user_id:
-                  currentUser.id
-
-              });
-
-
-          if (error) {
-            throw error;
-          }
-
-        }
-
-
-        await refreshPostStats(
-          postId
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "Erreur like:",
-          error
-        );
-
-
-        alert(
-          "Impossible de modifier le J'aime."
-        );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       COMMENTAIRE
-    ===================================================== */
-
-    async function commentPost(
-      postId
-    ) {
-
-      if (!currentUser) {
-        return;
-      }
-
-
-      const text =
-        prompt(
-          "Écris ton commentaire :"
-        );
-
-
-      if (
-        text === null
-      ) {
-        return;
-      }
-
-
-      const content =
-        text.trim();
-
-
-      if (!content) {
-
-        alert(
-          "Le commentaire ne peut pas être vide."
-        );
-
-        return;
-
-      }
-
-
-      try {
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("comments")
-            .insert({
-
-              post_id:
-                postId,
-
-              user_id:
-                currentUser.id,
-
-              content:
-                content
-
-            });
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        await refreshPostStats(
-          postId
-        );
-
-
-        alert(
-          "Commentaire publié."
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "Erreur commentaire:",
-          error
-        );
-
-
-        alert(
-          "Impossible de publier le commentaire."
-        );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       PARTAGE
-    ===================================================== */
-
-    async function sharePost(
-      postId
-    ) {
-
-      const url =
-        `${window.location.origin}${window.location.pathname}#post-${postId}`;
-
-
-      try {
-
-        if (
-          navigator.share
-        ) {
-
-          await navigator.share({
-
-            title:
-              "Cercle des Agents",
-
-            text:
-              "Publication sur Cercle des Agents",
-
-            url:
-              url
-
-          });
-
-          return;
-
-        }
-
-
-        if (
-          navigator.clipboard
-        ) {
-
-          await navigator.clipboard.writeText(
-            url
-          );
-
-          alert(
-            "Lien copié."
-          );
-
-          return;
-
-        }
-
-
-        prompt(
-          "Copie ce lien :",
-          url
-        );
-
-
-      } catch (error) {
-
-        /*
-         * L'utilisateur peut avoir
-         * simplement fermé la fenêtre
-         * de partage.
-         */
-
-        console.log(
-          "Partage annulé.",
-          error
-        );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       MESSAGE — PRÉPARATION
-    ===================================================== */
-
-    function showComingSoon(message) {
-
-      alert(
-        message
+      await updateStats(
+        post.id
       );
 
     }
 
 
-    /* =====================================================
-       ERREUR GÉNÉRALE
-    ===================================================== */
+  }catch(error){
 
-    function showError(
-      message
-    ) {
-
-      document.getElementById(
-        "loading"
-      ).style.display =
-        "none";
+    console.error(
+      "Erreur publications:",
+      error
+    );
 
 
-      const box =
-        document.getElementById(
-          "errorBox"
+    container.innerHTML = `
+
+      <div class="error">
+
+        ❌ Impossible d'afficher
+        les publications.
+
+        <br><br>
+
+        ${escapeHtml(
+          error.message ||
+          "Erreur inconnue"
+        )}
+
+      </div>
+
+    `;
+
+  }
+}
+
+
+/* =========================================================
+   CONSTRUIRE UNE PUBLICATION
+========================================================= */
+
+async function buildPost(post){
+
+  const name =
+    fullName(profileData);
+
+
+  const avatar =
+    avatarUrl(
+      profileData?.avatar_path
+    );
+
+
+  let avatarHtml;
+
+
+  if(avatar){
+
+    avatarHtml = `
+
+      <img
+        class="post-avatar"
+        src="${escapeHtml(avatar)}"
+        alt="Photo de profil"
+        onerror="
+          this.style.display='none';
+          this.nextElementSibling.style.display='flex';
+        "
+      >
+
+      <div
+        class="post-avatar-placeholder"
+        style="display:none"
+      >
+        ${escapeHtml(
+          initials(profileData)
+        )}
+      </div>
+
+    `;
+
+  }else{
+
+    avatarHtml = `
+
+      <div class="post-avatar-placeholder">
+
+        ${escapeHtml(
+          initials(profileData)
+        )}
+
+      </div>
+
+    `;
+
+  }
+
+
+  /*
+   * TEXTE
+   */
+
+  let contentHtml = "";
+
+  if(
+    post.content &&
+    String(post.content).trim()
+  ){
+
+    contentHtml = `
+
+      <div class="post-content">
+
+        ${escapeHtml(
+          post.content
+        )}
+
+      </div>
+
+    `;
+
+  }
+
+
+  /*
+   * PHOTO
+   */
+
+  let imageHtml = "";
+
+  const image =
+    postImageUrl(
+      post.image_url
+    );
+
+
+  if(image){
+
+    imageHtml = `
+
+      <img
+        class="post-image"
+        src="${escapeHtml(image)}"
+        alt="Photo de publication"
+        onerror="postImageError(this)"
+      >
+
+      <div class="post-image-error">
+        🖼️ Photo indisponible
+      </div>
+
+    `;
+
+  }
+
+
+  /*
+   * LOCALISATION
+   */
+
+  let locationHtml = "";
+
+
+  if(
+    post.location_name &&
+    String(post.location_name).trim()
+  ){
+
+    locationHtml = `
+
+      <div class="post-location">
+
+        📍 ${escapeHtml(
+          post.location_name
+        )}
+
+      </div>
+
+    `;
+
+  }
+
+
+  return `
+
+    <article
+      class="post"
+      id="post-${escapeHtml(post.id)}"
+    >
+
+
+      <div class="post-head">
+
+        ${avatarHtml}
+
+        <div>
+
+          <div class="post-author">
+
+            ${escapeHtml(name)}
+
+            <span class="verified">
+              ✓
+            </span>
+
+          </div>
+
+          <div class="post-date">
+
+            ${escapeHtml(
+              formatDate(
+                post.created_at
+              )
+            )}
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      ${contentHtml}
+
+
+      ${imageHtml}
+
+
+      ${locationHtml}
+
+
+      <div
+        class="post-stats"
+        id="stats-${escapeHtml(post.id)}"
+      >
+        ❤️ 0 • 💬 0
+      </div>
+
+
+      <div class="post-actions">
+
+        <button
+          class="post-action"
+          onclick="likePost('${escapeJs(post.id)}')"
+        >
+          ❤️ J'aime
+        </button>
+
+
+        <button
+          class="post-action"
+          onclick="commentPost('${escapeJs(post.id)}')"
+        >
+          💬 Commenter
+        </button>
+
+
+        <button
+          class="post-action"
+          onclick="sharePost('${escapeJs(post.id)}')"
+        >
+          📤 Partager
+        </button>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================================
+   IMAGE ERREUR
+========================================================= */
+
+function postImageError(img){
+
+  img.style.display =
+    "none";
+
+
+  const error =
+    img.nextElementSibling;
+
+
+  if(error){
+
+    error.style.display =
+      "block";
+
+  }
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+async function updateStats(postId){
+
+  try{
+
+    const {
+      count:likes,
+      error:likeError
+    } =
+      await supabaseClient
+        .from("likes")
+        .select(
+          "id",
+          {
+            count:"exact",
+            head:true
+          }
+        )
+        .eq(
+          "post_id",
+          postId
         );
 
 
-      box.innerHTML = `
-        <div class="error">
+    const {
+      count:comments,
+      error:commentError
+    } =
+      await supabaseClient
+        .from("comments")
+        .select(
+          "id",
+          {
+            count:"exact",
+            head:true
+          }
+        )
+        .eq(
+          "post_id",
+          postId
+        );
 
-          ❌<br><br>
 
-          ${message}
-
-          <br><br>
-
-          <button
-            class="btn btn-secondary"
-            onclick="location.href='membres.html'"
-          >
-            ← Retour aux membres
-          </button>
-
-        </div>
-      `;
+    if(
+      likeError ||
+      commentError
+    ){
+      return;
+    }
 
 
-      box.style.display =
-        "block";
+    const stats =
+      document.getElementById(
+        `stats-${postId}`
+      );
+
+
+    if(stats){
+
+      stats.textContent =
+        `❤️ ${likes || 0} • 💬 ${comments || 0}`;
+
+    }
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   LIKE
+========================================================= */
+
+async function likePost(postId){
+
+  if(!currentUser){
+    return;
+  }
+
+
+  try{
+
+    const {
+      data:existing,
+      error:findError
+    } =
+      await supabaseClient
+        .from("likes")
+        .select("id")
+        .eq(
+          "post_id",
+          postId
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .maybeSingle();
+
+
+    if(findError){
+      throw findError;
+    }
+
+
+    if(existing){
+
+      const {error} =
+        await supabaseClient
+          .from("likes")
+          .delete()
+          .eq(
+            "id",
+            existing.id
+          );
+
+      if(error){
+        throw error;
+      }
+
+    }else{
+
+      const {error} =
+        await supabaseClient
+          .from("likes")
+          .insert({
+
+            post_id:postId,
+            user_id:currentUser.id
+
+          });
+
+      if(error){
+        throw error;
+      }
 
     }
 
 
-    /* =====================================================
-       DÉMARRAGE
-    ===================================================== */
+    await updateStats(
+      postId
+    );
 
-    loadProfile();
 
-  </script>
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Impossible de modifier le J'aime."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   COMMENTAIRE
+========================================================= */
+
+async function commentPost(postId){
+
+  if(!currentUser){
+    return;
+  }
+
+
+  const text =
+    prompt(
+      "Écris ton commentaire :"
+    );
+
+
+  if(text === null){
+    return;
+  }
+
+
+  const content =
+    text.trim();
+
+
+  if(!content){
+
+    alert(
+      "Le commentaire ne peut pas être vide."
+    );
+
+    return;
+  }
+
+
+  try{
+
+    const {error} =
+      await supabaseClient
+        .from("comments")
+        .insert({
+
+          post_id:postId,
+          user_id:currentUser.id,
+          content:content
+
+        });
+
+
+    if(error){
+      throw error;
+    }
+
+
+    await updateStats(
+      postId
+    );
+
+
+    alert(
+      "Commentaire publié."
+    );
+
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Impossible de publier le commentaire."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   PARTAGE
+========================================================= */
+
+async function sharePost(postId){
+
+  const url =
+    `${window.location.origin}${window.location.pathname}#post-${postId}`;
+
+
+  try{
+
+    if(
+      navigator.share
+    ){
+
+      await navigator.share({
+
+        title:
+          "Cercle des Agents",
+
+        text:
+          "Publication sur Cercle des Agents",
+
+        url:url
+
+      });
+
+      return;
+    }
+
+
+    if(
+      navigator.clipboard
+    ){
+
+      await navigator.clipboard.writeText(
+        url
+      );
+
+      alert(
+        "Lien copié."
+      );
+
+      return;
+    }
+
+
+    prompt(
+      "Copie ce lien :",
+      url
+    );
+
+
+  }catch(error){
+
+    console.log(
+      "Partage annulé"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   ERREUR
+========================================================= */
+
+function showError(message){
+
+  document.getElementById(
+    "loading"
+  ).style.display =
+    "none";
+
+
+  const box =
+    document.getElementById(
+      "errorBox"
+    );
+
+
+  box.innerHTML = `
+
+    <div class="error">
+
+      ${message}
+
+      <br><br>
+
+      <button
+        class="btn secondary"
+        onclick="location.href='membres.html'"
+      >
+        ← Retour aux membres
+      </button>
+
+    </div>
+
+  `;
+
+
+  box.style.display =
+    "block";
+
+}
+
+
+/* =========================================================
+   DÉMARRAGE
+========================================================= */
+
+loadProfile();
+
+</script>
 
 </body>
 </html>
