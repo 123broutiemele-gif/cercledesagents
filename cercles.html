@@ -3,808 +3,554 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Cercle des Agents — Cercles</title>
+  <title>Cercle des Agents — Cercle</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#07111f;
+      --bg2:#0d1b2f;
+      --card:#101f34;
+      --card2:#142943;
+      --border:rgba(255,255,255,.09);
+      --text:#f8fafc;
+      --muted:#94a3b8;
+      --blue:#38bdf8;
+      --yellow:#facc15;
+      --orange:#fb923c;
+      --green:#22c55e;
+      --danger:#ef4444;
     }
 
-    :root {
-      --bg: #07111f;
-      --bg2: #0f172a;
-      --card: #102238;
-      --card2: #142b44;
-      --border: rgba(255,255,255,.09);
-      --text: #f8fafc;
-      --muted: #9fb0c5;
-      --blue: #1683ff;
-      --blue-dark: #075985;
-      --gold: #f5b942;
-      --orange: #f59e0b;
-      --green: #25c481;
-      --red: #ef5350;
+    *{
+      box-sizing:border-box;
     }
 
-    body {
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      color:var(--text);
       background:
-        radial-gradient(
-          circle at top right,
-          rgba(7,89,133,.45),
-          transparent 35%
-        ),
-        linear-gradient(
-          135deg,
-          #07111f,
-          #0f172a 55%,
-          #172554
-        );
+        radial-gradient(circle at top,#075985 0%,transparent 32%),
+        linear-gradient(135deg,#07111f,#0f172a 55%,#172554);
+      min-height:100vh;
     }
 
-    button,
-    input {
-      font: inherit;
+    a{
+      color:inherit;
+      text-decoration:none;
     }
 
-    button {
-      cursor: pointer;
+    button,input,textarea{
+      font:inherit;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    button{
+      cursor:pointer;
     }
 
-    /* =====================================================
-       TOPBAR
-    ===================================================== */
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-
-      height: 70px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 8px 22px;
-
-      background: rgba(7,17,31,.94);
-      backdrop-filter: blur(16px);
-
-      border-bottom: 1px solid var(--border);
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      height:70px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:10px 18px;
+      background:rgba(7,17,31,.92);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      min-width: 0;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:220px;
     }
 
-    .brand img {
-      width: 48px;
-      height: 48px;
-
-      object-fit: contain;
-
-      border-radius: 12px;
+    .brand img{
+      width:48px;
+      height:48px;
+      object-fit:contain;
+      border-radius:12px;
     }
 
-    .brand-text {
-      min-width: 0;
+    .brand-text strong{
+      display:block;
+      font-size:15px;
+      letter-spacing:.3px;
     }
 
-    .brand-title {
-      font-size: 17px;
-      font-weight: 900;
-
-      white-space: nowrap;
+    .brand-text span{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      margin-top:3px;
     }
 
-    .brand-subtitle {
-      margin-top: 3px;
-
-      color: var(--gold);
-
-      font-size: 11px;
-
-      white-space: nowrap;
+    .top-actions{
+      margin-left:auto;
+      display:flex;
+      align-items:center;
+      gap:8px;
     }
 
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .top-btn{
+      border:1px solid var(--border);
+      background:#10243b;
+      color:white;
+      padding:10px 13px;
+      border-radius:12px;
+      font-weight:700;
     }
 
-    .top-btn {
-      border: 1px solid var(--border);
-
-      background: rgba(255,255,255,.05);
-
-      color: var(--text);
-
-      padding: 10px 14px;
-
-      border-radius: 12px;
-
-      font-weight: 800;
+    .top-btn:hover{
+      border-color:rgba(56,189,248,.5);
     }
 
-    .top-btn:hover {
-      background: rgba(255,255,255,.09);
+    .layout{
+      width:min(1180px,calc(100% - 24px));
+      margin:24px auto 50px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 310px;
+      gap:20px;
     }
 
-    /* =====================================================
-       PAGE
-    ===================================================== */
-
-    .page {
-      width: min(1180px, calc(100% - 24px));
-
-      margin: 24px auto 100px;
+    .main-card,
+    .side-card{
+      background:rgba(16,31,52,.88);
+      border:1px solid var(--border);
+      border-radius:22px;
+      box-shadow:0 20px 60px rgba(0,0,0,.22);
     }
 
-    .hero {
-      position: relative;
+    .main-card{
+      overflow:hidden;
+    }
 
-      padding: 28px;
-
-      border-radius: 22px;
-
+    .circle-header{
+      padding:26px;
       background:
-        linear-gradient(
-          135deg,
-          rgba(7,89,133,.55),
-          rgba(16,34,56,.96)
-        );
-
-      border: 1px solid var(--border);
-
-      box-shadow:
-        0 20px 55px rgba(0,0,0,.20);
-
-      overflow: hidden;
+        linear-gradient(135deg,rgba(14,116,144,.55),rgba(30,41,59,.35));
+      border-bottom:1px solid var(--border);
     }
 
-    .hero::after {
-      content: "";
-
-      position: absolute;
-
-      width: 220px;
-      height: 220px;
-
-      right: -70px;
-      top: -90px;
-
-      border-radius: 50%;
-
-      border: 30px solid rgba(245,185,66,.08);
+    .back{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      color:#bae6fd;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:20px;
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
+    .circle-main{
+      display:flex;
+      align-items:flex-start;
+      gap:18px;
     }
 
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-
-      color: var(--muted);
-
-      font-size: 13px;
-      font-weight: 700;
-
-      margin-bottom: 18px;
+    .circle-icon{
+      width:78px;
+      height:78px;
+      border-radius:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:40px;
+      background:linear-gradient(135deg,#172554,#075985);
+      border:1px solid rgba(250,204,21,.25);
+      flex-shrink:0;
     }
 
-    .back-link:hover {
-      color: white;
+    .circle-info{
+      flex:1;
+      min-width:0;
     }
 
-    .hero-title {
-      font-size: clamp(27px, 4vw, 40px);
-
-      font-weight: 900;
-
-      line-height: 1.1;
+    .circle-info h1{
+      margin:0 0 8px;
+      font-size:28px;
     }
 
-    .hero-title span {
-      color: var(--gold);
+    .circle-info p{
+      margin:0;
+      color:#cbd5e1;
+      line-height:1.55;
+      font-size:14px;
     }
 
-    .hero-description {
-      max-width: 720px;
-
-      margin-top: 11px;
-
-      color: #cbd5e1;
-
-      font-size: 15px;
-
-      line-height: 1.6;
+    .circle-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:14px;
     }
 
-    .hero-badges {
-      display: flex;
-      flex-wrap: wrap;
-
-      gap: 8px;
-
-      margin-top: 18px;
+    .pill{
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      color:#cbd5e1;
+      font-size:12px;
     }
 
-    .badge {
-      padding: 8px 11px;
-
-      border-radius: 999px;
-
-      background: rgba(255,255,255,.07);
-
-      border: 1px solid rgba(255,255,255,.08);
-
-      color: #dbeafe;
-
-      font-size: 12px;
-      font-weight: 800;
+    .join-btn{
+      border:0;
+      border-radius:12px;
+      padding:11px 16px;
+      background:linear-gradient(135deg,#facc15,#fb923c);
+      color:#111827;
+      font-weight:900;
+      white-space:nowrap;
     }
 
-    /* =====================================================
-       TOOLBAR
-    ===================================================== */
-
-    .toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 14px;
-
-      margin: 20px 0;
+    .join-btn.leave{
+      background:#1e293b;
+      color:#e2e8f0;
+      border:1px solid var(--border);
     }
 
-    .search {
-      position: relative;
-
-      flex: 1;
-
-      max-width: 600px;
+    .content{
+      padding:22px;
     }
 
-    .search input {
-      width: 100%;
-
-      padding: 14px 45px 14px 16px;
-
-      border-radius: 14px;
-
-      border: 1px solid var(--border);
-
-      background: rgba(16,34,56,.92);
-
-      color: white;
-
-      outline: none;
+    .section-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:14px;
     }
 
-    .search input:focus {
-      border-color: rgba(22,131,255,.7);
-
-      box-shadow:
-        0 0 0 3px rgba(22,131,255,.08);
+    .section-title h2{
+      margin:0;
+      font-size:19px;
     }
 
-    .search-icon {
-      position: absolute;
-
-      right: 15px;
-      top: 50%;
-
-      transform: translateY(-50%);
-
-      color: var(--muted);
+    .section-title span{
+      color:var(--muted);
+      font-size:12px;
     }
 
-    .refresh-btn {
-      border: 1px solid var(--border);
-
-      background: rgba(255,255,255,.06);
-
-      color: white;
-
-      padding: 13px 16px;
-
-      border-radius: 13px;
-
-      font-weight: 800;
+    .composer{
+      background:#0b182a;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:22px;
     }
 
-    .refresh-btn:hover {
-      background: rgba(255,255,255,.10);
+    .composer textarea{
+      width:100%;
+      min-height:95px;
+      resize:vertical;
+      border:1px solid var(--border);
+      background:#081421;
+      color:white;
+      border-radius:14px;
+      padding:13px;
+      outline:none;
     }
 
-    /* =====================================================
-       GRID
-    ===================================================== */
-
-    .circles-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-      gap: 18px;
+    .composer textarea:focus{
+      border-color:rgba(56,189,248,.6);
     }
 
-    .circle-card {
-      position: relative;
-
-      display: flex;
-      flex-direction: column;
-
-      min-height: 300px;
-
-      padding: 22px;
-
-      border-radius: 20px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(20,43,68,.98),
-          rgba(12,29,48,.98)
-        );
-
-      border: 1px solid var(--border);
-
-      box-shadow:
-        0 15px 40px rgba(0,0,0,.18);
-
-      transition:
-        transform .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease;
+    .composer-footer{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:10px;
     }
 
-    .circle-card:hover {
-      transform: translateY(-3px);
-
-      border-color:
-        rgba(22,131,255,.35);
-
-      box-shadow:
-        0 22px 48px rgba(0,0,0,.25);
+    .composer-info{
+      color:var(--muted);
+      font-size:12px;
     }
 
-    .circle-icon {
-      width: 65px;
-      height: 65px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 18px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(7,89,133,.7),
-          rgba(23,37,84,.9)
-        );
-
-      border: 1px solid rgba(255,255,255,.08);
-
-      font-size: 31px;
-
-      margin-bottom: 16px;
+    .publish-btn{
+      border:0;
+      border-radius:12px;
+      padding:11px 17px;
+      background:linear-gradient(135deg,#38bdf8,#2563eb);
+      color:white;
+      font-weight:800;
     }
 
-    .circle-name {
-      font-size: 20px;
-
-      font-weight: 900;
-
-      line-height: 1.25;
+    .post{
+      background:#0c1b2d;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:14px;
     }
 
-    .circle-description {
-      margin-top: 9px;
-
-      color: var(--muted);
-
-      font-size: 13px;
-
-      line-height: 1.55;
-
-      flex: 1;
+    .post-head{
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
 
-    .circle-bottom {
-      display: flex;
-
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 10px;
-
-      margin-top: 20px;
+    .avatar{
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      object-fit:cover;
+      background:#172554;
+      border:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      color:#bae6fd;
+      flex-shrink:0;
     }
 
-    .member-count {
-      color: #cbd5e1;
-
-      font-size: 12px;
-
-      font-weight: 800;
+    .post-author{
+      flex:1;
+      min-width:0;
     }
 
-    .join-btn {
-      border: 0;
-
-      padding: 11px 15px;
-
-      border-radius: 12px;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--gold),
-          var(--orange)
-        );
-
-      color: #111827;
-
-      font-weight: 900;
-
-      transition: .18s;
+    .post-author strong{
+      display:block;
+      font-size:14px;
     }
 
-    .join-btn:hover {
-      transform: translateY(-1px);
-
-      filter: brightness(1.05);
+    .post-author span{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      margin-top:3px;
     }
 
-    .join-btn.joined {
-      background: rgba(37,196,129,.15);
-
-      color: #8df0c5;
-
-      border: 1px solid rgba(37,196,129,.35);
+    .post-content{
+      margin-top:13px;
+      color:#e2e8f0;
+      line-height:1.6;
+      white-space:pre-wrap;
+      word-break:break-word;
     }
 
-    .join-btn.joined:hover {
-      background: rgba(239,83,80,.12);
-
-      color: #ffaaa6;
-
-      border-color: rgba(239,83,80,.35);
+    .post-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:14px;
+      padding-top:12px;
+      border-top:1px solid var(--border);
     }
 
-    .loading,
-    .empty,
-    .error {
-      grid-column: 1 / -1;
-
-      padding: 45px 20px;
-
-      text-align: center;
-
-      border-radius: 18px;
-
-      background: rgba(16,34,56,.8);
-
-      border: 1px solid var(--border);
-
-      color: var(--muted);
+    .action-btn{
+      border:1px solid var(--border);
+      background:#10243b;
+      color:#cbd5e1;
+      border-radius:10px;
+      padding:8px 11px;
+      font-size:12px;
     }
 
-    .loading {
-      font-weight: 700;
+    .action-btn:hover{
+      border-color:rgba(56,189,248,.5);
+      color:white;
     }
 
-    .empty-title {
-      color: white;
-
-      font-size: 19px;
-
-      font-weight: 900;
-
-      margin-bottom: 6px;
+    .empty{
+      text-align:center;
+      padding:35px 15px;
+      color:var(--muted);
+      border:1px dashed var(--border);
+      border-radius:16px;
     }
 
-    .error {
-      color: #ffb4b1;
-
-      background: rgba(239,83,80,.08);
-
-      border-color: rgba(239,83,80,.25);
+    .side-card{
+      padding:20px;
+      height:max-content;
     }
 
-    /* =====================================================
-       INFO
-    ===================================================== */
-
-    .info-section {
-      margin-top: 22px;
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-      gap: 15px;
+    .side-card h3{
+      margin:0 0 14px;
+      font-size:16px;
     }
 
-    .info-card {
-      padding: 18px;
-
-      border-radius: 17px;
-
-      background: rgba(16,34,56,.76);
-
-      border: 1px solid var(--border);
+    .member{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:9px 0;
+      border-bottom:1px solid rgba(255,255,255,.05);
     }
 
-    .info-icon {
-      font-size: 24px;
-
-      margin-bottom: 9px;
+    .member:last-child{
+      border-bottom:0;
     }
 
-    .info-title {
-      font-weight: 900;
-
-      font-size: 15px;
+    .member .avatar{
+      width:38px;
+      height:38px;
+      font-size:12px;
     }
 
-    .info-text {
-      margin-top: 6px;
-
-      color: var(--muted);
-
-      font-size: 12px;
-
-      line-height: 1.5;
+    .member-info{
+      min-width:0;
     }
 
-    /* =====================================================
-       STATUS
-    ===================================================== */
-
-    .status {
-      position: fixed;
-
-      z-index: 300;
-
-      left: 50%;
-      bottom: 85px;
-
-      transform:
-        translateX(-50%)
-        translateY(20px);
-
-      width: min(430px, calc(100% - 30px));
-
-      padding: 13px 16px;
-
-      border-radius: 13px;
-
-      opacity: 0;
-      pointer-events: none;
-
-      transition: .25s;
-
-      font-size: 13px;
-
-      font-weight: 700;
-
-      box-shadow:
-        0 15px 35px rgba(0,0,0,.3);
+    .member-info strong{
+      display:block;
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
-    .status.show {
-      opacity: 1;
-
-      transform:
-        translateX(-50%)
-        translateY(0);
+    .member-info span{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      margin-top:3px;
     }
 
-    .status.success {
-      background: #123d30;
-
-      border: 1px solid rgba(37,196,129,.35);
-
-      color: #a7f3d0;
+    .side-link{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      width:100%;
+      padding:11px 12px;
+      margin-top:8px;
+      border-radius:11px;
+      background:#10243b;
+      border:1px solid var(--border);
+      color:#dbeafe;
+      font-weight:700;
+      font-size:13px;
     }
 
-    .status.error {
-      background: #401d1c;
-
-      border: 1px solid rgba(239,83,80,.35);
-
-      color: #fecaca;
+    .loading{
+      padding:30px;
+      text-align:center;
+      color:var(--muted);
     }
 
-    /* =====================================================
-       MOBILE NAV
-    ===================================================== */
-
-    .mobile-nav {
-      display: none;
-
-      position: fixed;
-
-      z-index: 200;
-
-      left: 0;
-      right: 0;
-      bottom: 0;
-
-      height: 66px;
-
-      background: rgba(7,17,31,.97);
-
-      backdrop-filter: blur(16px);
-
-      border-top: 1px solid var(--border);
-
-      grid-template-columns:
-        repeat(4, 1fr);
+    .error{
+      padding:14px;
+      border-radius:12px;
+      background:rgba(239,68,68,.1);
+      border:1px solid rgba(239,68,68,.25);
+      color:#fecaca;
+      font-size:13px;
+      margin-bottom:15px;
     }
 
-    .mobile-nav a {
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-      justify-content: center;
-
-      gap: 3px;
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-      font-weight: 700;
+    .mobile-nav{
+      display:none;
     }
 
-    .mobile-nav a.active {
-      color: var(--gold);
-    }
-
-    .mobile-nav span:first-child {
-      font-size: 19px;
-    }
-
-    /* =====================================================
-       RESPONSIVE
-    ===================================================== */
-
-    @media (max-width: 980px) {
-
-      .circles-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
+    @media(max-width:850px){
+      .layout{
+        grid-template-columns:1fr;
       }
 
-      .info-section {
-        grid-template-columns:
-          1fr 1fr;
+      .side-card{
+        display:none;
       }
     }
 
-    @media (max-width: 700px) {
-
-      .topbar {
-        padding: 8px 12px;
+    @media(max-width:620px){
+      .topbar{
+        height:62px;
+        padding:8px 11px;
       }
 
-      .brand img {
-        width: 42px;
-        height: 42px;
+      .brand{
+        min-width:0;
       }
 
-      .brand-title {
-        font-size: 15px;
+      .brand img{
+        width:42px;
+        height:42px;
       }
 
-      .brand-subtitle {
-        font-size: 10px;
+      .brand-text span{
+        display:none;
       }
 
-      .top-actions .top-btn span {
-        display: none;
+      .brand-text strong{
+        font-size:13px;
       }
 
-      .page {
-        width: 100%;
-
-        margin:
-          0 0 85px;
+      .top-btn span{
+        display:none;
       }
 
-      .hero {
-        border-radius: 0;
-
-        padding: 23px 17px;
-
-        border-left: 0;
-        border-right: 0;
+      .layout{
+        width:100%;
+        margin:0 0 76px;
       }
 
-      .toolbar {
-        padding: 0 13px;
-
-        flex-direction: column;
-
-        align-items: stretch;
+      .main-card{
+        border-radius:0;
+        border-left:0;
+        border-right:0;
       }
 
-      .search {
-        max-width: none;
+      .circle-header{
+        padding:20px 15px;
       }
 
-      .refresh-btn {
-        width: 100%;
+      .circle-main{
+        flex-wrap:wrap;
       }
 
-      .circles-grid {
-        grid-template-columns: 1fr;
-
-        padding: 0 13px;
-
-        gap: 13px;
+      .circle-info{
+        width:calc(100% - 96px);
       }
 
-      .circle-card {
-        min-height: 260px;
+      .circle-info h1{
+        font-size:22px;
       }
 
-      .info-section {
-        grid-template-columns: 1fr;
-
-        padding: 0 13px;
+      .join-btn{
+        width:100%;
       }
 
-      .mobile-nav {
-        display: grid;
-      }
-    }
-
-    @media (max-width: 430px) {
-
-      .hero-title {
-        font-size: 27px;
+      .content{
+        padding:15px;
       }
 
-      .hero-description {
-        font-size: 14px;
+      .mobile-nav{
+        position:fixed;
+        left:0;
+        right:0;
+        bottom:0;
+        z-index:100;
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        background:rgba(7,17,31,.97);
+        border-top:1px solid var(--border);
+        padding:7px 5px calc(7px + env(safe-area-inset-bottom));
       }
 
-      .circle-card {
-        padding: 18px;
+      .mobile-nav a{
+        text-align:center;
+        color:#94a3b8;
+        font-size:10px;
+        padding:6px 2px;
+      }
+
+      .mobile-nav .active{
+        color:#facc15;
+      }
+
+      .mobile-nav span{
+        display:block;
+        font-size:19px;
+        margin-bottom:2px;
       }
     }
   </style>
@@ -812,896 +558,1056 @@
 
 <body>
 
-  <!-- =====================================================
-       TOPBAR
-  ====================================================== -->
+<header class="topbar">
+  <a href="accueil.html" class="brand">
+    <img src="logo-aigle.png" alt="Cercle des Agents">
+    <div class="brand-text">
+      <strong>Cercle des Agents</strong>
+      <span>Unis • Informés • Plus forts</span>
+    </div>
+  </a>
 
-  <header class="topbar">
+  <div class="top-actions">
+    <a href="cercles.html" class="top-btn">🛡️ <span>Cercles</span></a>
+    <a href="messages.html" class="top-btn">💬 <span>Messages</span></a>
+    <a href="notifications.html" class="top-btn">🔔 <span>Alertes</span></a>
+  </div>
+</header>
 
-    <a href="accueil.html" class="brand">
+<main class="layout">
 
-      <img
-        src="logo-aigle.png"
-        alt="Cercle des Agents"
-      >
+  <section class="main-card">
 
-      <div class="brand-text">
-
-        <div class="brand-title">
-          Cercle des Agents
-        </div>
-
-        <div class="brand-subtitle">
-          Unis • Informés • Plus forts
-        </div>
-
-      </div>
-
-    </a>
-
-
-    <div class="top-actions">
-
-      <a
-        href="accueil.html"
-        class="top-btn"
-      >
-        🏠 <span>Accueil</span>
-      </a>
-
-      <a
-        href="profil.html"
-        class="top-btn"
-      >
-        👤 <span>Profil</span>
-      </a>
-
+    <div id="circleHeader" class="circle-header">
+      <div class="loading">Chargement du cercle...</div>
     </div>
 
-  </header>
+    <div class="content">
 
+      <div id="pageError"></div>
 
-  <!-- =====================================================
-       PAGE
-  ====================================================== -->
-
-  <main class="page">
-
-    <!-- HERO -->
-
-    <section class="hero">
-
-      <div class="hero-content">
-
-        <a
-          href="accueil.html"
-          class="back-link"
-        >
-          ← Retour à l'accueil
-        </a>
-
-        <h1 class="hero-title">
-          Les <span>cercles</span> professionnels
-        </h1>
-
-        <p class="hero-description">
-          Rejoignez les espaces qui correspondent à votre
-          métier, vos compétences et vos centres d'intérêt
-          professionnels.
-        </p>
-
-        <div class="hero-badges">
-
-          <div class="badge">
-            🛡️ Sécurité privée
-          </div>
-
-          <div class="badge">
-            🤝 Échanges professionnels
-          </div>
-
-          <div class="badge">
-            📚 Formation
-          </div>
-
-          <div class="badge">
-            📢 Opportunités
-          </div>
-
+      <div id="composerSection" style="display:none;">
+        <div class="section-title">
+          <h2>📝 Publier dans ce cercle</h2>
+          <span>Visible par les membres</span>
         </div>
 
+        <div class="composer">
+          <textarea
+            id="postContent"
+            placeholder="Partagez une information, un conseil ou une expérience professionnelle..."
+          ></textarea>
+
+          <div class="composer-footer">
+            <div class="composer-info">
+              🛡️ Publication réservée à ce cercle
+            </div>
+
+            <button class="publish-btn" id="publishBtn">
+              Publier
+            </button>
+          </div>
+        </div>
       </div>
 
-    </section>
-
-
-    <!-- TOOLBAR -->
-
-    <div class="toolbar">
-
-      <div class="search">
-
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Rechercher un cercle..."
-          autocomplete="off"
-        >
-
-        <span class="search-icon">
-          🔎
-        </span>
-
+      <div class="section-title">
+        <h2>📢 Publications du cercle</h2>
+        <span id="postCount">0 publication</span>
       </div>
 
-
-      <button
-        id="refreshBtn"
-        class="refresh-btn"
-        type="button"
-      >
-        🔄 Actualiser
-      </button>
+      <div id="postsContainer">
+        <div class="loading">Chargement des publications...</div>
+      </div>
 
     </div>
+  </section>
 
+  <aside class="side-card">
 
-    <!-- CERCLES -->
+    <h3>👥 Membres du cercle</h3>
 
-    <section
-      id="circlesGrid"
-      class="circles-grid"
-    >
+    <div id="membersContainer">
+      <div class="loading">Chargement...</div>
+    </div>
 
-      <div class="loading">
-        Chargement des cercles...
-      </div>
-
-    </section>
-
-
-    <!-- INFO -->
-
-    <section class="info-section">
-
-      <article class="info-card">
-
-        <div class="info-icon">
-          🤝
-        </div>
-
-        <div class="info-title">
-          Échangez
-        </div>
-
-        <div class="info-text">
-          Partagez votre expérience et échangez
-          avec d'autres professionnels.
-        </div>
-
-      </article>
-
-
-      <article class="info-card">
-
-        <div class="info-icon">
-          📚
-        </div>
-
-        <div class="info-title">
-          Apprenez
-        </div>
-
-        <div class="info-text">
-          Découvrez des conseils, des formations
-          et des informations utiles à votre métier.
-        </div>
-
-      </article>
-
-
-      <article class="info-card">
-
-        <div class="info-icon">
-          🚀
-        </div>
-
-        <div class="info-title">
-          Évoluez
-        </div>
-
-        <div class="info-text">
-          Développez votre réseau professionnel
-          et découvrez de nouvelles opportunités.
-        </div>
-
-      </article>
-
-    </section>
-
-  </main>
-
-
-  <!-- =====================================================
-       MOBILE NAV
-  ====================================================== -->
-
-  <nav class="mobile-nav">
-
-    <a href="accueil.html">
-
-      <span>🏠</span>
-      <span>Accueil</span>
-
+    <a href="cercles.html" class="side-link">
+      ← Tous les cercles
     </a>
 
-
-    <a href="membres.html">
-
-      <span>👥</span>
-      <span>Membres</span>
-
+    <a href="accueil.html" class="side-link">
+      🏠 Retour à l'accueil
     </a>
 
-
-    <a
-      href="cercles.html"
-      class="active"
-    >
-
-      <span>🛡️</span>
-      <span>Cercles</span>
-
+    <a href="profil.html" class="side-link">
+      👤 Mon profil
     </a>
 
+  </aside>
 
-    <a href="profil.html">
+</main>
 
-      <span>👤</span>
-      <span>Profil</span>
+<nav class="mobile-nav">
+  <a href="accueil.html">
+    <span>🏠</span>
+    Accueil
+  </a>
 
-    </a>
+  <a href="membres.html">
+    <span>👥</span>
+    Membres
+  </a>
 
-  </nav>
+  <a href="cercles.html" class="active">
+    <span>🛡️</span>
+    Cercles
+  </a>
 
-
-  <!-- STATUS -->
-
-  <div
-    id="status"
-    class="status"
-  ></div>
-
+  <a href="profil.html">
+    <span>👤</span>
+    Profil
+  </a>
+</nav>
 
 <script>
-
-  /* =====================================================
-     SUPABASE
-  ====================================================== */
-
   const SUPABASE_URL =
     "https://quzgphbougaujzqrhjza.supabase.co";
 
   const SUPABASE_KEY =
     "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
 
-
   const supabaseClient =
-    supabase.createClient(
+    window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_KEY
     );
 
-
-  /* =====================================================
-     VARIABLES
-  ====================================================== */
-
   let currentUser = null;
+  let circleId = null;
+  let circle = null;
+  let isMember = false;
+  let profilesMap = {};
 
-  let circles = [];
+  const $ = (id) => document.getElementById(id);
 
-  let memberships = new Set();
-
-
-  /* =====================================================
-     ELEMENTS
-  ====================================================== */
-
-  const circlesGrid =
-    document.getElementById(
-      "circlesGrid"
-    );
-
-  const searchInput =
-    document.getElementById(
-      "searchInput"
-    );
-
-  const refreshBtn =
-    document.getElementById(
-      "refreshBtn"
-    );
-
-  const statusBox =
-    document.getElementById(
-      "status"
-    );
-
-
-  /* =====================================================
-     UTILITAIRES
-  ====================================================== */
-
-  function escapeHTML(value) {
-
+  function escapeHtml(value){
     return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
   }
 
+  function initials(profile){
+    const first = String(profile?.prenom || "").trim();
+    const last = String(profile?.nom || "").trim();
 
-  function showStatus(
-    message,
-    type = "success"
-  ) {
-
-    statusBox.textContent =
-      message;
-
-    statusBox.className =
-      "status show " + type;
-
-    clearTimeout(
-      showStatus.timer
+    return (
+      (first.charAt(0) + last.charAt(0)).toUpperCase()
+      || "CA"
     );
-
-    showStatus.timer =
-      setTimeout(() => {
-
-        statusBox.className =
-          "status";
-
-      }, 3500);
   }
 
+  function fullName(profile){
+    const name =
+      `${profile?.prenom || ""} ${profile?.nom || ""}`.trim();
 
-  /* =====================================================
-     AUTH
-  ====================================================== */
+    return name || "Agent";
+  }
 
-  async function checkAuth() {
+  function avatarUrl(path){
+    if(!path) return "";
+
+    if(
+      path.startsWith("http://") ||
+      path.startsWith("https://")
+    ){
+      return path;
+    }
+
+    const clean = path
+      .replace(/^avatars\//,"")
+      .replace(/^\/avatars\//,"");
+
+    const result =
+      supabaseClient.storage
+        .from("avatars")
+        .getPublicUrl(clean);
+
+    return result?.data?.publicUrl || "";
+  }
+
+  function formatDate(date){
+    try{
+      return new Date(date).toLocaleString(
+        "fr-FR",
+        {
+          day:"2-digit",
+          month:"2-digit",
+          year:"numeric",
+          hour:"2-digit",
+          minute:"2-digit"
+        }
+      );
+    }catch{
+      return "";
+    }
+  }
+
+  function getCircleId(){
+    const params =
+      new URLSearchParams(window.location.search);
+
+    return params.get("id");
+  }
+
+  function showError(message){
+    $("pageError").innerHTML =
+      `<div class="error">${escapeHtml(message)}</div>`;
+  }
+
+  async function loadCircle(){
+
+    circleId = getCircleId();
+
+    if(!circleId){
+      $("circleHeader").innerHTML =
+        `<div class="error">
+          Cercle introuvable. Revenez à la page des cercles.
+        </div>`;
+      return false;
+    }
 
     const {
       data,
       error
-    } =
-      await supabaseClient.auth.getUser();
+    } = await supabaseClient
+      .from("cercles")
+      .select("*")
+      .eq("id",circleId)
+      .maybeSingle();
 
-    if (
-      error ||
-      !data ||
-      !data.user
-    ) {
+    if(error){
+      console.error(error);
+
+      $("circleHeader").innerHTML =
+        `<div class="error">
+          Impossible de charger ce cercle.
+        </div>`;
+
+      return false;
+    }
+
+    if(!data){
+      $("circleHeader").innerHTML =
+        `<div class="error">
+          Ce cercle n'existe pas.
+        </div>`;
+
+      return false;
+    }
+
+    circle = data;
+
+    await checkMembership();
+    await renderCircleHeader();
+
+    return true;
+  }
+
+  async function checkMembership(){
+
+    if(!currentUser || !circleId){
+      isMember = false;
+      return;
+    }
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("cercle_members")
+      .select("id")
+      .eq("cercle_id",circleId)
+      .eq("user_id",currentUser.id)
+      .maybeSingle();
+
+    if(error){
+      console.error(error);
+      isMember = false;
+      return;
+    }
+
+    isMember = !!data;
+  }
+
+  async function getMemberCount(){
+
+    const {
+      count,
+      error
+    } = await supabaseClient
+      .from("cercle_members")
+      .select("id",{count:"exact",head:true})
+      .eq("cercle_id",circleId);
+
+    if(error){
+      console.error(error);
+      return 0;
+    }
+
+    return count || 0;
+  }
+
+  async function renderCircleHeader(){
+
+    const count =
+      await getMemberCount();
+
+    $("circleHeader").innerHTML = `
+      <a href="cercles.html" class="back">
+        ← Retour aux cercles
+      </a>
+
+      <div class="circle-main">
+
+        <div class="circle-icon">
+          ${escapeHtml(circle.icone || "🛡️")}
+        </div>
+
+        <div class="circle-info">
+
+          <h1>
+            ${escapeHtml(circle.nom)}
+          </h1>
+
+          <p>
+            ${escapeHtml(
+              circle.description ||
+              "Espace professionnel du Cercle des Agents."
+            )}
+          </p>
+
+          <div class="circle-meta">
+            <span class="pill">
+              👥 ${count} membre${count > 1 ? "s" : ""}
+            </span>
+
+            <span class="pill">
+              🛡️ Cercle professionnel
+            </span>
+          </div>
+
+        </div>
+
+        <button
+          id="membershipBtn"
+          class="join-btn ${isMember ? "leave" : ""}"
+          onclick="toggleMembership()"
+        >
+          ${isMember ? "Quitter le cercle" : "Rejoindre le cercle"}
+        </button>
+
+      </div>
+    `;
+
+    $("composerSection").style.display =
+      isMember ? "block" : "none";
+  }
+
+  async function toggleMembership(){
+
+    if(!currentUser){
+      alert("Vous devez être connecté.");
+      window.location.href = "connexion.html";
+      return;
+    }
+
+    const button =
+      $("membershipBtn");
+
+    button.disabled = true;
+
+    if(isMember){
+
+      const {
+        error
+      } = await supabaseClient
+        .from("cercle_members")
+        .delete()
+        .eq("cercle_id",circleId)
+        .eq("user_id",currentUser.id);
+
+      if(error){
+        console.error(error);
+        alert("Impossible de quitter le cercle.");
+        button.disabled = false;
+        return;
+      }
+
+      isMember = false;
+
+    }else{
+
+      const {
+        error
+      } = await supabaseClient
+        .from("cercle_members")
+        .insert({
+          cercle_id:circleId,
+          user_id:currentUser.id
+        });
+
+      if(error){
+
+        if(
+          String(error.message || "")
+            .toLowerCase()
+            .includes("duplicate")
+        ){
+          isMember = true;
+        }else{
+          console.error(error);
+          alert("Impossible de rejoindre le cercle.");
+          button.disabled = false;
+          return;
+        }
+
+      }else{
+        isMember = true;
+      }
+    }
+
+    await renderCircleHeader();
+    await loadMembers();
+  }
+
+  async function loadMembers(){
+
+    $("membersContainer").innerHTML =
+      `<div class="loading">Chargement...</div>`;
+
+    const {
+      data: memberships,
+      error
+    } = await supabaseClient
+      .from("cercle_members")
+      .select("user_id")
+      .eq("cercle_id",circleId)
+      .order("created_at",{ascending:true})
+      .limit(100);
+
+    if(error){
+      console.error(error);
+
+      $("membersContainer").innerHTML =
+        `<div class="empty">
+          Impossible de charger les membres.
+        </div>`;
+
+      return;
+    }
+
+    const ids =
+      (memberships || [])
+        .map(item => item.user_id)
+        .filter(Boolean);
+
+    if(!ids.length){
+
+      $("membersContainer").innerHTML =
+        `<div class="empty">
+          Aucun membre pour le moment.
+        </div>`;
+
+      return;
+    }
+
+    const {
+      data:profiles,
+      error:profileError
+    } = await supabaseClient
+      .from("profiles")
+      .select(
+        "id,prenom,nom,ville,entreprise,type_agent,avatar_path"
+      )
+      .in("id",ids);
+
+    if(profileError){
+      console.error(profileError);
+
+      $("membersContainer").innerHTML =
+        `<div class="empty">
+          Impossible de charger les profils.
+        </div>`;
+
+      return;
+    }
+
+    profilesMap = {};
+
+    (profiles || []).forEach(profile => {
+      profilesMap[profile.id] = profile;
+    });
+
+    $("membersContainer").innerHTML =
+      ids.map(id => {
+
+        const profile =
+          profilesMap[id] || {};
+
+        const avatar =
+          avatarUrl(profile.avatar_path);
+
+        return `
+          <a
+            href="profil.html?id=${encodeURIComponent(id)}"
+            class="member"
+          >
+
+            ${
+              avatar
+              ?
+              `<img
+                class="avatar"
+                src="${escapeHtml(avatar)}"
+                alt=""
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+              >
+              <div
+                class="avatar"
+                style="display:none;"
+              >
+                ${escapeHtml(initials(profile))}
+              </div>`
+              :
+              `<div class="avatar">
+                ${escapeHtml(initials(profile))}
+              </div>`
+            }
+
+            <div class="member-info">
+              <strong>
+                ${escapeHtml(fullName(profile))}
+              </strong>
+
+              <span>
+                ${escapeHtml(
+                  profile.type_agent ||
+                  profile.ville ||
+                  "Agent de sécurité"
+                )}
+              </span>
+            </div>
+
+          </a>
+        `;
+
+      }).join("");
+  }
+
+  async function loadPosts(){
+
+    $("postsContainer").innerHTML =
+      `<div class="loading">
+        Chargement des publications...
+      </div>`;
+
+    const {
+      data:posts,
+      error
+    } = await supabaseClient
+      .from("posts")
+      .select(`
+        id,
+        user_id,
+        content,
+        created_at,
+        cercle_id
+      `)
+      .eq("cercle_id",circleId)
+      .order("created_at",{ascending:false})
+      .limit(50);
+
+    if(error){
+
+      console.error(error);
+
+      $("postsContainer").innerHTML =
+        `<div class="empty">
+          Impossible de charger les publications.
+        </div>`;
+
+      return;
+    }
+
+    const safePosts = posts || [];
+
+    $("postCount").textContent =
+      `${safePosts.length} publication${safePosts.length > 1 ? "s" : ""}`;
+
+    if(!safePosts.length){
+
+      $("postsContainer").innerHTML =
+        `<div class="empty">
+          <div style="font-size:32px;margin-bottom:8px;">📝</div>
+          Aucune publication dans ce cercle pour le moment.
+          ${
+            isMember
+            ? "<br>Vous pouvez être le premier à publier."
+            : "<br>Rejoignez le cercle pour participer."
+          }
+        </div>`;
+
+      return;
+    }
+
+    const userIds =
+      [...new Set(
+        safePosts
+          .map(post => post.user_id)
+          .filter(Boolean)
+      )];
+
+    let postProfiles = {};
+
+    if(userIds.length){
+
+      const {
+        data:profiles
+      } = await supabaseClient
+        .from("profiles")
+        .select(
+          "id,prenom,nom,ville,entreprise,type_agent,avatar_path"
+        )
+        .in("id",userIds);
+
+      (profiles || []).forEach(profile => {
+        postProfiles[profile.id] = profile;
+      });
+    }
+
+    let html = "";
+
+    for(const post of safePosts){
+
+      const profile =
+        postProfiles[post.user_id] || {};
+
+      html += await buildPost(
+        post,
+        profile
+      );
+    }
+
+    $("postsContainer").innerHTML = html;
+
+    for(const post of safePosts){
+      await refreshStats(post.id);
+    }
+  }
+
+  async function buildPost(post,profile){
+
+    const avatar =
+      avatarUrl(profile.avatar_path);
+
+    const canDelete =
+      currentUser &&
+      currentUser.id === post.user_id;
+
+    return `
+      <article
+        class="post"
+        id="post-${escapeHtml(post.id)}"
+      >
+
+        <div class="post-head">
+
+          ${
+            avatar
+            ?
+            `<img
+              class="avatar"
+              src="${escapeHtml(avatar)}"
+              alt=""
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+            >
+            <div
+              class="avatar"
+              style="display:none;"
+            >
+              ${escapeHtml(initials(profile))}
+            </div>`
+            :
+            `<div class="avatar">
+              ${escapeHtml(initials(profile))}
+            </div>`
+          }
+
+          <div class="post-author">
+            <a href="profil.html?id=${encodeURIComponent(post.user_id)}">
+              <strong>
+                ${escapeHtml(fullName(profile))}
+              </strong>
+            </a>
+
+            <span>
+              ${escapeHtml(
+                profile.type_agent ||
+                profile.ville ||
+                "Agent"
+              )}
+              •
+              ${escapeHtml(formatDate(post.created_at))}
+            </span>
+          </div>
+
+        </div>
+
+        ${
+          post.content
+          ?
+          `<div class="post-content">
+            ${escapeHtml(post.content)}
+          </div>`
+          :
+          ""
+        }
+
+        <div class="post-actions">
+
+          <button
+            class="action-btn"
+            onclick="toggleLike('${escapeHtml(post.id)}')"
+          >
+            ❤️ J'aime
+            <span id="likes-${escapeHtml(post.id)}">0</span>
+          </button>
+
+          <button
+            class="action-btn"
+            onclick="addComment('${escapeHtml(post.id)}')"
+          >
+            💬 Commenter
+            <span id="comments-${escapeHtml(post.id)}">0</span>
+          </button>
+
+          <button
+            class="action-btn"
+            onclick="sharePost('${escapeHtml(post.id)}')"
+          >
+            ↗️ Partager
+          </button>
+
+          ${
+            canDelete
+            ?
+            `<button
+              class="action-btn"
+              onclick="deletePost('${escapeHtml(post.id)}')"
+            >
+              🗑️ Supprimer
+            </button>`
+            :
+            ""
+          }
+
+        </div>
+
+      </article>
+    `;
+  }
+
+  async function refreshStats(postId){
+
+    const {
+      count:likesCount
+    } = await supabaseClient
+      .from("likes")
+      .select("id",{count:"exact",head:true})
+      .eq("post_id",postId);
+
+    const {
+      count:commentsCount
+    } = await supabaseClient
+      .from("comments")
+      .select("id",{count:"exact",head:true})
+      .eq("post_id",postId);
+
+    const likes =
+      document.getElementById(`likes-${postId}`);
+
+    const comments =
+      document.getElementById(`comments-${postId}`);
+
+    if(likes){
+      likes.textContent =
+        likesCount || 0;
+    }
+
+    if(comments){
+      comments.textContent =
+        commentsCount || 0;
+    }
+  }
+
+  async function toggleLike(postId){
+
+    if(!currentUser){
+      alert("Vous devez être connecté.");
+      return;
+    }
+
+    const {
+      data:existing
+    } = await supabaseClient
+      .from("likes")
+      .select("id")
+      .eq("post_id",postId)
+      .eq("user_id",currentUser.id)
+      .maybeSingle();
+
+    if(existing){
+
+      const {
+        error
+      } = await supabaseClient
+        .from("likes")
+        .delete()
+        .eq("id",existing.id);
+
+      if(error){
+        console.error(error);
+        alert("Impossible de retirer le J'aime.");
+        return;
+      }
+
+    }else{
+
+      const {
+        error
+      } = await supabaseClient
+        .from("likes")
+        .insert({
+          post_id:postId,
+          user_id:currentUser.id
+        });
+
+      if(error){
+        console.error(error);
+        alert("Impossible d'aimer cette publication.");
+        return;
+      }
+    }
+
+    await refreshStats(postId);
+  }
+
+  async function addComment(postId){
+
+    if(!currentUser){
+      alert("Vous devez être connecté.");
+      return;
+    }
+
+    const content =
+      prompt("Votre commentaire :");
+
+    if(!content || !content.trim()){
+      return;
+    }
+
+    const {
+      error
+    } = await supabaseClient
+      .from("comments")
+      .insert({
+        post_id:postId,
+        user_id:currentUser.id,
+        content:content.trim()
+      });
+
+    if(error){
+      console.error(error);
+      alert("Impossible d'ajouter le commentaire.");
+      return;
+    }
+
+    await refreshStats(postId);
+  }
+
+  async function sharePost(postId){
+
+    const url =
+      `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(circleId)}#post-${encodeURIComponent(postId)}`;
+
+    try{
+
+      if(navigator.share){
+
+        await navigator.share({
+          title:circle?.nom || "Cercle des Agents",
+          text:"Publication du Cercle des Agents",
+          url:url
+        });
+
+      }else if(navigator.clipboard){
+
+        await navigator.clipboard.writeText(url);
+        alert("Lien copié.");
+
+      }else{
+
+        prompt("Copiez ce lien :",url);
+      }
+
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  async function deletePost(postId){
+
+    if(!currentUser){
+      return;
+    }
+
+    if(!confirm("Supprimer cette publication ?")){
+      return;
+    }
+
+    const {
+      error
+    } = await supabaseClient
+      .from("posts")
+      .delete()
+      .eq("id",postId)
+      .eq("user_id",currentUser.id);
+
+    if(error){
+      console.error(error);
+      alert("Impossible de supprimer la publication.");
+      return;
+    }
+
+    await loadPosts();
+  }
+
+  async function publishPost(){
+
+    if(!currentUser){
+      alert("Vous devez être connecté.");
+      return;
+    }
+
+    if(!isMember){
+      alert("Vous devez rejoindre ce cercle pour publier.");
+      return;
+    }
+
+    const textarea =
+      $("postContent");
+
+    const content =
+      textarea.value.trim();
+
+    if(!content){
+      alert("Écrivez votre publication.");
+      textarea.focus();
+      return;
+    }
+
+    const button =
+      $("publishBtn");
+
+    button.disabled = true;
+    button.textContent = "Publication...";
+
+    const {
+      error
+    } = await supabaseClient
+      .from("posts")
+      .insert({
+        user_id:currentUser.id,
+        content:content,
+        cercle_id:circleId
+      });
+
+    if(error){
+
+      console.error(error);
+
+      alert(
+        "Impossible de publier dans ce cercle."
+      );
+
+      button.disabled = false;
+      button.textContent = "Publier";
+      return;
+    }
+
+    textarea.value = "";
+
+    button.disabled = false;
+    button.textContent = "Publier";
+
+    await loadPosts();
+  }
+
+  async function init(){
+
+    const {
+      data,
+      error
+    } = await supabaseClient.auth.getUser();
+
+    if(error || !data?.user){
 
       window.location.href =
         "connexion.html";
 
-      return false;
+      return;
     }
 
     currentUser =
       data.user;
 
-    return true;
-  }
-
-
-  /* =====================================================
-     CHARGER LES CERCLES
-  ====================================================== */
-
-  async function loadCircles() {
-
-    circlesGrid.innerHTML = `
-      <div class="loading">
-        Chargement des cercles...
-      </div>
-    `;
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("cercles")
-        .select("*")
-        .order(
-          "created_at",
-          {
-            ascending: true
-          }
-        );
-
-
-    if (error) {
-
-      console.error(
-        "Erreur cercles:",
-        error
+    $("publishBtn")
+      .addEventListener(
+        "click",
+        publishPost
       );
 
-      circlesGrid.innerHTML = `
-        <div class="error">
-          Impossible de charger les cercles.<br><br>
-          ${escapeHTML(error.message)}
-        </div>
-      `;
+    const circleLoaded =
+      await loadCircle();
 
+    if(!circleLoaded){
       return;
     }
 
-
-    circles =
-      data || [];
-
-
-    await loadMemberships();
-
-    renderCircles();
+    await Promise.all([
+      loadMembers(),
+      loadPosts()
+    ]);
   }
 
+  window.toggleMembership =
+    toggleMembership;
 
-  /* =====================================================
-     CHARGER LES PARTICIPATIONS
-  ====================================================== */
+  window.toggleLike =
+    toggleLike;
 
-  async function loadMemberships() {
+  window.addComment =
+    addComment;
 
-    memberships =
-      new Set();
+  window.sharePost =
+    sharePost;
 
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("cercle_members")
-        .select(
-          "cercle_id"
-        )
-        .eq(
-          "user_id",
-          currentUser.id
-        );
-
-
-    if (error) {
-
-      console.error(
-        "Erreur membres:",
-        error
-      );
-
-      return;
-    }
-
-
-    (data || [])
-      .forEach(row => {
-
-        memberships.add(
-          row.cercle_id
-        );
-
-      });
-  }
-
-
-  /* =====================================================
-     COMPTER LES MEMBRES
-  ====================================================== */
-
-  async function getMemberCounts() {
-
-    const counts =
-      {};
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("cercle_members")
-        .select(
-          "cercle_id"
-        );
-
-
-    if (error) {
-
-      console.error(
-        "Erreur compteur:",
-        error
-      );
-
-      return counts;
-    }
-
-
-    (data || [])
-      .forEach(row => {
-
-        counts[row.cercle_id] =
-          (counts[row.cercle_id] || 0) + 1;
-
-      });
-
-
-    return counts;
-  }
-
-
-  /* =====================================================
-     AFFICHER LES CERCLES
-  ====================================================== */
-
-  async function renderCircles() {
-
-    const query =
-      searchInput.value
-        .trim()
-        .toLowerCase();
-
-
-    const filtered =
-      circles.filter(circle => {
-
-        if (!query) {
-          return true;
-        }
-
-        const text =
-          [
-            circle.nom,
-            circle.description,
-            circle.icone
-          ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-
-        return text.includes(query);
-      });
-
-
-    if (!filtered.length) {
-
-      circlesGrid.innerHTML = `
-        <div class="empty">
-
-          <div class="empty-title">
-            Aucun cercle trouvé
-          </div>
-
-          <div>
-            Essayez une autre recherche.
-          </div>
-
-        </div>
-      `;
-
-      return;
-    }
-
-
-    const counts =
-      await getMemberCounts();
-
-
-    circlesGrid.innerHTML =
-      filtered.map(circle => {
-
-        const joined =
-          memberships.has(
-            circle.id
-          );
-
-        const count =
-          counts[circle.id] || 0;
-
-
-        return `
-
-          <article
-            class="circle-card"
-          >
-
-            <div class="circle-icon">
-              ${escapeHTML(
-                circle.icone || "🛡️"
-              )}
-            </div>
-
-
-            <h2 class="circle-name">
-              ${escapeHTML(
-                circle.nom
-              )}
-            </h2>
-
-
-            <p class="circle-description">
-              ${escapeHTML(
-                circle.description ||
-                "Espace professionnel du Cercle des Agents."
-              )}
-            </p>
-
-
-            <div class="circle-bottom">
-
-              <div class="member-count">
-                👥 ${count}
-                ${count > 1 ? "membres" : "membre"}
-              </div>
-
-
-              <button
-                type="button"
-                class="join-btn ${joined ? "joined" : ""}"
-                data-circle-id="${escapeHTML(circle.id)}"
-                data-joined="${joined ? "true" : "false"}"
-              >
-                ${
-                  joined
-                    ? "✓ Membre"
-                    : "＋ Rejoindre"
-                }
-              </button>
-
-            </div>
-
-          </article>
-
-        `;
-
-      }).join("");
-
-
-    document
-      .querySelectorAll(
-        ".join-btn"
-      )
-      .forEach(button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            toggleMembership(
-              button.dataset.circleId
-            );
-
-          }
-        );
-
-      });
-  }
-
-
-  /* =====================================================
-     REJOINDRE / QUITTER
-  ====================================================== */
-
-  async function toggleMembership(
-    circleId
-  ) {
-
-    if (!circleId) {
-      return;
-    }
-
-
-    const alreadyMember =
-      memberships.has(
-        circleId
-      );
-
-
-    /* -----------------------------------------------------
-       QUITTER
-    ----------------------------------------------------- */
-
-    if (alreadyMember) {
-
-      const confirmLeave =
-        confirm(
-          "Voulez-vous quitter ce cercle ?"
-        );
-
-
-      if (!confirmLeave) {
-        return;
-      }
-
-
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("cercle_members")
-          .delete()
-          .eq(
-            "cercle_id",
-            circleId
-          )
-          .eq(
-            "user_id",
-            currentUser.id
-          );
-
-
-      if (error) {
-
-        console.error(error);
-
-        showStatus(
-          "Impossible de quitter le cercle : " +
-          error.message,
-          "error"
-        );
-
-        return;
-      }
-
-
-      memberships.delete(
-        circleId
-      );
-
-
-      showStatus(
-        "Vous avez quitté le cercle."
-      );
-
-
-      await renderCircles();
-
-      return;
-    }
-
-
-    /* -----------------------------------------------------
-       REJOINDRE
-    ----------------------------------------------------- */
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("cercle_members")
-        .insert({
-
-          cercle_id:
-            circleId,
-
-          user_id:
-            currentUser.id
-
-        });
-
-
-    if (error) {
-
-      console.error(error);
-
-      if (
-        error.code === "23505"
-      ) {
-
-        memberships.add(
-          circleId
-        );
-
-        await renderCircles();
-
-        return;
-      }
-
-
-      showStatus(
-        "Impossible de rejoindre le cercle : " +
-        error.message,
-        "error"
-      );
-
-      return;
-    }
-
-
-    memberships.add(
-      circleId
-    );
-
-
-    showStatus(
-      "Bienvenue dans ce cercle ! 🎉"
-    );
-
-
-    await renderCircles();
-  }
-
-
-  /* =====================================================
-     RECHERCHE
-  ====================================================== */
-
-  searchInput.addEventListener(
-    "input",
-    () => {
-
-      renderCircles();
-
-    }
-  );
-
-
-  /* =====================================================
-     ACTUALISER
-  ====================================================== */
-
-  refreshBtn.addEventListener(
-    "click",
-    async () => {
-
-      refreshBtn.disabled =
-        true;
-
-      refreshBtn.textContent =
-        "⏳ Chargement...";
-
-
-      await loadCircles();
-
-
-      refreshBtn.disabled =
-        false;
-
-      refreshBtn.textContent =
-        "🔄 Actualiser";
-    }
-  );
-
-
-  /* =====================================================
-     INITIALISATION
-  ====================================================== */
-
-  async function init() {
-
-    const authenticated =
-      await checkAuth();
-
-
-    if (!authenticated) {
-      return;
-    }
-
-
-    await loadCircles();
-  }
-
+  window.deletePost =
+    deletePost;
 
   init();
-
 </script>
 
 </body>
