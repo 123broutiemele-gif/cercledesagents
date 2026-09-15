@@ -16,219 +16,142 @@
     }
 
     body {
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      color: white;
-
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at top, #075985 0%, transparent 38%),
-        linear-gradient(135deg, #071426, #0f172a 55%, #172554);
-
+        radial-gradient(circle at top right, #075985 0%, transparent 35%),
+        linear-gradient(135deg, #0f172a, #172554);
+      color: #f8fafc;
+      min-height: 100vh;
       padding: 20px;
     }
 
     .container {
       width: 100%;
-      max-width: 650px;
+      max-width: 600px;
       margin: auto;
-    }
-
-    .card {
-      background: rgba(15, 23, 42, 0.97);
-
-      border: 1px solid rgba(255,255,255,0.10);
-
-      border-radius: 24px;
-
-      padding: 25px;
-
-      box-shadow:
-        0 20px 60px rgba(0,0,0,0.45),
-        0 0 30px rgba(14,165,233,0.10);
     }
 
     .header {
       text-align: center;
-      padding-bottom: 25px;
+      padding: 20px 10px 25px;
     }
 
     .logo {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
 
-      object-fit: contain;
-
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
-
-      margin: 0 auto 10px;
-
-      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.4));
     }
 
-    .brand {
-      font-size: 23px;
-      font-weight: 900;
-      letter-spacing: 1px;
-
-      background: linear-gradient(
-        90deg,
-        #facc15,
-        #fb923c,
-        #38bdf8
-      );
-
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
     }
 
-    .subtitle {
+    .header h1 span {
+      color: #facc15;
+    }
+
+    .header p {
       color: #94a3b8;
-      font-size: 13px;
       margin-top: 6px;
     }
 
-    h1 {
-      text-align: center;
-      font-size: 24px;
-      margin-bottom: 8px;
+    .card {
+      background: rgba(30, 41, 59, .96);
+      border: 1px solid #334155;
+      border-radius: 22px;
+      padding: 25px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
     }
-
-    .intro {
-      text-align: center;
-      color: #94a3b8;
-      font-size: 14px;
-      margin-bottom: 25px;
-    }
-
-    /* PHOTO */
 
     .photo-section {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 25px;
     }
 
-    .avatar-wrapper {
-      width: 145px;
-      height: 145px;
-
+    .avatar-preview {
+      width: 130px;
+      height: 130px;
       margin: 0 auto 15px;
-
       border-radius: 50%;
-
-      border: 4px solid #facc15;
-
       overflow: hidden;
-
-      background:
-        linear-gradient(135deg, #075985, #172554);
-
+      background: #0f172a;
+      border: 4px solid #facc15;
       display: flex;
       align-items: center;
       justify-content: center;
-
-      box-shadow:
-        0 10px 30px rgba(0,0,0,0.35);
-    }
-
-    #avatarPreview {
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-    }
-
-    .avatar-placeholder {
       font-size: 55px;
     }
 
-    .photo-label {
-      display: inline-block;
-
-      padding: 11px 18px;
-
-      border-radius: 10px;
-
-      background: #1e293b;
-
-      border: 1px solid #334155;
-
-      color: #facc15;
-
-      font-weight: bold;
-
-      cursor: pointer;
+    .avatar-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
-    .photo-label:hover {
-      background: #334155;
+    .photo-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 6px;
     }
 
-    #photoInput {
-      display: none;
+    .photo-section p {
+      color: #94a3b8;
+      font-size: .9rem;
+      margin-bottom: 15px;
     }
 
-    .photo-info {
-      color: #64748b;
-      font-size: 11px;
-      margin-top: 9px;
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #475569;
+      border-radius: 12px;
+      background: #0f172a;
+      color: #f8fafc;
     }
-
-    /* FORM */
 
     .field {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     label {
       display: block;
-
+      color: #cbd5e1;
+      font-weight: 700;
       margin-bottom: 7px;
-
-      color: #e2e8f0;
-
-      font-size: 14px;
-
-      font-weight: bold;
     }
 
     input,
     select,
     textarea {
       width: 100%;
-
-      border-radius: 11px;
-
-      border: 1px solid #334155;
-
-      background: #0b1220;
-
-      color: white;
-
-      padding: 13px 14px;
-
-      font-size: 15px;
-
+      padding: 14px;
+      border: 1px solid #475569;
+      border-radius: 12px;
+      background: #0f172a;
+      color: #f8fafc;
+      font-size: 1rem;
       outline: none;
-
-      font-family: inherit;
     }
 
     input:focus,
     select:focus,
     textarea:focus {
-      border-color: #38bdf8;
-
-      box-shadow:
-        0 0 0 3px rgba(56,189,248,0.10);
+      border-color: #facc15;
     }
 
-    select {
-      appearance: auto;
-    }
-
-    option {
-      background: #0f172a;
-      color: white;
+    input[readonly] {
+      opacity: .7;
     }
 
     textarea {
@@ -237,977 +160,882 @@
       line-height: 1.5;
     }
 
-    .email-info {
-      color: #64748b;
-      font-size: 11px;
-      margin-top: 6px;
+    .buttons {
+      margin-top: 25px;
+      display: grid;
+      gap: 12px;
     }
 
-    /* BUTTONS */
-
-    .save-button {
+    button {
       width: 100%;
-
-      border: none;
-
-      border-radius: 13px;
-
       padding: 15px;
-
-      background:
-        linear-gradient(
-          90deg,
-          #facc15,
-          #fb923c
-        );
-
-      color: #111827;
-
-      font-size: 16px;
-
-      font-weight: 900;
-
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
-
-      margin-top: 5px;
     }
 
-    .save-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .save-btn {
+      background: #facc15;
+      color: #172554;
     }
 
-    .cancel {
-      display: block;
-
-      text-align: center;
-
-      margin-top: 18px;
-
-      color: #94a3b8;
-
-      text-decoration: none;
-
-      font-size: 14px;
-    }
-
-    .cancel:hover {
+    .home-btn {
+      background: #0284c7;
       color: white;
     }
 
-    /* MESSAGE */
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
 
-    #message {
-      display: none;
-
-      margin-bottom: 20px;
-
-      padding: 13px;
-
-      border-radius: 10px;
-
+    .message {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
       text-align: center;
-
-      font-size: 14px;
-
+      display: none;
       line-height: 1.5;
     }
 
-    #message.success {
+    .success {
       display: block;
-
-      background: rgba(34,197,94,0.12);
-
-      border: 1px solid rgba(34,197,94,0.30);
-
-      color: #86efac;
+      background: #064e3b;
+      color: #a7f3d0;
+      border: 1px solid #10b981;
     }
 
-    #message.error {
+    .error {
       display: block;
-
-      background: rgba(239,68,68,0.12);
-
-      border: 1px solid rgba(239,68,68,0.30);
-
-      color: #fca5a5;
+      background: #7f1d1d;
+      color: #fecaca;
+      border: 1px solid #ef4444;
     }
 
     .loading {
       text-align: center;
-
       color: #94a3b8;
-
-      padding: 30px;
+      padding: 30px 10px;
     }
 
-    @media (max-width: 480px) {
+    footer {
+      text-align: center;
+      color: #94a3b8;
+      margin-top: 20px;
+      font-size: .9rem;
+      padding-bottom: 20px;
+    }
 
-      body {
-        padding: 12px;
-      }
-
-      .card {
-        padding: 20px 16px;
-        border-radius: 20px;
-      }
-
-      .avatar-wrapper {
-        width: 125px;
-        height: 125px;
-      }
-
-      .brand {
-        font-size: 20px;
-      }
+    footer strong {
+      color: #facc15;
     }
   </style>
 </head>
 
 <body>
 
-  <main class="container">
+<div class="container">
 
-    <section class="card">
+  <header class="header">
 
-      <!-- HEADER -->
+    <div class="logo">
+      <img src="logo-aigle.png" alt="Cercle des Agents">
+    </div>
 
-      <div class="header">
+    <h1>
+      CERCLE<span>DES</span>AGENTS
+    </h1>
 
-        <img
-          src="logo-aigle.png"
-          alt="Cercle des Agents"
-          class="logo"
+    <p>
+      Unis • Informés • Plus forts
+    </p>
+
+  </header>
+
+
+  <main class="card">
+
+    <div id="loading" class="loading">
+      Chargement de ton profil...
+    </div>
+
+
+    <form id="profile-form" style="display:none;">
+
+      <!-- PHOTO -->
+
+      <div class="photo-section">
+
+        <div class="avatar-preview" id="avatar-preview">
+          👤
+        </div>
+
+        <h2>Photo de profil</h2>
+
+        <p>
+          Choisis une photo JPG, PNG ou WebP.
+          Taille maximale : 5 Mo.
+        </p>
+
+        <input
+          type="file"
+          id="avatar-input"
+          accept="image/jpeg,image/png,image/webp"
         >
 
-        <div class="brand">
-          CERCLE DES AGENTS
-        </div>
-
-        <div class="subtitle">
-          Unis • Informés • Plus forts
-        </div>
-
       </div>
 
 
-      <h1>
-        👤 Modifier mon profil
-      </h1>
+      <!-- PRÉNOM -->
 
-      <p class="intro">
-        Mets à jour tes informations et ta photo de profil.
-      </p>
+      <div class="field">
 
+        <label for="prenom">
+          Prénom
+        </label>
 
-      <div id="loading" class="loading">
-        Chargement de ton profil…
-      </div>
-
-
-      <div id="profileContent" style="display:none;">
-
-        <div id="message"></div>
-
-
-        <!-- PHOTO -->
-
-        <div class="photo-section">
-
-          <div class="avatar-wrapper">
-
-            <img
-              id="avatarPreview"
-              src=""
-              alt="Photo de profil"
-              style="display:none;"
-            >
-
-            <div
-              id="avatarPlaceholder"
-              class="avatar-placeholder"
-            >
-              👤
-            </div>
-
-          </div>
-
-
-          <label
-            for="photoInput"
-            class="photo-label"
-          >
-            📷 Choisir ma photo
-          </label>
-
-          <input
-            type="file"
-            id="photoInput"
-            accept="image/jpeg,image/png,image/webp"
-          >
-
-          <div class="photo-info">
-            JPG, PNG ou WebP • maximum 5 Mo
-          </div>
-
-        </div>
-
-
-        <!-- FORMULAIRE -->
-
-        <form id="profileForm">
-
-
-          <div class="field">
-
-            <label for="prenom">
-              Prénom
-            </label>
-
-            <input
-              type="text"
-              id="prenom"
-              placeholder="Ton prénom"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="nom">
-              Nom
-            </label>
-
-            <input
-              type="text"
-              id="nom"
-              placeholder="Ton nom"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="email">
-              Adresse e-mail
-            </label>
-
-            <input
-              type="email"
-              id="email"
-              readonly
-            >
-
-            <div class="email-info">
-              L'adresse e-mail est gérée par ton compte de connexion.
-            </div>
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="ville">
-              Ville
-            </label>
-
-            <input
-              type="text"
-              id="ville"
-              placeholder="Exemple : Abidjan"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="entreprise">
-              Entreprise
-            </label>
-
-            <input
-              type="text"
-              id="entreprise"
-              placeholder="Nom de ton entreprise"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="typeAgent">
-              Type d'agent
-            </label>
-
-            <select id="typeAgent">
-
-              <option value="">
-                Sélectionner
-              </option>
-
-              <option value="surete">
-                Agent de sûreté
-              </option>
-
-              <option value="securite">
-                Agent de sécurité
-              </option>
-
-              <option value="gardiennage">
-                Agent de gardiennage
-              </option>
-
-              <option value="protection">
-                Agent de protection rapprochée
-              </option>
-
-              <option value="incendie">
-                Agent de sécurité incendie
-              </option>
-
-              <option value="autre">
-                Autre
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="presentation">
-              Présentation
-            </label>
-
-            <textarea
-              id="presentation"
-              placeholder="Présente-toi en quelques mots..."
-            ></textarea>
-
-          </div>
-
-
-          <button
-            type="submit"
-            class="save-button"
-            id="saveButton"
-          >
-            💾 Enregistrer mon profil
-          </button>
-
-        </form>
-
-
-        <a
-          href="profil.html"
-          class="cancel"
+        <input
+          type="text"
+          id="prenom"
+          required
         >
-          ← Retour à mon profil
-        </a>
 
       </div>
 
-    </section>
+
+      <!-- NOM -->
+
+      <div class="field">
+
+        <label for="nom">
+          Nom
+        </label>
+
+        <input
+          type="text"
+          id="nom"
+          required
+        >
+
+      </div>
+
+
+      <!-- EMAIL -->
+
+      <div class="field">
+
+        <label for="email">
+          Adresse e-mail
+        </label>
+
+        <input
+          type="email"
+          id="email"
+          readonly
+        >
+
+      </div>
+
+
+      <!-- VILLE -->
+
+      <div class="field">
+
+        <label for="ville">
+          📍 Ville
+        </label>
+
+        <input
+          type="text"
+          id="ville"
+          placeholder="Ex : Abidjan"
+        >
+
+      </div>
+
+
+      <!-- ENTREPRISE -->
+
+      <div class="field">
+
+        <label for="entreprise">
+          🏢 Entreprise
+        </label>
+
+        <input
+          type="text"
+          id="entreprise"
+          placeholder="Nom de votre entreprise"
+        >
+
+      </div>
+
+
+      <!-- TYPE AGENT -->
+
+      <div class="field">
+
+        <label for="type_agent">
+          🛡️ Type d'agent
+        </label>
+
+        <select id="type_agent">
+
+          <option value="surete">
+            Agent de sûreté
+          </option>
+
+          <option value="securite">
+            Agent de sécurité
+          </option>
+
+          <option value="gardiennage">
+            Agent de gardiennage
+          </option>
+
+          <option value="protection">
+            Agent de protection
+          </option>
+
+          <option value="incendie">
+            Agent de sécurité incendie
+          </option>
+
+          <option value="autre">
+            Autre
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- PRÉSENTATION -->
+
+      <div class="field">
+
+        <label for="presentation">
+          📝 Présentation
+        </label>
+
+        <textarea
+          id="presentation"
+          placeholder="Présente-toi aux autres agents..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="buttons">
+
+        <button
+          type="submit"
+          class="save-btn"
+          id="save-btn"
+        >
+          💾 Enregistrer mon profil
+        </button>
+
+        <button
+          type="button"
+          class="home-btn"
+          onclick="window.location.href='profil.html'"
+        >
+          👤 Retour à mon profil
+        </button>
+
+      </div>
+
+    </form>
+
+
+    <div id="message" class="message"></div>
 
   </main>
 
 
-  <script>
+  <footer>
 
-    // ==========================================
-    // SUPABASE
-    // ==========================================
+    Cercledesagents —
+    <strong>Unis • Informés • Plus forts</strong>
 
-    const SUPABASE_URL =
-      "https://quzgphbougaujzqrhjza.supabase.co";
+  </footer>
 
-    const SUPABASE_KEY =
-      "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+</div>
 
-    const supabaseClient =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
+
+<script>
+
+/* ============================================================
+   SUPABASE
+   ============================================================ */
+
+const SUPABASE_URL =
+  "https://quzgphbougaujzqrhjza.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
+
+const loading =
+  document.getElementById("loading");
+
+const form =
+  document.getElementById("profile-form");
+
+const message =
+  document.getElementById("message");
+
+const avatarInput =
+  document.getElementById("avatar-input");
+
+const avatarPreview =
+  document.getElementById("avatar-preview");
+
+const saveBtn =
+  document.getElementById("save-btn");
+
+
+let currentUser = null;
+let currentAvatarPath = null;
+let selectedPhoto = null;
+
+
+/* ============================================================
+   MESSAGE
+   ============================================================ */
+
+function showMessage(text, type) {
+
+  message.textContent = text;
+
+  message.className =
+    "message " + type;
+
+}
+
+
+/* ============================================================
+   PUBLIC URL AVATAR
+   ============================================================ */
+
+function getAvatarUrl(path) {
+
+  if (!path) {
+    return null;
+  }
+
+  const {
+    data
+  } = supabaseClient
+    .storage
+    .from("avatars")
+    .getPublicUrl(path);
+
+  if (!data || !data.publicUrl) {
+    return null;
+  }
+
+  return data.publicUrl +
+    "?v=" +
+    Date.now();
+
+}
+
+
+/* ============================================================
+   AFFICHER AVATAR
+   ============================================================ */
+
+function displayAvatar(path) {
+
+  const url =
+    getAvatarUrl(path);
+
+  if (url) {
+
+    avatarPreview.innerHTML = "";
+
+    const img =
+      document.createElement("img");
+
+    img.src = url;
+
+    img.alt =
+      "Photo de profil";
+
+    avatarPreview.appendChild(img);
+
+  } else {
+
+    avatarPreview.innerHTML =
+      "👤";
+
+  }
+
+}
+
+
+/* ============================================================
+   CHOIX PHOTO
+   ============================================================ */
+
+avatarInput.addEventListener(
+  "change",
+  function() {
+
+    const file =
+      this.files[0];
+
+    if (!file) {
+      return;
+    }
+
+
+    /* Vérification type */
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+
+      showMessage(
+        "Format refusé. Utilise JPG, PNG ou WebP.",
+        "error"
+      );
+
+      this.value = "";
+
+      return;
+    }
+
+
+    /* Vérification taille */
+
+    if (file.size > 5 * 1024 * 1024) {
+
+      showMessage(
+        "La photo est trop grande. Maximum : 5 Mo.",
+        "error"
+      );
+
+      this.value = "";
+
+      return;
+    }
+
+
+    selectedPhoto = file;
+
+
+    /* Prévisualisation */
+
+    const reader =
+      new FileReader();
+
+    reader.onload =
+      function(event) {
+
+        avatarPreview.innerHTML = `
+          <img
+            src="${event.target.result}"
+            alt="Aperçu de la photo"
+          >
+        `;
+
+      };
+
+    reader.readAsDataURL(file);
+
+  }
+);
+
+
+/* ============================================================
+   CHARGEMENT PROFIL
+   ============================================================ */
+
+async function loadProfile() {
+
+  try {
+
+    const {
+      data: authData,
+      error: authError
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    if (authError) {
+      throw authError;
+    }
+
+
+    currentUser =
+      authData.user;
+
+
+    if (!currentUser) {
+
+      window.location.href =
+        "connexion.html";
+
+      return;
+    }
+
+
+    /* Récupération profil */
+
+    const {
+      data: profileData,
+      error: profileError
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select("*")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+
+
+    if (profileError) {
+      throw profileError;
+    }
+
+
+    const data =
+      profileData || {};
+
+
+    /* Valeurs */
+
+    document.getElementById("prenom").value =
+      data.prenom ||
+      currentUser.user_metadata?.prenom ||
+      "";
+
+    document.getElementById("nom").value =
+      data.nom ||
+      currentUser.user_metadata?.nom ||
+      "";
+
+    document.getElementById("email").value =
+      currentUser.email ||
+      "";
+
+    document.getElementById("ville").value =
+      data.ville ||
+      currentUser.user_metadata?.ville ||
+      "";
+
+    document.getElementById("entreprise").value =
+      data.entreprise ||
+      currentUser.user_metadata?.entreprise ||
+      "";
+
+    document.getElementById("type_agent").value =
+      data.type_agent ||
+      currentUser.user_metadata?.type_agent ||
+      "surete";
+
+    document.getElementById("presentation").value =
+      data.presentation ||
+      currentUser.user_metadata?.presentation ||
+      "";
+
+
+    /* Avatar existant */
+
+    currentAvatarPath =
+      data.avatar_path ||
+      null;
+
+
+    displayAvatar(
+      currentAvatarPath
+    );
+
+
+    loading.style.display =
+      "none";
+
+    form.style.display =
+      "block";
+
+
+  } catch (error) {
+
+    console.error(
+      "Erreur chargement profil :",
+      error
+    );
+
+    loading.style.display =
+      "none";
+
+    showMessage(
+      "Impossible de charger ton profil : " +
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   ENREGISTREMENT
+   ============================================================ */
+
+form.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+
+    if (!currentUser) {
+
+      showMessage(
+        "Tu dois être connecté.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    saveBtn.disabled =
+      true;
+
+    saveBtn.textContent =
+      "⏳ Enregistrement...";
+
+
+    try {
+
+      let avatarPath =
+        currentAvatarPath;
+
+
+      /* ======================================================
+         UPLOAD PHOTO
+         ====================================================== */
+
+      if (selectedPhoto) {
+
+        const extension =
+          selectedPhoto.type === "image/png"
+            ? "png"
+            : selectedPhoto.type === "image/webp"
+              ? "webp"
+              : "jpg";
+
+
+        avatarPath =
+          currentUser.id +
+          "/avatar." +
+          extension;
+
+
+        const {
+          error: uploadError
+        } =
+          await supabaseClient
+            .storage
+            .from("avatars")
+            .upload(
+              avatarPath,
+              selectedPhoto,
+              {
+                cacheControl: "3600",
+                upsert: true,
+                contentType:
+                  selectedPhoto.type
+              }
+            );
+
+
+        if (uploadError) {
+
+          console.error(
+            "Erreur upload avatar :",
+            uploadError
+          );
+
+          throw uploadError;
+        }
+
+      }
+
+
+      /* ======================================================
+         DONNÉES PROFIL
+         ====================================================== */
+
+      const profileData = {
+
+        id:
+          currentUser.id,
+
+        prenom:
+          document.getElementById(
+            "prenom"
+          ).value.trim(),
+
+        nom:
+          document.getElementById(
+            "nom"
+          ).value.trim(),
+
+        email:
+          currentUser.email,
+
+        ville:
+          document.getElementById(
+            "ville"
+          ).value.trim(),
+
+        entreprise:
+          document.getElementById(
+            "entreprise"
+          ).value.trim(),
+
+        type_agent:
+          document.getElementById(
+            "type_agent"
+          ).value,
+
+        presentation:
+          document.getElementById(
+            "presentation"
+          ).value.trim(),
+
+        avatar_path:
+          avatarPath
+
+      };
+
+
+      /* ======================================================
+         ENREGISTRER DANS PROFILES
+         ====================================================== */
+
+      const {
+        error: saveError
+      } =
+        await supabaseClient
+          .from("profiles")
+          .upsert(
+            profileData,
+            {
+              onConflict: "id"
+            }
+          );
+
+
+      if (saveError) {
+
+        console.error(
+          "Erreur sauvegarde profil :",
+          saveError
+        );
+
+        throw saveError;
+      }
+
+
+      /* Mise à jour locale */
+
+      currentAvatarPath =
+        avatarPath;
+
+      selectedPhoto =
+        null;
+
+      avatarInput.value =
+        "";
+
+
+      /* Afficher immédiatement */
+
+      displayAvatar(
+        currentAvatarPath
       );
 
 
-    // ==========================================
-    // ELEMENTS
-    // ==========================================
-
-    const loading =
-      document.getElementById("loading");
-
-    const profileContent =
-      document.getElementById("profileContent");
-
-    const message =
-      document.getElementById("message");
-
-    const form =
-      document.getElementById("profileForm");
-
-    const photoInput =
-      document.getElementById("photoInput");
-
-    const avatarPreview =
-      document.getElementById("avatarPreview");
-
-    const avatarPlaceholder =
-      document.getElementById("avatarPlaceholder");
-
-    const saveButton =
-      document.getElementById("saveButton");
+      showMessage(
+        "✅ Profil enregistré avec succès !",
+        "success"
+      );
 
 
-    let currentUser = null;
-
-    let selectedPhoto = null;
-
-    let currentAvatarPath = null;
+      saveBtn.textContent =
+        "✅ Enregistré";
 
 
-    // ==========================================
-    // MESSAGE
-    // ==========================================
+      /* Retour automatique */
 
-    function showMessage(text, type) {
-
-      message.textContent = text;
-
-      message.className = type;
-
-    }
-
-
-    // ==========================================
-    // CHARGER LE PROFIL
-    // ==========================================
-
-    async function loadProfile() {
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.auth.getUser();
-
-
-        // IMPORTANT :
-        // On ne redirige PAS vers inscription.html.
-        // Si l'utilisateur n'est pas connecté,
-        // on le renvoie simplement vers connexion.
-
-        if (
-          error ||
-          !data ||
-          !data.user
-        ) {
+      setTimeout(
+        function() {
 
           window.location.href =
-            "connexion.html";
+            "profil.html";
 
-          return;
-        }
-
-
-        currentUser =
-          data.user;
+        },
+        1200
+      );
 
 
-        // E-mail provenant de Auth
+    } catch (error) {
 
-        document.getElementById("email").value =
-          currentUser.email || "";
+      console.error(
+        "Erreur complète :",
+        error
+      );
 
-
-        // Recherche du profil
-
-        const {
-          data: profile,
-          error: profileError
-        } =
-          await supabaseClient
-            .from("profiles")
-            .select(`
-              id,
-              prenom,
-              nom,
-              email,
-              ville,
-              entreprise,
-              type_agent,
-              presentation,
-              avatar_path
-            `)
-            .eq("id", currentUser.id)
-            .maybeSingle();
+      showMessage(
+        "Impossible d'enregistrer le profil. " +
+        error.message,
+        "error"
+      );
 
 
-        if (profileError) {
+      saveBtn.disabled =
+        false;
 
-          console.error(
-            "Erreur profil:",
-            profileError
-          );
-
-          showMessage(
-            "Impossible de charger les informations du profil.",
-            "error"
-          );
-
-        }
-
-
-        // ======================================
-        // REMPLIR LES CHAMPS
-        // ======================================
-
-        if (profile) {
-
-          document.getElementById("prenom").value =
-            profile.prenom || "";
-
-          document.getElementById("nom").value =
-            profile.nom || "";
-
-          document.getElementById("ville").value =
-            profile.ville || "";
-
-          document.getElementById("entreprise").value =
-            profile.entreprise || "";
-
-          document.getElementById("typeAgent").value =
-            profile.type_agent || "";
-
-          document.getElementById("presentation").value =
-            profile.presentation || "";
-
-
-          currentAvatarPath =
-            profile.avatar_path || null;
-
-
-          // ====================================
-          // AFFICHER AVATAR EXISTANT
-          // ====================================
-
-          if (currentAvatarPath) {
-
-            const {
-              data: publicData
-            } =
-              supabaseClient
-                .storage
-                .from("avatars")
-                .getPublicUrl(
-                  currentAvatarPath
-                );
-
-
-            if (
-              publicData &&
-              publicData.publicUrl
-            ) {
-
-              avatarPreview.src =
-                publicData.publicUrl +
-                "?t=" +
-                Date.now();
-
-              avatarPreview.style.display =
-                "block";
-
-              avatarPlaceholder.style.display =
-                "none";
-
-            }
-
-          }
-
-        }
-
-
-        loading.style.display =
-          "none";
-
-        profileContent.style.display =
-          "block";
-
-      }
-
-      catch (error) {
-
-        console.error(error);
-
-        loading.textContent =
-          "Une erreur est survenue.";
-
-      }
+      saveBtn.textContent =
+        "💾 Enregistrer mon profil";
 
     }
 
+  }
+);
 
-    // ==========================================
-    // CHOIX PHOTO
-    // ==========================================
 
-    photoInput.addEventListener(
-      "change",
-      function () {
+/* ============================================================
+   DÉMARRAGE
+   ============================================================ */
 
-        const file =
-          this.files[0];
+loadProfile();
 
-
-        if (!file) {
-
-          selectedPhoto = null;
-
-          return;
-
-        }
-
-
-        // Vérification format
-
-        const allowedTypes = [
-          "image/jpeg",
-          "image/png",
-          "image/webp"
-        ];
-
-
-        if (
-          !allowedTypes.includes(
-            file.type
-          )
-        ) {
-
-          showMessage(
-            "Format non accepté. Utilise JPG, PNG ou WebP.",
-            "error"
-          );
-
-          this.value = "";
-
-          selectedPhoto = null;
-
-          return;
-        }
-
-
-        // Vérification taille : 5 Mo
-
-        if (
-          file.size >
-          5 * 1024 * 1024
-        ) {
-
-          showMessage(
-            "La photo est trop grande. Maximum : 5 Mo.",
-            "error"
-          );
-
-          this.value = "";
-
-          selectedPhoto = null;
-
-          return;
-        }
-
-
-        selectedPhoto =
-          file;
-
-
-        // Aperçu
-
-        const reader =
-          new FileReader();
-
-
-        reader.onload =
-          function (event) {
-
-            avatarPreview.src =
-              event.target.result;
-
-            avatarPreview.style.display =
-              "block";
-
-            avatarPlaceholder.style.display =
-              "none";
-
-          };
-
-
-        reader.readAsDataURL(file);
-
-      }
-    );
-
-
-    // ==========================================
-    // ENREGISTREMENT
-    // ==========================================
-
-    form.addEventListener(
-      "submit",
-      async function (event) {
-
-        event.preventDefault();
-
-
-        if (!currentUser) {
-
-          showMessage(
-            "Session utilisateur introuvable. Reconnecte-toi.",
-            "error"
-          );
-
-          return;
-        }
-
-
-        saveButton.disabled =
-          true;
-
-        saveButton.textContent =
-          "Enregistrement…";
-
-
-        try {
-
-          let avatarPath =
-            currentAvatarPath;
-
-
-          // ====================================
-          // UPLOAD PHOTO SI UNE NOUVELLE PHOTO
-          // ====================================
-
-          if (selectedPhoto) {
-
-            let extension =
-              "jpg";
-
-
-            if (
-              selectedPhoto.type ===
-              "image/png"
-            ) {
-
-              extension =
-                "png";
-
-            }
-
-
-            if (
-              selectedPhoto.type ===
-              "image/webp"
-            ) {
-
-              extension =
-                "webp";
-
-            }
-
-
-            avatarPath =
-              currentUser.id +
-              "/avatar." +
-              extension;
-
-
-            const {
-              error: uploadError
-            } =
-              await supabaseClient
-                .storage
-                .from("avatars")
-                .upload(
-                  avatarPath,
-                  selectedPhoto,
-                  {
-                    cacheControl: "3600",
-                    upsert: true,
-                    contentType:
-                      selectedPhoto.type
-                  }
-                );
-
-
-            if (uploadError) {
-
-              console.error(
-                "Erreur upload:",
-                uploadError
-              );
-
-              throw new Error(
-                "La photo n'a pas pu être envoyée. " +
-                uploadError.message
-              );
-
-            }
-
-          }
-
-
-          // ====================================
-          // ENREGISTRER LE PROFIL
-          // ====================================
-
-          const profileData = {
-
-            id:
-              currentUser.id,
-
-            prenom:
-              document
-                .getElementById("prenom")
-                .value
-                .trim(),
-
-            nom:
-              document
-                .getElementById("nom")
-                .value
-                .trim(),
-
-            email:
-              currentUser.email,
-
-            ville:
-              document
-                .getElementById("ville")
-                .value
-                .trim(),
-
-            entreprise:
-              document
-                .getElementById("entreprise")
-                .value
-                .trim(),
-
-            type_agent:
-              document
-                .getElementById("typeAgent")
-                .value,
-
-            presentation:
-              document
-                .getElementById("presentation")
-                .value
-                .trim(),
-
-            avatar_path:
-              avatarPath
-
-          };
-
-
-          const {
-            error: profileSaveError
-          } =
-            await supabaseClient
-              .from("profiles")
-              .upsert(
-                profileData,
-                {
-                  onConflict: "id"
-                }
-              );
-
-
-          if (profileSaveError) {
-
-            console.error(
-              "Erreur sauvegarde profil:",
-              profileSaveError
-            );
-
-            throw new Error(
-              "Impossible d'enregistrer le profil. " +
-              profileSaveError.message
-            );
-
-          }
-
-
-          showMessage(
-            "✅ Ton profil a été enregistré avec succès !",
-            "success"
-          );
-
-
-          currentAvatarPath =
-            avatarPath;
-
-          selectedPhoto =
-            null;
-
-
-          // ====================================
-          // RETOUR AU PROFIL
-          // ====================================
-
-          setTimeout(
-            function () {
-
-              window.location.href =
-                "profil.html";
-
-            },
-            1200
-          );
-
-        }
-
-        catch (error) {
-
-          console.error(error);
-
-          showMessage(
-            error.message ||
-            "Une erreur est survenue.",
-            "error"
-          );
-
-        }
-
-        finally {
-
-          saveButton.disabled =
-            false;
-
-          saveButton.textContent =
-            "💾 Enregistrer mon profil";
-
-        }
-
-      }
-    );
-
-
-    // ==========================================
-    // DEMARRAGE
-    // ==========================================
-
-    loadProfile();
-
-  </script>
+</script>
 
 </body>
 </html>
