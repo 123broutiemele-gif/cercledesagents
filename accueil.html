@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Cercle des Agents — Accueil</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -16,208 +15,172 @@
     }
 
     :root {
-      --fond: #07111f;
-      --fond2: #0b1728;
-      --carte: #101f33;
-      --carte2: #14263d;
-      --bordure: rgba(255,255,255,.09);
-      --texte: #f8fafc;
-      --gris: #94a3b8;
-      --jaune: #facc15;
-      --orange: #f97316;
-      --bleu: #0ea5e9;
-      --vert: #22c55e;
+      --bg: #07111f;
+      --bg2: #0b1728;
+      --card: #101d30;
+      --card2: #14243a;
+      --border: rgba(255,255,255,.09);
+      --text: #f5f7fa;
+      --muted: #9aa8ba;
+      --blue: #1683d8;
+      --blue2: #075985;
+      --yellow: #f5c542;
+      --orange: #f59e0b;
+      --danger: #ef4444;
+      --success: #22c55e;
     }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(14,165,233,.16), transparent 30%),
-        radial-gradient(circle at top right, rgba(249,115,22,.10), transparent 25%),
-        linear-gradient(135deg, var(--fond), #020617);
-      color: var(--texte);
+        radial-gradient(circle at top left, rgba(7,89,133,.45), transparent 32%),
+        linear-gradient(135deg, #07111f, #0b1728 55%, #101d30);
+      color: var(--text);
       min-height: 100vh;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
     button,
+    input,
     textarea {
-      font-family: inherit;
+      font: inherit;
     }
 
-    /* ================= HEADER ================= */
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      min-height: 100vh;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================= */
 
     .topbar {
-      height: 72px;
+      height: 70px;
       background: rgba(7,17,31,.94);
-      border-bottom: 1px solid var(--bordure);
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 25px;
+      padding: 0 22px;
       position: sticky;
       top: 0;
-      z-index: 100;
-      backdrop-filter: blur(15px);
+      z-index: 1000;
+      backdrop-filter: blur(14px);
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      min-width: 220px;
     }
 
     .brand img {
       width: 48px;
       height: 48px;
       object-fit: contain;
-      border-radius: 50%;
+      border-radius: 12px;
     }
 
     .brand-text strong {
       display: block;
       font-size: 17px;
-      letter-spacing: .4px;
+      letter-spacing: .3px;
     }
 
     .brand-text span {
-      color: var(--jaune);
+      display: block;
+      color: var(--yellow);
       font-size: 11px;
-      font-weight: bold;
-    }
-
-    .search {
-      width: 360px;
-      position: relative;
-    }
-
-    .search input {
-      width: 100%;
-      padding: 12px 18px 12px 43px;
-      border-radius: 30px;
-      border: 1px solid var(--bordure);
-      outline: none;
-      background: #0d1b2d;
-      color: white;
-      font-size: 14px;
-    }
-
-    .search span {
-      position: absolute;
-      left: 16px;
-      top: 11px;
-      font-size: 18px;
-      color: var(--gris);
+      margin-top: 3px;
     }
 
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
     }
 
-    .top-btn {
+    .top-icon {
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      border: 1px solid var(--bordure);
-      background: #0d1b2d;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
       color: white;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    .top-btn:hover {
-      background: var(--carte2);
-    }
-
-    /* ================= LAYOUT ================= */
-
-    .layout {
-      max-width: 1450px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: 250px minmax(400px, 680px) 290px;
-      gap: 22px;
-      padding: 25px;
-    }
-
-    /* ================= SIDEBAR ================= */
-
-    .sidebar {
-      position: sticky;
-      top: 95px;
-      height: fit-content;
-    }
-
-    .profile-mini {
-      background: linear-gradient(145deg, #12243a, #0c192b);
-      border: 1px solid var(--bordure);
-      border-radius: 18px;
-      padding: 18px;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    .avatar {
-      width: 68px;
-      height: 68px;
-      margin: auto;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--jaune), var(--orange));
-      color: #111827;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      font-weight: bold;
-      border: 3px solid rgba(255,255,255,.12);
+      font-size: 19px;
     }
 
-    .profile-mini h3 {
-      margin-top: 10px;
-      font-size: 16px;
+    .top-icon:hover {
+      background: rgba(22,131,216,.2);
     }
 
-    .profile-mini p {
-      color: var(--gris);
-      font-size: 12px;
-      margin-top: 4px;
+    /* =========================
+       LAYOUT
+    ========================= */
+
+    .layout {
+      width: min(1400px, 100%);
+      margin: auto;
+      display: grid;
+      grid-template-columns: 245px minmax(0, 1fr) 280px;
+      gap: 20px;
+      padding: 22px;
     }
 
-    .menu {
-      background: rgba(16,31,51,.75);
-      border: 1px solid var(--bordure);
+    .sidebar,
+    .rightbar {
+      position: sticky;
+      top: 92px;
+      height: max-content;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .menu-card,
+    .info-card {
+      background: rgba(16,29,48,.92);
+      border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 10px;
+      padding: 14px;
+      box-shadow: 0 15px 35px rgba(0,0,0,.18);
     }
 
-    .menu a,
-    .logout {
+    .menu-item {
       width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 13px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
       padding: 13px 12px;
       border-radius: 12px;
-      color: #dbeafe;
-      font-size: 14px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 11px;
       text-align: left;
+      margin-bottom: 4px;
+      transition: .2s;
     }
 
-    .menu a:hover,
-    .menu a.active,
-    .logout:hover {
-      background: #17304d;
-      color: var(--jaune);
+    .menu-item:hover,
+    .menu-item.active {
+      color: white;
+      background: rgba(22,131,216,.16);
+    }
+
+    .menu-item.active {
+      border-left: 3px solid var(--yellow);
     }
 
     .menu-icon {
@@ -226,354 +189,482 @@
       font-size: 18px;
     }
 
-    .logout {
-      color: #fca5a5;
-      margin-top: 4px;
+    .menu-separator {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 4px;
     }
 
-    /* ================= MAIN ================= */
+    .logout {
+      color: #ff8b8b;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main {
+      min-width: 0;
+    }
 
     .welcome {
       background:
-        linear-gradient(120deg, rgba(14,165,233,.20), rgba(249,115,22,.12)),
-        #10243b;
-      border: 1px solid var(--bordure);
+        radial-gradient(circle at right top, rgba(245,197,66,.16), transparent 35%),
+        linear-gradient(135deg, #0d2740, #101d30);
+      border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 24px;
+      padding: 22px;
       margin-bottom: 18px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .welcome::after {
-      content: "🛡️";
-      position: absolute;
-      right: 25px;
-      bottom: -12px;
-      font-size: 85px;
-      opacity: .10;
-    }
-
-    .welcome small {
-      color: var(--jaune);
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      box-shadow: 0 15px 35px rgba(0,0,0,.18);
     }
 
     .welcome h1 {
-      margin-top: 7px;
-      font-size: 27px;
+      font-size: 23px;
+      margin-bottom: 7px;
     }
 
     .welcome p {
-      margin-top: 8px;
-      color: #cbd5e1;
+      color: var(--muted);
       line-height: 1.5;
-      font-size: 14px;
-      max-width: 540px;
     }
 
-    /* ================= COMPOSER ================= */
+    .welcome strong {
+      color: var(--yellow);
+    }
 
-    .composer {
-      background: var(--carte);
-      border: 1px solid var(--bordure);
+    /* =========================
+       CREATE POST
+    ========================= */
+
+    .create-card {
+      background: rgba(16,29,48,.94);
+      border: 1px solid var(--border);
       border-radius: 18px;
       padding: 18px;
       margin-bottom: 18px;
     }
 
-    .composer-top {
+    .create-top {
       display: flex;
       gap: 12px;
-      align-items: center;
+      align-items: flex-start;
     }
 
-    .composer-avatar {
-      width: 45px;
-      height: 45px;
-      flex-shrink: 0;
+    .avatar {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--jaune), var(--orange));
-      color: #111827;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--blue2), #163b62);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: bold;
-    }
-
-    .composer textarea {
-      width: 100%;
-      min-height: 75px;
-      resize: vertical;
-      border-radius: 14px;
-      border: 1px solid var(--bordure);
-      background: #0b192b;
       color: white;
-      outline: none;
+      font-weight: bold;
+      border: 2px solid rgba(245,197,66,.35);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 105px;
+      resize: vertical;
+      background: #0a1728;
+      border: 1px solid var(--border);
+      color: white;
+      border-radius: 14px;
       padding: 14px;
-      font-size: 14px;
+      outline: none;
     }
 
-    .composer textarea::placeholder {
-      color: #64748b;
+    textarea:focus {
+      border-color: rgba(22,131,216,.7);
     }
 
-    .composer-bottom {
+    .selected-photo {
       margin-top: 12px;
+      display: none;
+      position: relative;
+    }
+
+    .selected-photo img {
+      width: 100%;
+      max-height: 350px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .remove-photo {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      border: 0;
+      background: rgba(0,0,0,.7);
+      color: white;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+    }
+
+    .create-bottom {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 13px;
     }
 
     .post-tools {
       display: flex;
-      gap: 8px;
+      gap: 7px;
     }
 
-    .tool {
-      border: none;
-      background: transparent;
-      color: var(--gris);
-      padding: 8px;
-      cursor: pointer;
-      border-radius: 8px;
-    }
-
-    .tool:hover {
-      background: #172a42;
-      color: white;
-    }
-
-    .publish {
-      border: none;
+    .tool-btn {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
       border-radius: 10px;
-      padding: 10px 19px;
-      background: linear-gradient(135deg, var(--jaune), var(--orange));
-      color: #111827;
+      padding: 9px 12px;
+    }
+
+    .tool-btn:hover {
+      color: white;
+      background: rgba(255,255,255,.08);
+    }
+
+    .publish-btn {
+      border: 0;
+      background: linear-gradient(135deg, var(--yellow), var(--orange));
+      color: #101010;
       font-weight: bold;
-      cursor: pointer;
+      padding: 11px 20px;
+      border-radius: 11px;
+      min-width: 110px;
     }
 
-    .publish:hover {
-      transform: translateY(-1px);
+    .publish-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
     }
 
-    /* ================= POST ================= */
+    /* =========================
+       STATUS
+    ========================= */
 
-    .post {
-      background: var(--carte);
-      border: 1px solid var(--bordure);
+    .status {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .status.success {
+      display: block;
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.3);
+      color: #86efac;
+    }
+
+    .status.error {
+      display: block;
+      background: rgba(239,68,68,.12);
+      border: 1px solid rgba(239,68,68,.3);
+      color: #fca5a5;
+    }
+
+    /* =========================
+       FEED
+    ========================= */
+
+    .feed-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 8px 3px 12px;
+    }
+
+    .feed-title h2 {
+      font-size: 18px;
+    }
+
+    .refresh-btn {
+      background: transparent;
+      color: var(--blue);
+      border: 0;
+      font-size: 14px;
+    }
+
+    .post-card {
+      background: rgba(16,29,48,.95);
+      border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 19px;
+      padding: 17px;
       margin-bottom: 17px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.16);
     }
 
     .post-header {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: flex-start;
+      gap: 10px;
     }
 
-    .author {
+    .post-user {
       display: flex;
+      align-items: center;
       gap: 11px;
-      align-items: center;
+      min-width: 0;
     }
 
-    .author-avatar {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #0ea5e9, #2563eb);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .post-user-info {
+      min-width: 0;
+    }
+
+    .post-user-name {
       font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .author strong {
-      display: block;
-      font-size: 14px;
-    }
-
-    .author span {
-      display: block;
-      color: var(--gris);
-      font-size: 11px;
+    .post-date {
+      color: var(--muted);
+      font-size: 12px;
       margin-top: 3px;
     }
 
     .post-menu {
-      color: var(--gris);
-      cursor: pointer;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
       font-size: 20px;
     }
 
     .post-content {
-      margin-top: 15px;
-      color: #dbeafe;
+      margin: 14px 0;
       line-height: 1.6;
-      font-size: 14px;
+      color: #e9eef5;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
-    .post-tag {
-      display: inline-block;
-      margin-top: 13px;
-      padding: 5px 9px;
-      border-radius: 20px;
-      background: rgba(14,165,233,.10);
-      color: #7dd3fc;
-      font-size: 11px;
+    .post-image {
+      width: 100%;
+      max-height: 550px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      display: block;
+      margin-bottom: 13px;
+    }
+
+    .post-stats {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 4px 2px 10px;
     }
 
     .post-actions {
-      display: flex;
-      border-top: 1px solid var(--bordure);
-      margin-top: 17px;
-      padding-top: 11px;
-      gap: 5px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
     .post-action {
-      flex: 1;
+      border: 0;
       background: transparent;
-      border: none;
-      color: var(--gris);
-      padding: 9px;
-      border-radius: 9px;
-      cursor: pointer;
-      font-size: 13px;
+      color: var(--muted);
+      padding: 12px 5px;
+      transition: .2s;
     }
 
     .post-action:hover {
-      background: #172a42;
+      background: rgba(255,255,255,.04);
       color: white;
     }
 
-    /* ================= RIGHT ================= */
-
-    .rightbar {
-      position: sticky;
-      top: 95px;
-      height: fit-content;
+    .post-action.liked {
+      color: #ff5f70;
+      font-weight: bold;
     }
 
-    .right-card {
-      background: var(--carte);
-      border: 1px solid var(--bordure);
-      border-radius: 18px;
-      padding: 18px;
-      margin-bottom: 17px;
+    .comments-box {
+      display: none;
+      margin-top: 13px;
     }
 
-    .right-card h3 {
-      font-size: 15px;
-      margin-bottom: 15px;
-    }
-
-    .info {
-      display: flex;
-      gap: 11px;
-      margin-bottom: 14px;
-    }
-
-    .info-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: #172a42;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .info strong {
-      font-size: 13px;
+    .comments-box.open {
       display: block;
     }
 
-    .info p {
-      color: var(--gris);
-      font-size: 11px;
-      line-height: 1.4;
-      margin-top: 3px;
+    .comment-list {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 10px;
     }
 
-    .online {
-      width: 9px;
-      height: 9px;
-      background: var(--vert);
+    .comment {
+      display: flex;
+      gap: 9px;
+      margin-bottom: 10px;
+    }
+
+    .comment-avatar {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
       border-radius: 50%;
-      display: inline-block;
-      margin-right: 5px;
-    }
-
-    .community {
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    .community-number {
-      font-size: 27px;
-      font-weight: bold;
-      color: var(--jaune);
-    }
-
-    .community p {
-      color: var(--gris);
+      overflow: hidden;
+      background: #173452;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 12px;
-      margin-top: 4px;
+      font-weight: bold;
     }
 
-    /* ================= MESSAGE ================= */
+    .comment-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-    #message {
-      position: fixed;
-      top: 88px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 300;
-      padding: 12px 18px;
+    .comment-body {
+      background: #0a1728;
       border-radius: 12px;
-      background: #162a43;
-      border: 1px solid var(--bordure);
-      color: white;
-      display: none;
-      font-size: 13px;
-      box-shadow: 0 10px 35px rgba(0,0,0,.35);
+      padding: 8px 11px;
+      flex: 1;
     }
 
-    /* ================= MOBILE ================= */
+    .comment-name {
+      font-weight: bold;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .comment-text {
+      font-size: 13px;
+      line-height: 1.4;
+      color: #dce5ef;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .comment-input {
+      flex: 1;
+      background: #0a1728;
+      border: 1px solid var(--border);
+      color: white;
+      border-radius: 12px;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    .comment-send {
+      border: 0;
+      border-radius: 12px;
+      background: var(--blue);
+      color: white;
+      padding: 0 15px;
+      font-weight: bold;
+    }
+
+    .empty-feed {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px 20px;
+      background: rgba(16,29,48,.8);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 35px;
+      color: var(--muted);
+    }
+
+    /* =========================
+       RIGHTBAR
+    ========================= */
+
+    .info-card {
+      margin-bottom: 15px;
+    }
+
+    .info-card h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .info-card p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .community-line {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 0;
+      color: #dce5ef;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .community-line:last-child {
+      border-bottom: 0;
+    }
+
+    /* =========================
+       MOBILE NAV
+    ========================= */
 
     .mobile-nav {
       display: none;
     }
 
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
     @media (max-width: 1100px) {
       .layout {
-        grid-template-columns: 220px minmax(350px, 1fr);
+        grid-template-columns: 220px minmax(0, 1fr);
       }
 
       .rightbar {
         display: none;
       }
-
-      .search {
-        width: 280px;
-      }
     }
 
     @media (max-width: 760px) {
-
-      .topbar {
-        height: 64px;
-        padding: 0 13px;
+      body {
+        padding-bottom: 70px;
       }
 
-      .brand {
-        min-width: auto;
+      .topbar {
+        height: 62px;
+        padding: 0 12px;
       }
 
       .brand img {
@@ -582,24 +673,21 @@
       }
 
       .brand-text strong {
-        font-size: 14px;
+        font-size: 15px;
       }
 
       .brand-text span {
         font-size: 9px;
       }
 
-      .search {
-        display: none;
-      }
-
-      .top-actions .top-btn:nth-child(1) {
+      .top-actions .top-icon:nth-child(1),
+      .top-actions .top-icon:nth-child(2) {
         display: none;
       }
 
       .layout {
         display: block;
-        padding: 14px 12px 90px;
+        padding: 12px;
       }
 
       .sidebar {
@@ -607,51 +695,73 @@
       }
 
       .welcome {
-        padding: 20px;
+        padding: 18px;
+        border-radius: 16px;
       }
 
       .welcome h1 {
-        font-size: 23px;
+        font-size: 20px;
       }
 
-      .composer,
-      .post {
+      .create-card,
+      .post-card {
         border-radius: 15px;
       }
 
+      .create-card {
+        padding: 14px;
+      }
+
+      .create-bottom {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .post-tools {
+        width: 100%;
+      }
+
+      .tool-btn {
+        flex: 1;
+      }
+
+      .publish-btn {
+        width: 100%;
+      }
+
       .mobile-nav {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
-        height: 67px;
+        height: 64px;
         background: rgba(7,17,31,.97);
-        border-top: 1px solid var(--bordure);
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        z-index: 200;
-        backdrop-filter: blur(15px);
+        border-top: 1px solid var(--border);
+        z-index: 2000;
+        backdrop-filter: blur(14px);
       }
 
-      .mobile-nav a,
       .mobile-nav button {
-        border: none;
+        border: 0;
         background: transparent;
-        color: #94a3b8;
-        font-size: 20px;
-        text-align: center;
-        cursor: pointer;
+        color: var(--muted);
+        font-size: 11px;
       }
 
-      .mobile-nav span {
+      .mobile-nav button span {
         display: block;
-        font-size: 9px;
-        margin-top: 3px;
+        font-size: 20px;
+        margin-bottom: 3px;
       }
 
-      .mobile-nav .active {
-        color: var(--jaune);
+      .mobile-nav button.active {
+        color: var(--yellow);
+      }
+
+      .post-actions {
+        font-size: 13px;
       }
     }
   </style>
@@ -659,186 +769,174 @@
 
 <body>
 
-  <!-- ================= HEADER ================= -->
+<div class="app">
 
+  <!-- =========================
+       BARRE DU HAUT
+  ========================== -->
   <header class="topbar">
 
-    <a href="accueil.html" class="brand">
-
+    <div class="brand">
       <img src="logo-aigle.png" alt="Cercle des Agents">
 
       <div class="brand-text">
         <strong>CERCLE DES AGENTS</strong>
-        <span>UNIS • INFORMÉS • PLUS FORTS</span>
+        <span>Unis • Informés • Plus forts</span>
       </div>
-
-    </a>
-
-    <div class="search">
-      <span>🔎</span>
-      <input
-        type="search"
-        id="searchInput"
-        placeholder="Rechercher un agent..."
-      >
     </div>
 
     <div class="top-actions">
+      <button class="top-icon" onclick="showNotice('La recherche sera disponible prochainement.')" title="Recherche">
+        🔎
+      </button>
 
-      <button
-        class="top-btn"
-        onclick="showMessage('🔔 Les notifications seront bientôt disponibles.')"
-        title="Notifications"
-      >
+      <button class="top-icon" onclick="showNotice('Les notifications seront disponibles prochainement.')" title="Notifications">
         🔔
       </button>
 
-      <button
-        class="top-btn"
-        onclick="showMessage('💬 La messagerie sera bientôt disponible.')"
-        title="Messages"
-      >
-        💬
+      <button class="top-icon" onclick="goToProfile()" title="Mon profil">
+        👤
       </button>
-
     </div>
 
   </header>
 
 
-  <!-- ================= LAYOUT ================= -->
-
   <div class="layout">
 
-    <!-- ================= SIDEBAR ================= -->
-
+    <!-- =========================
+         MENU GAUCHE
+    ========================== -->
     <aside class="sidebar">
 
-      <div class="profile-mini">
+      <div class="menu-card">
 
-        <div class="avatar" id="avatarSide">
-          CA
-        </div>
-
-        <h3 id="sideName">
-          Agent
-        </h3>
-
-        <p id="sideType">
-          Agent de sécurité
-        </p>
-
-      </div>
-
-
-      <nav class="menu">
-
-        <a href="accueil.html" class="active">
+        <button class="menu-item active" onclick="window.location.href='accueil.html'">
           <span class="menu-icon">🏠</span>
-          Accueil
-        </a>
-
-        <a href="#" onclick="showMessage('👥 La rubrique Membres arrive bientôt.'); return false;">
-          <span class="menu-icon">👥</span>
-          Membres
-        </a>
-
-        <a href="#" onclick="showMessage('📰 Les publications arrivent bientôt.'); return false;">
-          <span class="menu-icon">📰</span>
-          Publications
-        </a>
-
-        <a href="#" onclick="showMessage('💬 La messagerie arrive bientôt.'); return false;">
-          <span class="menu-icon">💬</span>
-          Messages
-        </a>
-
-        <a href="#" onclick="showMessage('🔔 Les notifications arrivent bientôt.'); return false;">
-          <span class="menu-icon">🔔</span>
-          Notifications
-        </a>
-
-        <a href="profil.html">
-          <span class="menu-icon">👤</span>
-          Mon profil
-        </a>
-
-        <a href="modifier-profil.html">
-          <span class="menu-icon">⚙️</span>
-          Modifier mon profil
-        </a>
-
-        <button class="logout" id="logoutBtn">
-          <span class="menu-icon">🚪</span>
-          Se déconnecter
+          <span>Accueil</span>
         </button>
 
-      </nav>
+        <button class="menu-item" onclick="showNotice('La rubrique Membres sera activée prochainement.')">
+          <span class="menu-icon">👥</span>
+          <span>Membres</span>
+        </button>
+
+        <button class="menu-item" onclick="window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'})">
+          <span class="menu-icon">📰</span>
+          <span>Publications</span>
+        </button>
+
+        <button class="menu-item" onclick="showNotice('La messagerie sera activée prochainement.')">
+          <span class="menu-icon">💬</span>
+          <span>Messages</span>
+        </button>
+
+        <button class="menu-item" onclick="showNotice('Les notifications seront activées prochainement.')">
+          <span class="menu-icon">🔔</span>
+          <span>Notifications</span>
+        </button>
+
+        <button class="menu-item" onclick="goToProfile()">
+          <span class="menu-icon">👤</span>
+          <span>Mon profil</span>
+        </button>
+
+        <button class="menu-item" onclick="window.location.href='modifier-profil.html'">
+          <span class="menu-icon">✏️</span>
+          <span>Modifier mon profil</span>
+        </button>
+
+        <div class="menu-separator"></div>
+
+        <button class="menu-item logout" onclick="logout()">
+          <span class="menu-icon">🚪</span>
+          <span>Se déconnecter</span>
+        </button>
+
+      </div>
 
     </aside>
 
 
-    <!-- ================= CONTENU PRINCIPAL ================= -->
+    <!-- =========================
+         CONTENU PRINCIPAL
+    ========================== -->
+    <main class="main">
 
-    <main>
+      <div id="global-status" class="status"></div>
 
       <section class="welcome">
-
-        <small>Réseau professionnel</small>
-
-        <h1>
-          Bonjour <span id="firstName">Agent</span> 👋
-        </h1>
-
+        <h1>Bienvenue <strong id="welcome-name">Agent</strong> 👋</h1>
         <p>
-          Bienvenue dans le Cercle des Agents.
-          Échange avec les professionnels de la sécurité,
-          partage tes expériences et reste informé.
+          Bienvenue dans le réseau professionnel des agents de sécurité privée.
+          Partage tes informations, échange avec la communauté et reste informé.
         </p>
-
       </section>
 
 
-      <!-- ================= PUBLICATION ================= -->
+      <!-- =========================
+           CREATION PUBLICATION
+      ========================== -->
+      <section class="create-card">
 
-      <section class="composer">
+        <div class="create-top">
 
-        <div class="composer-top">
-
-          <div class="composer-avatar" id="composerAvatar">
-            CA
+          <div class="avatar" id="current-avatar">
+            👤
           </div>
 
           <textarea
-            id="postText"
-            placeholder="Quoi de neuf dans le monde de la sécurité ?"
+            id="post-content"
+            placeholder="Que souhaitez-vous partager avec les agents ?"
+            maxlength="5000"
           ></textarea>
 
         </div>
 
-        <div class="composer-bottom">
+
+        <div id="selected-photo" class="selected-photo">
+
+          <img id="photo-preview" src="" alt="Aperçu">
+
+          <button
+            class="remove-photo"
+            onclick="removeSelectedPhoto()"
+            title="Supprimer la photo"
+          >
+            ✕
+          </button>
+
+        </div>
+
+
+        <div class="create-bottom">
 
           <div class="post-tools">
 
-            <button
-              class="tool"
-              onclick="showMessage('📷 Les photos seront bientôt disponibles.')"
-            >
+            <label class="tool-btn">
               📷 Photo
-            </button>
+              <input
+                id="post-image"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                hidden
+                onchange="previewPostImage(event)"
+              >
+            </label>
 
             <button
-              class="tool"
-              onclick="showMessage('📢 Les annonces seront bientôt disponibles.')"
+              class="tool-btn"
+              onclick="showNotice('La fonction vidéo sera disponible prochainement.')"
             >
-              📢 Annonce
+              🎥 Vidéo
             </button>
 
           </div>
 
           <button
-            class="publish"
-            id="publishBtn"
+            id="publish-button"
+            class="publish-btn"
+            onclick="publishPost()"
           >
             Publier
           </button>
@@ -848,293 +946,86 @@
       </section>
 
 
-      <!-- ================= FIL D'ACTUALITÉ ================= -->
+      <!-- =========================
+           FIL
+      ========================== -->
+      <div class="feed-title">
+
+        <h2>Fil d'actualité</h2>
+
+        <button
+          class="refresh-btn"
+          onclick="loadFeed()"
+        >
+          ↻ Actualiser
+        </button>
+
+      </div>
+
 
       <div id="feed">
 
-        <!-- POST 1 -->
-
-        <article class="post">
-
-          <div class="post-header">
-
-            <div class="author">
-
-              <div class="author-avatar">
-                CA
-              </div>
-
-              <div>
-                <strong>Cercle des Agents</strong>
-                <span>Publication officielle • Aujourd'hui</span>
-              </div>
-
-            </div>
-
-            <div class="post-menu">
-              ⋯
-            </div>
-
-          </div>
-
-          <div class="post-content">
-
-            Bienvenue sur <strong>Cercle des Agents</strong> 🛡️
-
-            <br><br>
-
-            Cet espace a été créé pour permettre aux agents
-            de sécurité privée de se retrouver, d'échanger
-            leurs expériences et de partager des informations
-            utiles à leur profession.
-
-            <br><br>
-
-            <strong>Unis • Informés • Plus forts.</strong>
-
-          </div>
-
-          <span class="post-tag">
-            #CercleDesAgents
-          </span>
-
-          <div class="post-actions">
-
-            <button
-              class="post-action"
-              onclick="likePost(this)"
-            >
-              👍 J'aime
-            </button>
-
-            <button
-              class="post-action"
-              onclick="showMessage('💬 Les commentaires seront bientôt disponibles.')"
-            >
-              💬 Commenter
-            </button>
-
-            <button
-              class="post-action"
-              onclick="showMessage('🔗 Le partage sera bientôt disponible.')"
-            >
-              ↗️ Partager
-            </button>
-
-          </div>
-
-        </article>
-
-
-        <!-- POST 2 -->
-
-        <article class="post">
-
-          <div class="post-header">
-
-            <div class="author">
-
-              <div
-                class="author-avatar"
-                style="background:linear-gradient(135deg,#f97316,#ef4444)"
-              >
-                🛡️
-              </div>
-
-              <div>
-
-                <strong>Conseil sécurité</strong>
-
-                <span>
-                  Information professionnelle
-                </span>
-
-              </div>
-
-            </div>
-
-            <div class="post-menu">
-              ⋯
-            </div>
-
-          </div>
-
-          <div class="post-content">
-
-            👮 <strong>Conseil du jour</strong>
-
-            <br><br>
-
-            Un bon agent reste attentif à son environnement,
-            communique efficacement avec son équipe et respecte
-            toujours les procédures de sécurité.
-
-            <br><br>
-
-            La vigilance est une responsabilité collective.
-
-          </div>
-
-          <span class="post-tag">
-            #Sécurité #Vigilance
-          </span>
-
-          <div class="post-actions">
-
-            <button
-              class="post-action"
-              onclick="likePost(this)"
-            >
-              👍 J'aime
-            </button>
-
-            <button
-              class="post-action"
-              onclick="showMessage('💬 Les commentaires seront bientôt disponibles.')"
-            >
-              💬 Commenter
-            </button>
-
-            <button
-              class="post-action"
-              onclick="showMessage('🔗 Le partage sera bientôt disponible.')"
-            >
-              ↗️ Partager
-            </button>
-
-          </div>
-
-        </article>
-
-
-        <!-- MESSAGE DE BIENVENUE -->
-
-        <article class="post">
-
-          <div class="post-content" style="text-align:center">
-
-            <div style="font-size:42px;margin-bottom:10px">
-              🦅
-            </div>
-
-            <strong style="font-size:18px">
-              Le Cercle commence ici.
-            </strong>
-
-            <p style="margin-top:10px;color:#94a3b8">
-              Ton réseau professionnel des agents
-              de sécurité privée.
-            </p>
-
-          </div>
-
-        </article>
+        <div class="loading">
+          Chargement des publications...
+        </div>
 
       </div>
 
     </main>
 
 
-    <!-- ================= COLONNE DROITE ================= -->
-
+    <!-- =========================
+         COLONNE DROITE
+    ========================== -->
     <aside class="rightbar">
 
-      <div class="right-card">
+      <div class="info-card">
 
-        <h3>
-          👥 La communauté
-        </h3>
+        <h3>🛡️ Cercle des Agents</h3>
 
-        <div class="community">
+        <p>
+          Un réseau professionnel dédié aux agents de sécurité privée.
+          Échange, entraide et partage d'expérience.
+        </p>
 
-          <div class="community-number">
-            🛡️
-          </div>
+      </div>
 
-          <p>
-            Des agents réunis autour
-            de la sécurité professionnelle.
-          </p>
 
+      <div class="info-card">
+
+        <h3>🌐 La communauté</h3>
+
+        <div class="community-line">
+          👥
+          <span>Agents de sécurité privée</span>
+        </div>
+
+        <div class="community-line">
+          🛡️
+          <span>Professionnalisme</span>
+        </div>
+
+        <div class="community-line">
+          🤝
+          <span>Entraide</span>
+        </div>
+
+        <div class="community-line">
+          📢
+          <span>Information</span>
         </div>
 
       </div>
 
 
-      <div class="right-card">
+      <div class="info-card">
 
-        <h3>
-          📌 À la une
-        </h3>
+        <h3>💡 Notre devise</h3>
 
-        <div class="info">
-
-          <div class="info-icon">
-            🛡️
-          </div>
-
-          <div>
-            <strong>
-              Professionnalisme
-            </strong>
-
-            <p>
-              Respect, vigilance et responsabilité.
-            </p>
-          </div>
-
-        </div>
-
-
-        <div class="info">
-
-          <div class="info-icon">
-            📢
-          </div>
-
-          <div>
-            <strong>
-              Informations
-            </strong>
-
-            <p>
-              Reste informé des actualités du secteur.
-            </p>
-          </div>
-
-        </div>
-
-
-        <div class="info">
-
-          <div class="info-icon">
-            🤝
-          </div>
-
-          <div>
-            <strong>
-              Solidarité
-            </strong>
-
-            <p>
-              Un réseau professionnel plus fort ensemble.
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="right-card">
-
-        <h3>
-          🟢 Statut
-        </h3>
-
-        <p style="font-size:13px;color:#cbd5e1">
-          <span class="online"></span>
-          Tu es connecté
+        <p>
+          <strong style="color:#f5c542;">
+            Unis • Informés • Plus forts
+          </strong>
         </p>
 
       </div>
@@ -1144,500 +1035,2008 @@
   </div>
 
 
-  <!-- ================= NAVIGATION MOBILE ================= -->
-
+  <!-- =========================
+       NAVIGATION MOBILE
+  ========================== -->
   <nav class="mobile-nav">
 
-    <a
-      href="accueil.html"
-      class="active"
-    >
-      🏠
-      <span>Accueil</span>
-    </a>
-
-    <button
-      onclick="showMessage('👥 Les membres arrivent bientôt.')"
-    >
-      👥
-      <span>Membres</span>
+    <button class="active" onclick="window.location.href='accueil.html'">
+      <span>🏠</span>
+      Accueil
     </button>
 
-    <button
-      onclick="window.scrollTo({top:0,behavior:'smooth'})"
-    >
-      ➕
-      <span>Publier</span>
+    <button onclick="showNotice('La rubrique Membres sera activée prochainement.')">
+      <span>👥</span>
+      Membres
     </button>
 
-    <a href="profil.html">
-      👤
-      <span>Profil</span>
-    </a>
+    <button onclick="focusPublisher()">
+      <span>➕</span>
+      Publier
+    </button>
 
-    <button
-      onclick="document.getElementById('logoutBtn').click()"
-    >
-      🚪
-      <span>Sortir</span>
+    <button onclick="showNotice('La messagerie sera activée prochainement.')">
+      <span>💬</span>
+      Messages
+    </button>
+
+    <button onclick="goToProfile()">
+      <span>👤</span>
+      Profil
     </button>
 
   </nav>
 
-
-  <!-- MESSAGE -->
-
-  <div id="message"></div>
+</div>
 
 
-  <!-- ================= JAVASCRIPT ================= -->
+<script>
 
-  <script>
+  /* ============================================================
+     CONFIGURATION SUPABASE
+  ============================================================ */
 
-    /* =========================================
-       SUPABASE
-    ========================================= */
+  const SUPABASE_URL =
+    "https://quzgphbougaujzqrhjza.supabase.co";
 
-    const SUPABASE_URL =
-      "https://quzgphbougaujzqrhjza.supabase.co";
+  const SUPABASE_KEY =
+    "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
 
-    const SUPABASE_KEY =
-      "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
-
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-      );
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
 
-    let currentUser = null;
-    let currentProfile = null;
+  /* ============================================================
+     VARIABLES
+  ============================================================ */
+
+  let currentUser = null;
+  let currentProfile = null;
+  let selectedPostImage = null;
 
 
-    /* =========================================
-       UTILITAIRE
-    ========================================= */
+  /* ============================================================
+     INITIALISATION
+  ============================================================ */
 
-    function escapeHtml(value) {
+  document.addEventListener("DOMContentLoaded", async () => {
 
-      if (value === null || value === undefined) {
-        return "";
-      }
-
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-
-    function getInitials(prenom, nom) {
-
-      const p =
-        (prenom || "").trim().charAt(0).toUpperCase();
-
-      const n =
-        (nom || "").trim().charAt(0).toUpperCase();
-
-      return (p + n) || "CA";
-    }
-
-
-    function showMessage(text) {
-
-      const box =
-        document.getElementById("message");
-
-      box.textContent = text;
-      box.style.display = "block";
-
-      clearTimeout(window.messageTimer);
-
-      window.messageTimer =
-        setTimeout(() => {
-
-          box.style.display = "none";
-
-        }, 3000);
-    }
-
-
-    /* =========================================
-       CHARGER LE PROFIL
-    ========================================= */
-
-    async function loadProfile() {
+    try {
 
       const {
-        data,
+        data: {
+          user
+        },
         error
       } = await supabaseClient.auth.getUser();
 
 
-      if (error || !data || !data.user) {
+      if (error || !user) {
 
-        window.location.href =
-          "connexion.html";
+        window.location.href = "connexion.html";
 
         return;
-
       }
 
 
-      currentUser = data.user;
+      currentUser = user;
 
+
+      await loadCurrentProfile();
+
+      await loadFeed();
+
+    } catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        "Impossible de charger votre espace.",
+        "error"
+      );
+
+    }
+
+  });
+
+
+  /* ============================================================
+     PROFIL UTILISATEUR
+  ============================================================ */
+
+  async function loadCurrentProfile() {
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", currentUser.id)
+      .maybeSingle();
+
+
+    if (error) {
+
+      console.error("Erreur profil :", error);
+
+      return;
+    }
+
+
+    currentProfile = data;
+
+
+    const firstName =
+      data?.prenom ||
+      currentUser.user_metadata?.prenom ||
+      "";
+
+
+    const lastName =
+      data?.nom ||
+      currentUser.user_metadata?.nom ||
+      "";
+
+
+    const fullName =
+      `${firstName} ${lastName}`.trim();
+
+
+    document.getElementById("welcome-name").textContent =
+      firstName || "Agent";
+
+
+    displayAvatar(
+      document.getElementById("current-avatar"),
+      data?.avatar_path,
+      fullName
+    );
+
+  }
+
+
+  /* ============================================================
+     AFFICHER AVATAR
+  ============================================================ */
+
+  function displayAvatar(container, avatarPath, fullName) {
+
+    if (!container) return;
+
+
+    if (avatarPath) {
 
       const {
-        data: profile,
-        error: profileError
+        data
+      } = supabaseClient
+        .storage
+        .from("avatars")
+        .getPublicUrl(avatarPath);
+
+
+      if (data?.publicUrl) {
+
+        container.innerHTML = `
+          <img
+            src="${escapeAttribute(data.publicUrl + "?v=" + Date.now())}"
+            alt="Photo de profil"
+          >
+        `;
+
+        return;
+      }
+    }
+
+
+    const initials =
+      getInitials(fullName);
+
+
+    container.innerHTML =
+      escapeHtml(initials);
+
+  }
+
+
+  /* ============================================================
+     CHARGER LE FIL
+  ============================================================ */
+
+  async function loadFeed() {
+
+    const feed =
+      document.getElementById("feed");
+
+
+    feed.innerHTML = `
+      <div class="loading">
+        Chargement des publications...
+      </div>
+    `;
+
+
+    try {
+
+      const {
+        data: posts,
+        error
       } = await supabaseClient
-        .from("profiles")
-        .select(`
-          id,
-          prenom,
-          nom,
-          email,
-          ville,
-          entreprise,
-          type_agent,
-          presentation
-        `)
-        .eq("id", currentUser.id)
-        .maybeSingle();
+        .from("posts")
+        .select("*")
+        .order("created_at", {
+          ascending: false
+        });
 
 
-      if (!profileError && profile) {
+      if (error) {
 
-        currentProfile = profile;
+        console.error(error);
 
-      } else {
+        feed.innerHTML = `
+          <div class="empty-feed">
+            ❌ Impossible de charger les publications.<br><br>
+            ${escapeHtml(error.message)}
+          </div>
+        `;
 
-        /*
-          Si le profil n'est pas encore disponible,
-          on utilise les informations Auth.
-        */
-
-        currentProfile = {
-
-          prenom:
-            currentUser.user_metadata?.prenom || "",
-
-          nom:
-            currentUser.user_metadata?.nom || "",
-
-          type_agent:
-            currentUser.user_metadata?.type_agent ||
-            "Agent de sécurité"
-
-        };
-
+        return;
       }
 
 
-      updateInterface();
+      if (!posts || posts.length === 0) {
 
-    }
+        feed.innerHTML = `
+          <div class="empty-feed">
+            <div style="font-size:42px;margin-bottom:12px;">📰</div>
 
+            <strong>Aucune publication pour le moment.</strong>
 
-    /* =========================================
-       METTRE À JOUR L'INTERFACE
-    ========================================= */
-
-    function updateInterface() {
-
-      const prenom =
-        currentProfile.prenom || "Agent";
-
-      const nom =
-        currentProfile.nom || "";
-
-      const type =
-        currentProfile.type_agent ||
-        "Agent de sécurité";
-
-
-      const initials =
-        getInitials(prenom, nom);
-
-
-      document.getElementById("firstName")
-        .textContent = prenom;
-
-
-      document.getElementById("sideName")
-        .textContent =
-          `${prenom} ${nom}`.trim();
-
-
-      document.getElementById("sideType")
-        .textContent = type;
-
-
-      document.getElementById("avatarSide")
-        .textContent = initials;
-
-
-      document.getElementById("composerAvatar")
-        .textContent = initials;
-
-    }
-
-
-    /* =========================================
-       PUBLICATION LOCALE
-    ========================================= */
-
-    function createLocalPost(text) {
-
-      const prenom =
-        currentProfile?.prenom || "Agent";
-
-      const nom =
-        currentProfile?.nom || "";
-
-      const initials =
-        getInitials(prenom, nom);
-
-
-      const post =
-        document.createElement("article");
-
-      post.className = "post";
-
-
-      const safeText =
-        escapeHtml(text)
-          .replace(/\n/g, "<br>");
-
-
-      post.innerHTML = `
-
-        <div class="post-header">
-
-          <div class="author">
-
-            <div class="author-avatar">
-              ${initials}
-            </div>
-
-            <div>
-
-              <strong>
-                ${escapeHtml(prenom)} ${escapeHtml(nom)}
-              </strong>
-
-              <span>
-                Publication • À l'instant
-              </span>
-
-            </div>
-
+            <p style="margin-top:8px;">
+              Sois le premier agent à publier quelque chose.
+            </p>
           </div>
+        `;
 
-          <div class="post-menu">
-            ⋯
-          </div>
+        return;
+      }
 
-        </div>
 
-        <div class="post-content">
-          ${safeText}
-        </div>
+      const userIds = [
+        ...new Set(
+          posts.map(post => post.user_id)
+        )
+      ];
 
-        <span class="post-tag">
-          #CercleDesAgents
-        </span>
 
-        <div class="post-actions">
+      let profiles = [];
 
-          <button
-            class="post-action"
-            onclick="likePost(this)"
-          >
-            👍 J'aime
-          </button>
 
-          <button
-            class="post-action"
-            onclick="showMessage('💬 Les commentaires seront bientôt disponibles.')"
-          >
-            💬 Commenter
-          </button>
+      if (userIds.length > 0) {
 
-          <button
-            class="post-action"
-            onclick="showMessage('🔗 Le partage sera bientôt disponible.')"
-          >
-            ↗️ Partager
-          </button>
+        const {
+          data,
+          error: profilesError
+        } = await supabaseClient
+          .from("profiles")
+          .select(`
+            id,
+            prenom,
+            nom,
+            avatar_path,
+            entreprise,
+            type_agent
+          `)
+          .in("id", userIds);
 
+
+        if (!profilesError) {
+
+          profiles = data || [];
+
+        } else {
+
+          console.warn(
+            "Impossible de charger certains profils :",
+            profilesError
+          );
+
+        }
+      }
+
+
+      const profileMap = {};
+
+
+      profiles.forEach(profile => {
+
+        profileMap[profile.id] =
+          profile;
+
+      });
+
+
+      feed.innerHTML = "";
+
+
+      for (const post of posts) {
+
+        const profile =
+          profileMap[post.user_id] || null;
+
+
+        const card =
+          await createPostCard(
+            post,
+            profile
+          );
+
+
+        feed.appendChild(card);
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      feed.innerHTML = `
+        <div class="empty-feed">
+          ❌ Une erreur est survenue.
         </div>
       `;
 
+    }
 
-      const feed =
-        document.getElementById("feed");
+  }
 
-      feed.prepend(post);
+
+  /* ============================================================
+     CREER UNE CARTE PUBLICATION
+  ============================================================ */
+
+  async function createPostCard(
+    post,
+    profile
+  ) {
+
+    const card =
+      document.createElement("article");
+
+
+    card.className =
+      "post-card";
+
+
+    card.dataset.postId =
+      post.id;
+
+
+    const firstName =
+      profile?.prenom ||
+      "Agent";
+
+
+    const lastName =
+      profile?.nom ||
+      "";
+
+
+    const fullName =
+      `${firstName} ${lastName}`.trim();
+
+
+    const initials =
+      getInitials(fullName);
+
+
+    let avatarHtml =
+      `<span>${escapeHtml(initials)}</span>`;
+
+
+    if (profile?.avatar_path) {
+
+      const {
+        data
+      } = supabaseClient
+        .storage
+        .from("avatars")
+        .getPublicUrl(profile.avatar_path);
+
+
+      if (data?.publicUrl) {
+
+        avatarHtml = `
+          <img
+            src="${escapeAttribute(data.publicUrl + "?v=" + Date.now())}"
+            alt="Photo"
+          >
+        `;
+
+      }
 
     }
 
 
-    /* =========================================
-       BOUTON PUBLIER
-    ========================================= */
-
-    document
-      .getElementById("publishBtn")
-      .addEventListener("click", async function() {
-
-        const textarea =
-          document.getElementById("postText");
-
-        const text =
-          textarea.value.trim();
+    const date =
+      formatDate(post.created_at);
 
 
-        if (!text) {
-
-          showMessage(
-            "✍️ Écris quelque chose avant de publier."
-          );
-
-          textarea.focus();
-
-          return;
-
-        }
+    let imageHtml = "";
 
 
-        /*
-          Pour le moment, la publication est affichée
-          dans l'interface. Nous connecterons ensuite
-          le fil à une table Supabase "posts".
-        */
+    if (post.image_url) {
 
-        createLocalPost(text);
-
-        textarea.value = "";
-
-        showMessage(
-          "✅ Publication ajoutée."
+      const imageUrl =
+        getPostImageUrl(
+          post.image_url
         );
 
-      });
+
+      if (imageUrl) {
+
+        imageHtml = `
+          <img
+            class="post-image"
+            src="${escapeAttribute(imageUrl)}"
+            alt="Photo de publication"
+            loading="lazy"
+          >
+        `;
+
+      }
+
+    }
 
 
-    /* =========================================
-       J'AIME
-    ========================================= */
+    card.innerHTML = `
 
-    function likePost(button) {
+      <div class="post-header">
 
-      if (button.dataset.liked === "true") {
+        <div class="post-user">
 
-        button.dataset.liked = "false";
+          <div class="avatar">
+            ${avatarHtml}
+          </div>
 
-        button.textContent =
-          "👍 J'aime";
+          <div class="post-user-info">
 
-        button.style.color = "";
+            <div class="post-user-name">
+              ${escapeHtml(fullName)}
+            </div>
 
-        return;
+            <div class="post-date">
+              ${escapeHtml(date)}
+            </div>
+
+          </div>
+
+        </div>
+
+        <button
+          class="post-menu"
+          onclick="showNotice('Menu de publication bientôt disponible.')"
+        >
+          ⋮
+        </button>
+
+      </div>
+
+
+      ${
+        post.content
+          ? `
+            <div class="post-content">
+              ${escapeHtml(post.content)}
+            </div>
+          `
+          : ""
+      }
+
+
+      ${imageHtml}
+
+
+      <div
+        class="post-stats"
+        id="stats-${post.id}"
+      >
+        <span class="likes-count">
+          Chargement...
+        </span>
+
+        <span class="comments-count">
+          Chargement...
+        </span>
+      </div>
+
+
+      <div class="post-actions">
+
+        <button
+          class="post-action like-button"
+          onclick="toggleLike('${post.id}', this)"
+        >
+          ❤️ <span>J’aime</span>
+        </button>
+
+
+        <button
+          class="post-action"
+          onclick="toggleComments('${post.id}')"
+        >
+          💬 <span>Commenter</span>
+        </button>
+
+
+        <button
+          class="post-action"
+          onclick="sharePost('${post.id}')"
+        >
+          🔗 <span>Partager</span>
+        </button>
+
+      </div>
+
+
+      <div
+        class="comments-box"
+        id="comments-${post.id}"
+      >
+
+        <div
+          class="comment-list"
+          id="comment-list-${post.id}"
+        >
+        </div>
+
+
+        <div class="comment-form">
+
+          <input
+            class="comment-input"
+            id="comment-input-${post.id}"
+            type="text"
+            maxlength="1000"
+            placeholder="Écrire un commentaire..."
+            onkeydown="handleCommentKey(event, '${post.id}')"
+          >
+
+          <button
+            class="comment-send"
+            onclick="addComment('${post.id}')"
+          >
+            Envoyer
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    await refreshPostStats(
+      post.id,
+      card
+    );
+
+
+    return card;
+
+  }
+
+
+  /* ============================================================
+     IMAGE PUBLICATION
+  ============================================================ */
+
+  function getPostImageUrl(path) {
+
+    if (!path) return "";
+
+
+    if (
+      path.startsWith("http://") ||
+      path.startsWith("https://")
+    ) {
+
+      return path;
+    }
+
+
+    const {
+      data
+    } = supabaseClient
+      .storage
+      .from("post-images")
+      .getPublicUrl(path);
+
+
+    return data?.publicUrl || "";
+
+  }
+
+
+  /* ============================================================
+     STATISTIQUES
+  ============================================================ */
+
+  async function refreshPostStats(
+    postId,
+    card
+  ) {
+
+    try {
+
+      const {
+        data: likes,
+        error: likesError
+      } = await supabaseClient
+        .from("likes")
+        .select("user_id")
+        .eq("post_id", postId);
+
+
+      const {
+        data: comments,
+        error: commentsError
+      } = await supabaseClient
+        .from("comments")
+        .select("id")
+        .eq("post_id", postId);
+
+
+      if (likesError) {
+
+        console.error(
+          "Erreur likes :",
+          likesError
+        );
 
       }
 
 
-      button.dataset.liked = "true";
+      if (commentsError) {
 
-      button.textContent =
-        "👍 J'aime ✓";
+        console.error(
+          "Erreur commentaires :",
+          commentsError
+        );
 
-      button.style.color =
-        "#facc15";
+      }
+
+
+      const likesCount =
+        likes?.length || 0;
+
+
+      const commentsCount =
+        comments?.length || 0;
+
+
+      const likesElement =
+        card.querySelector(".likes-count");
+
+
+      const commentsElement =
+        card.querySelector(".comments-count");
+
+
+      if (likesElement) {
+
+        likesElement.textContent =
+          `${likesCount} J’aime`;
+
+      }
+
+
+      if (commentsElement) {
+
+        commentsElement.textContent =
+          `${commentsCount} commentaire${commentsCount > 1 ? "s" : ""}`;
+
+      }
+
+
+      const userLiked =
+        (likes || []).some(
+          like =>
+            like.user_id === currentUser.id
+        );
+
+
+      const likeButton =
+        card.querySelector(".like-button");
+
+
+      if (userLiked) {
+
+        likeButton.classList.add("liked");
+
+        likeButton.innerHTML =
+          "❤️ <span>J’aime</span>";
+
+      } else {
+
+        likeButton.classList.remove("liked");
+
+        likeButton.innerHTML =
+          "🤍 <span>J’aime</span>";
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Erreur statistiques :",
+        error
+      );
 
     }
 
-
-    /* =========================================
-       RECHERCHE
-    ========================================= */
-
-    document
-      .getElementById("searchInput")
-      .addEventListener("keydown", function(event) {
-
-        if (event.key !== "Enter") {
-          return;
-        }
-
-        const value =
-          this.value.trim();
-
-        if (!value) {
-          return;
-        }
-
-        showMessage(
-          "🔎 La recherche des agents sera disponible prochainement."
-        );
-
-      });
+  }
 
 
-    /* =========================================
-       DÉCONNEXION
-    ========================================= */
+  /* ============================================================
+     LIKE / UNLIKE
+  ============================================================ */
 
-    document
-      .getElementById("logoutBtn")
-      .addEventListener("click", async function() {
+  async function toggleLike(
+    postId,
+    button
+  ) {
 
-        this.disabled = true;
+    if (!currentUser) return;
 
-        this.textContent =
-          "⏳ Déconnexion...";
 
+    button.disabled = true;
+
+
+    try {
+
+      const {
+        data: existingLike,
+        error: checkError
+      } = await supabaseClient
+        .from("likes")
+        .select("id")
+        .eq("post_id", postId)
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
+
+
+      if (checkError) {
+
+        throw checkError;
+
+      }
+
+
+      if (existingLike) {
 
         const {
           error
-        } = await supabaseClient.auth.signOut({
-          scope: "local"
-        });
+        } = await supabaseClient
+          .from("likes")
+          .delete()
+          .eq("id", existingLike.id);
 
 
         if (error) {
 
-          showMessage(
-            "❌ Impossible de se déconnecter."
-          );
-
-          this.disabled = false;
-
-          this.innerHTML =
-            '<span class="menu-icon">🚪</span> Se déconnecter';
-
-          return;
+          throw error;
 
         }
 
+      } else {
 
-        window.location.href =
-          "connexion.html";
+        const {
+          error
+        } = await supabaseClient
+          .from("likes")
+          .insert({
+
+            post_id: postId,
+
+            user_id: currentUser.id
+
+          });
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+      }
+
+
+      const card =
+        document.querySelector(
+          `[data-post-id="${postId}"]`
+        );
+
+
+      if (card) {
+
+        await refreshPostStats(
+          postId,
+          card
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        "Impossible de modifier le J’aime : " +
+        error.message,
+        "error"
+      );
+
+    } finally {
+
+      button.disabled = false;
+
+    }
+
+  }
+
+
+  /* ============================================================
+     OUVRIR / FERMER COMMENTAIRES
+  ============================================================ */
+
+  async function toggleComments(
+    postId
+  ) {
+
+    const box =
+      document.getElementById(
+        `comments-${postId}`
+      );
+
+
+    if (!box) return;
+
+
+    const isOpen =
+      box.classList.contains("open");
+
+
+    box.classList.toggle(
+      "open"
+    );
+
+
+    if (!isOpen) {
+
+      await loadComments(
+        postId
+      );
+
+
+      setTimeout(() => {
+
+        document
+          .getElementById(
+            `comment-input-${postId}`
+          )
+          ?.focus();
+
+      }, 100);
+
+    }
+
+  }
+
+
+  /* ============================================================
+     CHARGER COMMENTAIRES
+  ============================================================ */
+
+  async function loadComments(
+    postId
+  ) {
+
+    const list =
+      document.getElementById(
+        `comment-list-${postId}`
+      );
+
+
+    if (!list) return;
+
+
+    list.innerHTML = `
+      <div style="color:#9aa8ba;padding:10px 0;">
+        Chargement des commentaires...
+      </div>
+    `;
+
+
+    try {
+
+      const {
+        data: comments,
+        error
+      } = await supabaseClient
+        .from("comments")
+        .select("*")
+        .eq("post_id", postId)
+        .order("created_at", {
+          ascending: true
+        });
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      if (!comments || comments.length === 0) {
+
+        list.innerHTML = `
+          <div style="color:#9aa8ba;padding:10px 0;">
+            Aucun commentaire pour le moment.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      const userIds = [
+        ...new Set(
+          comments.map(
+            comment => comment.user_id
+          )
+        )
+      ];
+
+
+      let profiles = [];
+
+
+      if (userIds.length > 0) {
+
+        const {
+          data
+        } = await supabaseClient
+          .from("profiles")
+          .select(
+            "id,prenom,nom,avatar_path"
+          )
+          .in(
+            "id",
+            userIds
+          );
+
+
+        profiles = data || [];
+
+      }
+
+
+      const profileMap = {};
+
+
+      profiles.forEach(profile => {
+
+        profileMap[profile.id] =
+          profile;
 
       });
 
 
-    /* =========================================
-       DÉMARRAGE
-    ========================================= */
+      list.innerHTML = "";
 
-    loadProfile();
 
-  </script>
+      comments.forEach(comment => {
+
+        const profile =
+          profileMap[comment.user_id];
+
+
+        const fullName =
+          profile
+            ? `${profile.prenom || ""} ${profile.nom || ""}`.trim()
+            : "Agent";
+
+
+        const initials =
+          getInitials(fullName);
+
+
+        let avatar =
+          `<span>${escapeHtml(initials)}</span>`;
+
+
+        if (profile?.avatar_path) {
+
+          const {
+            data
+          } = supabaseClient
+            .storage
+            .from("avatars")
+            .getPublicUrl(
+              profile.avatar_path
+            );
+
+
+          if (data?.publicUrl) {
+
+            avatar = `
+              <img
+                src="${escapeAttribute(data.publicUrl + "?v=" + Date.now())}"
+                alt="Photo"
+              >
+            `;
+
+          }
+
+        }
+
+
+        const element =
+          document.createElement("div");
+
+
+        element.className =
+          "comment";
+
+
+        element.innerHTML = `
+
+          <div class="comment-avatar">
+            ${avatar}
+          </div>
+
+          <div class="comment-body">
+
+            <div class="comment-name">
+              ${escapeHtml(fullName)}
+            </div>
+
+            <div class="comment-text">
+              ${escapeHtml(comment.content)}
+            </div>
+
+          </div>
+
+        `;
+
+
+        list.appendChild(
+          element
+        );
+
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      list.innerHTML = `
+        <div style="color:#fca5a5;padding:10px 0;">
+          Impossible de charger les commentaires.
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  /* ============================================================
+     AJOUT COMMENTAIRE
+  ============================================================ */
+
+  async function addComment(
+    postId
+  ) {
+
+    const input =
+      document.getElementById(
+        `comment-input-${postId}`
+      );
+
+
+    if (!input) return;
+
+
+    const content =
+      input.value.trim();
+
+
+    if (!content) {
+
+      showStatus(
+        "Écris un commentaire avant d'envoyer.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    const button =
+      input.parentElement.querySelector(
+        ".comment-send"
+      );
+
+
+    button.disabled = true;
+
+
+    try {
+
+      const {
+        error
+      } = await supabaseClient
+        .from("comments")
+        .insert({
+
+          post_id: postId,
+
+          user_id: currentUser.id,
+
+          content: content
+
+        });
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      input.value = "";
+
+
+      await loadComments(
+        postId
+      );
+
+
+      const card =
+        document.querySelector(
+          `[data-post-id="${postId}"]`
+        );
+
+
+      if (card) {
+
+        await refreshPostStats(
+          postId,
+          card
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        "Impossible d'ajouter le commentaire : " +
+        error.message,
+        "error"
+      );
+
+    } finally {
+
+      button.disabled = false;
+
+    }
+
+  }
+
+
+  /* ============================================================
+     TOUCHE ENTRÉE COMMENTAIRE
+  ============================================================ */
+
+  function handleCommentKey(
+    event,
+    postId
+  ) {
+
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
+
+      event.preventDefault();
+
+      addComment(postId);
+
+    }
+
+  }
+
+
+  /* ============================================================
+     PARTAGER
+  ============================================================ */
+
+  async function sharePost(
+    postId
+  ) {
+
+    const url =
+      window.location.origin +
+      window.location.pathname +
+      "?publication=" +
+      encodeURIComponent(postId);
+
+
+    const title =
+      "Cercle des Agents";
+
+
+    const text =
+      "Regarde cette publication sur Cercle des Agents.";
+
+
+    try {
+
+      if (
+        navigator.share
+      ) {
+
+        await navigator.share({
+
+          title: title,
+
+          text: text,
+
+          url: url
+
+        });
+
+        return;
+      }
+
+
+      if (
+        navigator.clipboard &&
+        window.isSecureContext
+      ) {
+
+        await navigator.clipboard.writeText(
+          url
+        );
+
+        showStatus(
+          "Lien de la publication copié.",
+          "success"
+        );
+
+        return;
+
+      }
+
+
+      const temporaryInput =
+        document.createElement("input");
+
+
+      temporaryInput.value =
+        url;
+
+
+      document.body.appendChild(
+        temporaryInput
+      );
+
+
+      temporaryInput.select();
+
+
+      document.execCommand(
+        "copy"
+      );
+
+
+      temporaryInput.remove();
+
+
+      showStatus(
+        "Lien de la publication copié.",
+        "success"
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        "Partage annulé ou impossible.",
+        "error"
+      );
+
+    }
+
+  }
+
+
+  /* ============================================================
+     APERCU PHOTO PUBLICATION
+  ============================================================ */
+
+  function previewPostImage(
+    event
+  ) {
+
+    const file =
+      event.target.files?.[0];
+
+
+    if (!file) return;
+
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ];
+
+
+    if (
+      !allowedTypes.includes(
+        file.type
+      )
+    ) {
+
+      showStatus(
+        "Format non accepté. Utilise JPG, PNG ou WEBP.",
+        "error"
+      );
+
+
+      event.target.value = "";
+
+      return;
+
+    }
+
+
+    if (
+      file.size > 5 * 1024 * 1024
+    ) {
+
+      showStatus(
+        "La photo ne doit pas dépasser 5 Mo.",
+        "error"
+      );
+
+
+      event.target.value = "";
+
+      return;
+
+    }
+
+
+    selectedPostImage =
+      file;
+
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload = function(e) {
+
+      document.getElementById(
+        "photo-preview"
+      ).src =
+        e.target.result;
+
+
+      document.getElementById(
+        "selected-photo"
+      ).style.display =
+        "block";
+
+    };
+
+
+    reader.readAsDataURL(
+      file
+    );
+
+  }
+
+
+  /* ============================================================
+     SUPPRIMER PHOTO SELECTIONNEE
+  ============================================================ */
+
+  function removeSelectedPhoto() {
+
+    selectedPostImage =
+      null;
+
+
+    document.getElementById(
+      "post-image"
+    ).value = "";
+
+
+    document.getElementById(
+      "photo-preview"
+    ).src = "";
+
+
+    document.getElementById(
+      "selected-photo"
+    ).style.display =
+      "none";
+
+  }
+
+
+  /* ============================================================
+     PUBLIER
+  ============================================================ */
+
+  async function publishPost() {
+
+    const contentInput =
+      document.getElementById(
+        "post-content"
+      );
+
+
+    const button =
+      document.getElementById(
+        "publish-button"
+      );
+
+
+    const content =
+      contentInput.value.trim();
+
+
+    if (
+      !content &&
+      !selectedPostImage
+    ) {
+
+      showStatus(
+        "Ajoute un texte ou une photo avant de publier.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    button.disabled = true;
+
+    button.textContent =
+      "Publication...";
+
+
+    try {
+
+      let imagePath =
+        null;
+
+
+      /* =========================
+         UPLOAD IMAGE
+      ========================== */
+
+      if (selectedPostImage) {
+
+        const extension =
+          getExtension(
+            selectedPostImage.name,
+            selectedPostImage.type
+          );
+
+
+        const fileName =
+          `${Date.now()}-${Math.random().toString(36).substring(2,9)}.${extension}`;
+
+
+        imagePath =
+          `${currentUser.id}/${fileName}`;
+
+
+        const {
+          error: uploadError
+        } = await supabaseClient
+          .storage
+          .from("post-images")
+          .upload(
+            imagePath,
+            selectedPostImage,
+            {
+              cacheControl: "3600",
+              upsert: false,
+              contentType:
+                selectedPostImage.type
+            }
+          );
+
+
+        if (uploadError) {
+
+          throw uploadError;
+
+        }
+
+      }
+
+
+      /* =========================
+         INSERT POST
+      ========================== */
+
+      const {
+        error
+      } = await supabaseClient
+        .from("posts")
+        .insert({
+
+          user_id:
+            currentUser.id,
+
+          content:
+            content || null,
+
+          image_url:
+            imagePath
+
+        });
+
+
+      if (error) {
+
+        /*
+
+          Si l'insertion échoue après
+          l'upload, on tente de supprimer
+          l'image pour éviter un fichier inutile.
+
+        */
+
+        if (imagePath) {
+
+          await supabaseClient
+            .storage
+            .from("post-images")
+            .remove([
+              imagePath
+            ]);
+
+        }
+
+
+        throw error;
+
+      }
+
+
+      contentInput.value = "";
+
+      removeSelectedPhoto();
+
+
+      showStatus(
+        "Publication créée avec succès !",
+        "success"
+      );
+
+
+      await loadFeed();
+
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Erreur publication :",
+        error
+      );
+
+
+      showStatus(
+        "Impossible de publier : " +
+        error.message,
+        "error"
+      );
+
+    } finally {
+
+      button.disabled = false;
+
+      button.textContent =
+        "Publier";
+
+    }
+
+  }
+
+
+  /* ============================================================
+     FOCUS PUBLICATION
+  ============================================================ */
+
+  function focusPublisher() {
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+
+    setTimeout(() => {
+
+      document
+        .getElementById(
+          "post-content"
+        )
+        ?.focus();
+
+    }, 400);
+
+  }
+
+
+  /* ============================================================
+     PROFIL
+  ============================================================ */
+
+  function goToProfile() {
+
+    window.location.href =
+      "profil.html";
+
+  }
+
+
+  /* ============================================================
+     DECONNEXION
+  ============================================================ */
+
+  async function logout() {
+
+    try {
+
+      const {
+        error
+      } = await supabaseClient
+        .auth
+        .signOut({
+          scope: "local"
+        });
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      window.location.href =
+        "connexion.html";
+
+    } catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        "Impossible de se déconnecter : " +
+        error.message,
+        "error"
+      );
+
+    }
+
+  }
+
+
+  /* ============================================================
+     MESSAGE
+  ============================================================ */
+
+  function showStatus(
+    message,
+    type = "success"
+  ) {
+
+    const element =
+      document.getElementById(
+        "global-status"
+      );
+
+
+    element.textContent =
+      message;
+
+
+    element.className =
+      "status " + type;
+
+
+    clearTimeout(
+      window.statusTimer
+    );
+
+
+    window.statusTimer =
+      setTimeout(() => {
+
+        element.className =
+          "status";
+
+        element.textContent =
+          "";
+
+      }, 5000);
+
+  }
+
+
+  function showNotice(
+    message
+  ) {
+
+    showStatus(
+      message,
+      "success"
+    );
+
+  }
+
+
+  /* ============================================================
+     UTILITAIRES
+  ============================================================ */
+
+  function getInitials(
+    name
+  ) {
+
+    const parts =
+      String(name || "")
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+
+
+    if (parts.length === 0) {
+
+      return "A";
+
+    }
+
+
+    if (parts.length === 1) {
+
+      return parts[0]
+        .substring(0, 2)
+        .toUpperCase();
+
+    }
+
+
+    return (
+      parts[0][0] +
+      parts[parts.length - 1][0]
+    ).toUpperCase();
+
+  }
+
+
+  function formatDate(
+    value
+  ) {
+
+    if (!value) {
+
+      return "";
+
+    }
+
+
+    const date =
+      new Date(value);
+
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+
+      return "";
+
+    }
+
+
+    const now =
+      new Date();
+
+
+    const difference =
+      now.getTime() -
+      date.getTime();
+
+
+    const seconds =
+      Math.floor(
+        difference / 1000
+      );
+
+
+    if (seconds < 60) {
+
+      return "À l'instant";
+
+    }
+
+
+    const minutes =
+      Math.floor(
+        seconds / 60
+      );
+
+
+    if (minutes < 60) {
+
+      return (
+        `Il y a ${minutes} min`
+      );
+
+    }
+
+
+    const hours =
+      Math.floor(
+        minutes / 60
+      );
+
+
+    if (hours < 24) {
+
+      return (
+        `Il y a ${hours} h`
+      );
+
+    }
+
+
+    const days =
+      Math.floor(
+        hours / 24
+      );
+
+
+    if (days < 7) {
+
+      return (
+        `Il y a ${days} jour${days > 1 ? "s" : ""}`
+      );
+
+    }
+
+
+    return date.toLocaleDateString(
+      "fr-FR",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      }
+    );
+
+  }
+
+
+  function getExtension(
+    fileName,
+    mimeType
+  ) {
+
+    const parts =
+      String(fileName || "")
+        .split(".");
+
+
+    const extension =
+      parts.length > 1
+        ? parts.pop().toLowerCase()
+        : "";
+
+
+    if (
+      ["jpg", "jpeg", "png", "webp"]
+        .includes(extension)
+    ) {
+
+      return extension === "jpeg"
+        ? "jpg"
+        : extension;
+
+    }
+
+
+    if (
+      mimeType === "image/png"
+    ) {
+
+      return "png";
+
+    }
+
+
+    if (
+      mimeType === "image/webp"
+    ) {
+
+      return "webp";
+
+    }
+
+
+    return "jpg";
+
+  }
+
+
+  /* ============================================================
+     SECURITE AFFICHAGE TEXTE
+  ============================================================ */
+
+  function escapeHtml(
+    value
+  ) {
+
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  }
+
+
+  function escapeAttribute(
+    value
+  ) {
+
+    return escapeHtml(
+      value
+    );
+
+  }
+
+</script>
 
 </body>
 </html>
