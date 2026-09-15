@@ -1,1 +1,1837 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cercle des Agents — Cercles</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #07111f;
+      --bg2: #0f172a;
+      --card: #102238;
+      --card2: #142b44;
+      --border: rgba(255,255,255,.09);
+      --text: #f8fafc;
+      --muted: #9fb0c5;
+      --blue: #1683ff;
+      --blue-dark: #075985;
+      --gold: #f5b942;
+      --orange: #f59e0b;
+      --green: #25c481;
+      --red: #ef5350;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(7,89,133,.45),
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          #07111f,
+          #0f172a 55%,
+          #172554
+        );
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =====================================================
+       TOPBAR
+    ===================================================== */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      height: 70px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 8px 22px;
+
+      background: rgba(7,17,31,.94);
+      backdrop-filter: blur(16px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      border-radius: 12px;
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 900;
+
+      white-space: nowrap;
+    }
+
+    .brand-subtitle {
+      margin-top: 3px;
+
+      color: var(--gold);
+
+      font-size: 11px;
+
+      white-space: nowrap;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .top-btn {
+      border: 1px solid var(--border);
+
+      background: rgba(255,255,255,.05);
+
+      color: var(--text);
+
+      padding: 10px 14px;
+
+      border-radius: 12px;
+
+      font-weight: 800;
+    }
+
+    .top-btn:hover {
+      background: rgba(255,255,255,.09);
+    }
+
+    /* =====================================================
+       PAGE
+    ===================================================== */
+
+    .page {
+      width: min(1180px, calc(100% - 24px));
+
+      margin: 24px auto 100px;
+    }
+
+    .hero {
+      position: relative;
+
+      padding: 28px;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(7,89,133,.55),
+          rgba(16,34,56,.96)
+        );
+
+      border: 1px solid var(--border);
+
+      box-shadow:
+        0 20px 55px rgba(0,0,0,.20);
+
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+
+      position: absolute;
+
+      width: 220px;
+      height: 220px;
+
+      right: -70px;
+      top: -90px;
+
+      border-radius: 50%;
+
+      border: 30px solid rgba(245,185,66,.08);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+      font-weight: 700;
+
+      margin-bottom: 18px;
+    }
+
+    .back-link:hover {
+      color: white;
+    }
+
+    .hero-title {
+      font-size: clamp(27px, 4vw, 40px);
+
+      font-weight: 900;
+
+      line-height: 1.1;
+    }
+
+    .hero-title span {
+      color: var(--gold);
+    }
+
+    .hero-description {
+      max-width: 720px;
+
+      margin-top: 11px;
+
+      color: #cbd5e1;
+
+      font-size: 15px;
+
+      line-height: 1.6;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: 18px;
+    }
+
+    .badge {
+      padding: 8px 11px;
+
+      border-radius: 999px;
+
+      background: rgba(255,255,255,.07);
+
+      border: 1px solid rgba(255,255,255,.08);
+
+      color: #dbeafe;
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* =====================================================
+       TOOLBAR
+    ===================================================== */
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 14px;
+
+      margin: 20px 0;
+    }
+
+    .search {
+      position: relative;
+
+      flex: 1;
+
+      max-width: 600px;
+    }
+
+    .search input {
+      width: 100%;
+
+      padding: 14px 45px 14px 16px;
+
+      border-radius: 14px;
+
+      border: 1px solid var(--border);
+
+      background: rgba(16,34,56,.92);
+
+      color: white;
+
+      outline: none;
+    }
+
+    .search input:focus {
+      border-color: rgba(22,131,255,.7);
+
+      box-shadow:
+        0 0 0 3px rgba(22,131,255,.08);
+    }
+
+    .search-icon {
+      position: absolute;
+
+      right: 15px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: var(--muted);
+    }
+
+    .refresh-btn {
+      border: 1px solid var(--border);
+
+      background: rgba(255,255,255,.06);
+
+      color: white;
+
+      padding: 13px 16px;
+
+      border-radius: 13px;
+
+      font-weight: 800;
+    }
+
+    .refresh-btn:hover {
+      background: rgba(255,255,255,.10);
+    }
+
+    /* =====================================================
+       GRID
+    ===================================================== */
+
+    .circles-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 18px;
+    }
+
+    .circle-card {
+      position: relative;
+
+      display: flex;
+      flex-direction: column;
+
+      min-height: 320px;
+
+      padding: 22px;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(20,43,68,.98),
+          rgba(12,29,48,.98)
+        );
+
+      border: 1px solid var(--border);
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,.18);
+
+      transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+    }
+
+    .circle-card:hover {
+      transform: translateY(-3px);
+
+      border-color:
+        rgba(22,131,255,.35);
+
+      box-shadow:
+        0 22px 48px rgba(0,0,0,.25);
+    }
+
+    .circle-icon {
+      width: 65px;
+      height: 65px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 18px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(7,89,133,.7),
+          rgba(23,37,84,.9)
+        );
+
+      border: 1px solid rgba(255,255,255,.08);
+
+      font-size: 31px;
+
+      margin-bottom: 16px;
+    }
+
+    .circle-name {
+      font-size: 20px;
+
+      font-weight: 900;
+
+      line-height: 1.25;
+    }
+
+    .circle-description {
+      margin-top: 9px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.55;
+
+      flex: 1;
+    }
+
+    .circle-bottom {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+
+      margin-top: 20px;
+    }
+
+    .member-count {
+      color: #cbd5e1;
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+    .circle-actions {
+      display: flex;
+      flex-direction: column;
+
+      gap: 8px;
+
+      width: 150px;
+    }
+
+    .join-btn,
+    .open-btn {
+      width: 100%;
+
+      border-radius: 12px;
+
+      padding: 10px 12px;
+
+      font-weight: 900;
+
+      transition: .18s;
+    }
+
+    .join-btn {
+      border: 0;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--gold),
+          var(--orange)
+        );
+
+      color: #111827;
+    }
+
+    .join-btn:hover {
+      transform: translateY(-1px);
+
+      filter: brightness(1.05);
+    }
+
+    .join-btn.joined {
+      background: rgba(37,196,129,.15);
+
+      color: #8df0c5;
+
+      border: 1px solid rgba(37,196,129,.35);
+    }
+
+    .join-btn.joined:hover {
+      background: rgba(239,83,80,.12);
+
+      color: #ffaaa6;
+
+      border-color: rgba(239,83,80,.35);
+    }
+
+    .open-btn {
+      border: 1px solid rgba(22,131,255,.35);
+
+      background: rgba(22,131,255,.12);
+
+      color: #93c5fd;
+    }
+
+    .open-btn:hover {
+      background: rgba(22,131,255,.20);
+
+      border-color: rgba(22,131,255,.55);
+
+      transform: translateY(-1px);
+    }
+
+    .loading,
+    .empty,
+    .error {
+      grid-column: 1 / -1;
+
+      padding: 45px 20px;
+
+      text-align: center;
+
+      border-radius: 18px;
+
+      background: rgba(16,34,56,.8);
+
+      border: 1px solid var(--border);
+
+      color: var(--muted);
+    }
+
+    .loading {
+      font-weight: 700;
+    }
+
+    .empty-title {
+      color: white;
+
+      font-size: 19px;
+
+      font-weight: 900;
+
+      margin-bottom: 6px;
+    }
+
+    .error {
+      color: #ffb4b1;
+
+      background: rgba(239,83,80,.08);
+
+      border-color: rgba(239,83,80,.25);
+    }
+
+    /* =====================================================
+       INFO
+    ===================================================== */
+
+    .info-section {
+      margin-top: 22px;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 15px;
+    }
+
+    .info-card {
+      padding: 18px;
+
+      border-radius: 17px;
+
+      background: rgba(16,34,56,.76);
+
+      border: 1px solid var(--border);
+    }
+
+    .info-icon {
+      font-size: 24px;
+
+      margin-bottom: 9px;
+    }
+
+    .info-title {
+      font-weight: 900;
+
+      font-size: 15px;
+    }
+
+    .info-text {
+      margin-top: 6px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    .status {
+      position: fixed;
+
+      z-index: 300;
+
+      left: 50%;
+
+      bottom: 85px;
+
+      transform:
+        translateX(-50%)
+        translateY(20px);
+
+      width: min(430px, calc(100% - 30px));
+
+      padding: 13px 16px;
+
+      border-radius: 13px;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition: .25s;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      box-shadow:
+        0 15px 35px rgba(0,0,0,.3);
+    }
+
+    .status.show {
+      opacity: 1;
+
+      transform:
+        translateX(-50%)
+        translateY(0);
+    }
+
+    .status.success {
+      background: #123d30;
+
+      border: 1px solid rgba(37,196,129,.35);
+
+      color: #a7f3d0;
+    }
+
+    .status.error {
+      background: #401d1c;
+
+      border: 1px solid rgba(239,83,80,.35);
+
+      color: #fecaca;
+    }
+
+    /* =====================================================
+       MOBILE NAV
+    ===================================================== */
+
+    .mobile-nav {
+      display: none;
+
+      position: fixed;
+
+      z-index: 200;
+
+      left: 0;
+      right: 0;
+
+      bottom: 0;
+
+      height: 66px;
+
+      background: rgba(7,17,31,.97);
+
+      backdrop-filter: blur(16px);
+
+      border-top: 1px solid var(--border);
+
+      grid-template-columns:
+        repeat(4, 1fr);
+    }
+
+    .mobile-nav a {
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 3px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      font-weight: 700;
+    }
+
+    .mobile-nav a.active {
+      color: var(--gold);
+    }
+
+    .mobile-nav span:first-child {
+      font-size: 19px;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 980px) {
+
+      .circles-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .info-section {
+        grid-template-columns:
+          1fr 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+
+      .topbar {
+        padding: 8px 12px;
+      }
+
+      .brand img {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-title {
+        font-size: 15px;
+      }
+
+      .brand-subtitle {
+        font-size: 10px;
+      }
+
+      .top-actions .top-btn span {
+        display: none;
+      }
+
+      .page {
+        width: 100%;
+
+        margin:
+          0 0 85px;
+      }
+
+      .hero {
+        border-radius: 0;
+
+        padding: 23px 17px;
+
+        border-left: 0;
+        border-right: 0;
+      }
+
+      .toolbar {
+        padding: 0 13px;
+
+        flex-direction: column;
+
+        align-items: stretch;
+      }
+
+      .search {
+        max-width: none;
+      }
+
+      .refresh-btn {
+        width: 100%;
+      }
+
+      .circles-grid {
+        grid-template-columns: 1fr;
+
+        padding: 0 13px;
+
+        gap: 13px;
+      }
+
+      .circle-card {
+        min-height: 275px;
+      }
+
+      .circle-bottom {
+        align-items: flex-end;
+      }
+
+      .circle-actions {
+        width: 145px;
+      }
+
+      .info-section {
+        grid-template-columns: 1fr;
+
+        padding: 0 13px;
+      }
+
+      .mobile-nav {
+        display: grid;
+      }
+    }
+
+    @media (max-width: 430px) {
+
+      .hero-title {
+        font-size: 27px;
+      }
+
+      .hero-description {
+        font-size: 14px;
+      }
+
+      .circle-card {
+        padding: 18px;
+      }
+
+      .circle-bottom {
+        flex-direction: column;
+
+        align-items: stretch;
+      }
+
+      .circle-actions {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================================
+       TOPBAR
+  ====================================================== -->
+
+  <header class="topbar">
+
+    <a
+      href="accueil.html"
+      class="brand"
+    >
+
+      <img
+        src="logo-aigle.png"
+        alt="Cercle des Agents"
+      >
+
+      <div class="brand-text">
+
+        <div class="brand-title">
+          Cercle des Agents
+        </div>
+
+        <div class="brand-subtitle">
+          Unis • Informés • Plus forts
+        </div>
+
+      </div>
+
+    </a>
+
+    <div class="top-actions">
+
+      <a
+        href="accueil.html"
+        class="top-btn"
+      >
+        🏠 <span>Accueil</span>
+      </a>
+
+      <a
+        href="profil.html"
+        class="top-btn"
+      >
+        👤 <span>Profil</span>
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       PAGE
+  ====================================================== -->
+
+  <main class="page">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <a
+          href="accueil.html"
+          class="back-link"
+        >
+          ← Retour à l'accueil
+        </a>
+
+        <h1 class="hero-title">
+          Les <span>cercles</span> professionnels
+        </h1>
+
+        <p class="hero-description">
+          Rejoignez les espaces qui correspondent à votre
+          métier, vos compétences et vos centres d'intérêt
+          professionnels.
+        </p>
+
+        <div class="hero-badges">
+
+          <div class="badge">
+            🛡️ Sécurité privée
+          </div>
+
+          <div class="badge">
+            🤝 Échanges professionnels
+          </div>
+
+          <div class="badge">
+            📚 Formation
+          </div>
+
+          <div class="badge">
+            📢 Opportunités
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TOOLBAR -->
+
+    <div class="toolbar">
+
+      <div class="search">
+
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Rechercher un cercle..."
+          autocomplete="off"
+        >
+
+        <span class="search-icon">
+          🔎
+        </span>
+
+      </div>
+
+      <button
+        id="refreshBtn"
+        class="refresh-btn"
+        type="button"
+      >
+        🔄 Actualiser
+      </button>
+
+    </div>
+
+
+    <!-- CERCLES -->
+
+    <section
+      id="circlesGrid"
+      class="circles-grid"
+    >
+
+      <div class="loading">
+        Chargement des cercles...
+      </div>
+
+    </section>
+
+
+    <!-- INFO -->
+
+    <section class="info-section">
+
+      <article class="info-card">
+
+        <div class="info-icon">
+          🤝
+        </div>
+
+        <div class="info-title">
+          Échangez
+        </div>
+
+        <div class="info-text">
+          Partagez votre expérience et échangez
+          avec d'autres professionnels.
+        </div>
+
+      </article>
+
+
+      <article class="info-card">
+
+        <div class="info-icon">
+          📚
+        </div>
+
+        <div class="info-title">
+          Apprenez
+        </div>
+
+        <div class="info-text">
+          Découvrez des conseils, des formations
+          et des informations utiles à votre métier.
+        </div>
+
+      </article>
+
+
+      <article class="info-card">
+
+        <div class="info-icon">
+          🚀
+        </div>
+
+        <div class="info-title">
+          Évoluez
+        </div>
+
+        <div class="info-text">
+          Développez votre réseau professionnel
+          et découvrez de nouvelles opportunités.
+        </div>
+
+      </article>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       MOBILE NAV
+  ====================================================== -->
+
+  <nav class="mobile-nav">
+
+    <a href="accueil.html">
+      <span>🏠</span>
+      <span>Accueil</span>
+    </a>
+
+    <a href="membres.html">
+      <span>👥</span>
+      <span>Membres</span>
+    </a>
+
+    <a
+      href="cercles.html"
+      class="active"
+    >
+      <span>🛡️</span>
+      <span>Cercles</span>
+    </a>
+
+    <a href="profil.html">
+      <span>👤</span>
+      <span>Profil</span>
+    </a>
+
+  </nav>
+
+
+  <!-- STATUS -->
+
+  <div
+    id="status"
+    class="status"
+  ></div>
+
+
+  <script>
+
+    /* =====================================================
+       SUPABASE
+    ====================================================== */
+
+    const SUPABASE_URL =
+      "https://quzgphbougaujzqrhjza.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+    /* =====================================================
+       VARIABLES
+    ====================================================== */
+
+    let currentUser = null;
+
+    let circles = [];
+
+    let memberships = new Set();
+
+    let memberCounts = {};
+
+
+    /* =====================================================
+       ELEMENTS
+    ====================================================== */
+
+    const circlesGrid =
+      document.getElementById(
+        "circlesGrid"
+      );
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+    const refreshBtn =
+      document.getElementById(
+        "refreshBtn"
+      );
+
+    const statusBox =
+      document.getElementById(
+        "status"
+      );
+
+
+    /* =====================================================
+       UTILITAIRES
+    ====================================================== */
+
+    function escapeHTML(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+
+    function showStatus(
+      message,
+      type = "success"
+    ) {
+
+      statusBox.textContent =
+        message;
+
+      statusBox.className =
+        "status show " + type;
+
+      clearTimeout(
+        showStatus.timer
+      );
+
+      showStatus.timer =
+        setTimeout(() => {
+
+          statusBox.className =
+            "status";
+
+        }, 3500);
+    }
+
+
+    /* =====================================================
+       OUVRIR UN CERCLE
+    ====================================================== */
+
+    function openCircle(circleId) {
+
+      if (!circleId) {
+        return;
+      }
+
+      window.location.href =
+        "cercle.html?id=" +
+        encodeURIComponent(circleId);
+    }
+
+
+    /* =====================================================
+       AUTH
+    ====================================================== */
+
+    async function checkAuth() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.getUser();
+
+      if (
+        error ||
+        !data ||
+        !data.user
+      ) {
+
+        window.location.href =
+          "connexion.html";
+
+        return false;
+      }
+
+      currentUser =
+        data.user;
+
+      return true;
+    }
+
+
+    /* =====================================================
+       CHARGER LES CERCLES
+    ====================================================== */
+
+    async function loadCircles() {
+
+      circlesGrid.innerHTML = `
+        <div class="loading">
+          Chargement des cercles...
+        </div>
+      `;
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("cercles")
+          .select("*")
+          .order(
+            "created_at",
+            {
+              ascending: true
+            }
+          );
+
+      if (error) {
+
+        console.error(
+          "Erreur cercles:",
+          error
+        );
+
+        circlesGrid.innerHTML = `
+          <div class="error">
+            Impossible de charger les cercles.<br><br>
+            ${escapeHTML(error.message)}
+          </div>
+        `;
+
+        return;
+      }
+
+      circles =
+        data || [];
+
+      await Promise.all([
+        loadMemberships(),
+        loadMemberCounts()
+      ]);
+
+      renderCircles();
+    }
+
+
+    /* =====================================================
+       CHARGER LES PARTICIPATIONS
+    ====================================================== */
+
+    async function loadMemberships() {
+
+      memberships =
+        new Set();
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("cercle_members")
+          .select("cercle_id")
+          .eq(
+            "user_id",
+            currentUser.id
+          );
+
+      if (error) {
+
+        console.error(
+          "Erreur membres:",
+          error
+        );
+
+        return;
+      }
+
+      (data || [])
+        .forEach(row => {
+
+          memberships.add(
+            row.cercle_id
+          );
+
+        });
+    }
+
+
+    /* =====================================================
+       COMPTER LES MEMBRES
+    ====================================================== */
+
+    async function loadMemberCounts() {
+
+      memberCounts = {};
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("cercle_members")
+          .select("cercle_id");
+
+      if (error) {
+
+        console.error(
+          "Erreur compteur:",
+          error
+        );
+
+        return;
+      }
+
+      (data || [])
+        .forEach(row => {
+
+          memberCounts[row.cercle_id] =
+            (
+              memberCounts[row.cercle_id]
+              || 0
+            ) + 1;
+
+        });
+    }
+
+
+    /* =====================================================
+       AFFICHER LES CERCLES
+    ====================================================== */
+
+    function renderCircles() {
+
+      const query =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+      const filtered =
+        circles.filter(circle => {
+
+          if (!query) {
+            return true;
+          }
+
+          const text =
+            [
+              circle.nom,
+              circle.description,
+              circle.icone
+            ]
+              .filter(Boolean)
+              .join(" ")
+              .toLowerCase();
+
+          return text.includes(query);
+        });
+
+
+      if (!filtered.length) {
+
+        circlesGrid.innerHTML = `
+          <div class="empty">
+
+            <div class="empty-title">
+              Aucun cercle trouvé
+            </div>
+
+            <div>
+              Essayez une autre recherche.
+            </div>
+
+          </div>
+        `;
+
+        return;
+      }
+
+
+      circlesGrid.innerHTML =
+        filtered.map(circle => {
+
+          const joined =
+            memberships.has(
+              circle.id
+            );
+
+          const count =
+            memberCounts[
+              circle.id
+            ] || 0;
+
+
+          return `
+
+            <article
+              class="circle-card"
+            >
+
+              <div class="circle-icon">
+
+                ${escapeHTML(
+                  circle.icone ||
+                  "🛡️"
+                )}
+
+              </div>
+
+
+              <h2 class="circle-name">
+
+                ${escapeHTML(
+                  circle.nom
+                )}
+
+              </h2>
+
+
+              <p class="circle-description">
+
+                ${escapeHTML(
+                  circle.description ||
+                  "Espace professionnel du Cercle des Agents."
+                )}
+
+              </p>
+
+
+              <div class="circle-bottom">
+
+                <div class="member-count">
+
+                  👥 ${count}
+                  ${
+                    count > 1
+                      ? "membres"
+                      : "membre"
+                  }
+
+                </div>
+
+
+                <div class="circle-actions">
+
+                  <button
+                    type="button"
+                    class="open-btn"
+                    data-open-circle="${escapeHTML(
+                      circle.id
+                    )}"
+                  >
+
+                    👁️ Voir le cercle
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="join-btn ${
+                      joined
+                        ? "joined"
+                        : ""
+                    }"
+                    data-circle-id="${escapeHTML(
+                      circle.id
+                    )}"
+                    data-joined="${
+                      joined
+                        ? "true"
+                        : "false"
+                    }"
+                  >
+
+                    ${
+                      joined
+                        ? "✓ Membre"
+                        : "＋ Rejoindre"
+                    }
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </article>
+
+          `;
+
+        }).join("");
+
+
+      /* =====================================================
+         BOUTONS OUVRIR
+      ====================================================== */
+
+      document
+        .querySelectorAll(
+          "[data-open-circle]"
+        )
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              openCircle(
+                button.dataset.openCircle
+              );
+
+            }
+          );
+
+        });
+
+
+      /* =====================================================
+         BOUTONS REJOINDRE / QUITTER
+      ====================================================== */
+
+      document
+        .querySelectorAll(
+          ".join-btn"
+        )
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              toggleMembership(
+                button.dataset.circleId
+              );
+
+            }
+          );
+
+        });
+    }
+
+
+    /* =====================================================
+       REJOINDRE / QUITTER
+    ====================================================== */
+
+    async function toggleMembership(
+      circleId
+    ) {
+
+      if (!circleId) {
+        return;
+      }
+
+
+      const alreadyMember =
+        memberships.has(
+          circleId
+        );
+
+
+      /* -----------------------------------------------------
+         QUITTER
+      ----------------------------------------------------- */
+
+      if (alreadyMember) {
+
+        const confirmLeave =
+          confirm(
+            "Voulez-vous quitter ce cercle ?"
+          );
+
+        if (!confirmLeave) {
+          return;
+        }
+
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("cercle_members")
+            .delete()
+            .eq(
+              "cercle_id",
+              circleId
+            )
+            .eq(
+              "user_id",
+              currentUser.id
+            );
+
+
+        if (error) {
+
+          console.error(error);
+
+          showStatus(
+            "Impossible de quitter le cercle : " +
+            error.message,
+            "error"
+          );
+
+          return;
+        }
+
+
+        memberships.delete(
+          circleId
+        );
+
+
+        if (
+          memberCounts[circleId] &&
+          memberCounts[circleId] > 0
+        ) {
+
+          memberCounts[circleId]--;
+
+        }
+
+
+        showStatus(
+          "Vous avez quitté le cercle."
+        );
+
+        renderCircles();
+
+        return;
+      }
+
+
+      /* -----------------------------------------------------
+         REJOINDRE
+      ----------------------------------------------------- */
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("cercle_members")
+          .insert({
+
+            cercle_id:
+              circleId,
+
+            user_id:
+              currentUser.id
+
+          });
+
+
+      if (error) {
+
+        console.error(error);
+
+
+        if (
+          error.code === "23505"
+        ) {
+
+          memberships.add(
+            circleId
+          );
+
+          renderCircles();
+
+          return;
+        }
+
+
+        showStatus(
+          "Impossible de rejoindre le cercle : " +
+          error.message,
+          "error"
+        );
+
+        return;
+      }
+
+
+      memberships.add(
+        circleId
+      );
+
+
+      memberCounts[circleId] =
+        (
+          memberCounts[circleId]
+          || 0
+        ) + 1;
+
+
+      showStatus(
+        "Bienvenue dans ce cercle ! 🎉"
+      );
+
+
+      renderCircles();
+    }
+
+
+    /* =====================================================
+       RECHERCHE
+    ====================================================== */
+
+    searchInput.addEventListener(
+      "input",
+      () => {
+
+        renderCircles();
+
+      }
+    );
+
+
+    /* =====================================================
+       ACTUALISER
+    ====================================================== */
+
+    refreshBtn.addEventListener(
+      "click",
+      async () => {
+
+        refreshBtn.disabled =
+          true;
+
+        refreshBtn.textContent =
+          "⏳ Chargement...";
+
+
+        await loadCircles();
+
+
+        refreshBtn.disabled =
+          false;
+
+        refreshBtn.textContent =
+          "🔄 Actualiser";
+      }
+    );
+
+
+    /* =====================================================
+       INITIALISATION
+    ====================================================== */
+
+    async function init() {
+
+      const authenticated =
+        await checkAuth();
+
+      if (!authenticated) {
+        return;
+      }
+
+      await loadCircles();
+    }
+
+
+    init();
+
+  </script>
+
+</body>
+</html>
