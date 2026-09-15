@@ -1,1069 +1,529 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Cercle des Agents — Modifier mon profil</title>
 
-  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
   <style>
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-
     body {
-
-      font-family:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-      background:
-        radial-gradient(
-          circle at top right,
-          #075985 0%,
-          transparent 35%
-        ),
-        linear-gradient(
-          135deg,
-          #0f172a,
-          #172554
-        );
-
-      color: #f8fafc;
-
+      font-family: Arial, Helvetica, sans-serif;
       min-height: 100vh;
-
+      color: #f8fafc;
+      background:
+        radial-gradient(circle at top, rgba(14,165,233,.18), transparent 35%),
+        linear-gradient(135deg, #07111f, #0f172a, #172554);
       padding: 20px;
     }
 
-
     .container {
-
       width: 100%;
-
-      max-width: 600px;
-
+      max-width: 650px;
       margin: auto;
     }
-
-
-    /* =========================
-       HEADER
-       ========================= */
 
     .header {
-
       text-align: center;
-
-      padding:
-        20px
-        10px
-        25px;
+      padding: 10px 10px 25px;
     }
-
 
     .logo {
-
-      width: 80px;
-
-      height: 80px;
-
-      margin: auto;
-
+      width: 95px;
+      height: 95px;
+      object-fit: contain;
       border-radius: 50%;
-
-      background:
-        linear-gradient(
-          135deg,
-          #facc15,
-          #f97316
-        );
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      font-size: 42px;
-
-      box-shadow:
-        0 10px 30px
-        rgba(0,0,0,.35);
+      margin-bottom: 10px;
     }
-
 
     .header h1 {
-
-      margin-top: 15px;
-
-      font-size: 1.7rem;
-
-      font-weight: 800;
+      font-size: 23px;
     }
-
-
-    .header h1 span {
-
-      color: #facc15;
-    }
-
 
     .header p {
-
-      color: #94a3b8;
-
+      color: #facc15;
+      font-size: 12px;
+      font-weight: bold;
       margin-top: 5px;
     }
 
-
-    /* =========================
-       CARTE
-       ========================= */
-
     .card {
-
-      background:
-        rgba(30, 41, 59, .97);
-
-      border:
-        1px solid #334155;
-
+      background: rgba(16,31,51,.94);
+      border: 1px solid rgba(255,255,255,.09);
       border-radius: 22px;
-
       padding: 25px;
-
-      box-shadow:
-        0 20px 50px
-        rgba(0,0,0,.35);
+      box-shadow: 0 20px 50px rgba(0,0,0,.30);
     }
 
+    /* PHOTO */
 
-    h2 {
-
+    .photo-section {
       text-align: center;
-
       margin-bottom: 25px;
-
-      font-size: 1.4rem;
     }
 
+    .photo-wrapper {
+      width: 125px;
+      height: 125px;
+      margin: auto;
+      position: relative;
+    }
 
-    /* =========================
-       FORMULAIRE
-       ========================= */
+    #avatarPreview {
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #facc15;
+      background: linear-gradient(135deg, #facc15, #f97316);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .initials {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111827;
+      font-size: 38px;
+      font-weight: bold;
+      pointer-events: none;
+    }
+
+    .photo-button {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 11px 18px;
+      border-radius: 12px;
+      background: #172a42;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .photo-button:hover {
+      background: #203b5d;
+    }
+
+    #photoInput {
+      display: none;
+    }
+
+    .photo-info {
+      color: #94a3b8;
+      font-size: 11px;
+      margin-top: 8px;
+    }
+
+    /* FORM */
+
+    .form-group {
+      margin-bottom: 17px;
+    }
 
     label {
-
       display: block;
-
-      color: #cbd5e1;
-
-      font-size: .9rem;
-
-      font-weight: 700;
-
       margin-bottom: 7px;
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: bold;
     }
-
 
     input,
     select,
     textarea {
-
       width: 100%;
-
-      padding: 14px;
-
-      margin-bottom: 17px;
-
+      border: 1px solid rgba(255,255,255,.10);
       border-radius: 12px;
-
-      border:
-        1px solid #475569;
-
-      background: #0f172a;
-
-      color: #f8fafc;
-
-      font-size: 1rem;
+      background: #0b192b;
+      color: white;
+      padding: 13px;
+      outline: none;
+      font-size: 14px;
     }
-
 
     input:focus,
     select:focus,
     textarea:focus {
-
-      outline: none;
-
-      border-color: #facc15;
-
-      box-shadow:
-        0 0 0 2px
-        rgba(250,204,21,.15);
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 2px rgba(14,165,233,.12);
     }
 
-
     textarea {
-
       min-height: 120px;
-
       resize: vertical;
     }
 
-
-    /* =========================
-       EMAIL
-       ========================= */
-
     .email-info {
-
-      background: #172554;
-
-      border:
-        1px solid #334155;
-
-      color: #cbd5e1;
-
-      padding: 13px;
-
+      background: rgba(14,165,233,.08);
+      border: 1px solid rgba(14,165,233,.18);
+      padding: 12px;
       border-radius: 12px;
-
-      margin-bottom: 20px;
-
-      word-break: break-word;
+      color: #bae6fd;
+      font-size: 12px;
+      margin-bottom: 18px;
     }
 
+    .save {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #facc15, #f97316);
+      color: #111827;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-    .email-info strong {
+    .save:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
 
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 17px;
+      color: #93c5fd;
+      font-size: 13px;
+    }
+
+    .back:hover {
       color: #facc15;
     }
 
-
-    /* =========================
-       BOUTONS
-       ========================= */
-
-    button {
-
-      width: 100%;
-
-      padding: 15px;
-
-      border: none;
-
-      border-radius: 12px;
-
-      font-size: 1rem;
-
-      font-weight: 800;
-
-      cursor: pointer;
-
-      margin-top: 5px;
-    }
-
-
-    .save-btn {
-
-      background:
-        linear-gradient(
-          135deg,
-          #facc15,
-          #f59e0b
-        );
-
-      color: #172554;
-    }
-
-
-    .save-btn:hover {
-
-      filter: brightness(1.05);
-    }
-
-
-    .back-btn {
-
-      background: #0284c7;
-
-      color: white;
-
-      margin-top: 12px;
-    }
-
-
-    button:disabled {
-
-      opacity: .6;
-
-      cursor: not-allowed;
-    }
-
-
-    /* =========================
-       MESSAGES
-       ========================= */
-
-    .message {
-
+    #message {
       display: none;
-
-      margin-top: 18px;
-
-      padding: 14px;
-
+      margin-bottom: 18px;
+      padding: 12px;
       border-radius: 12px;
-
       text-align: center;
-
-      line-height: 1.5;
+      font-size: 13px;
     }
-
 
     .success {
-
-      display: block;
-
-      background: #064e3b;
-
-      color: #a7f3d0;
-
-      border:
-        1px solid #10b981;
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.30);
+      color: #86efac;
     }
-
 
     .error {
-
-      display: block;
-
-      background: #7f1d1d;
-
-      color: #fecaca;
-
-      border:
-        1px solid #ef4444;
+      background: rgba(239,68,68,.12);
+      border: 1px solid rgba(239,68,68,.30);
+      color: #fca5a5;
     }
 
+    @media (max-width: 600px) {
+      body {
+        padding: 12px;
+      }
 
-    .loading {
-
-      text-align: center;
-
-      color: #94a3b8;
-
-      padding: 30px;
+      .card {
+        padding: 20px 16px;
+        border-radius: 18px;
+      }
     }
-
-
-    /* =========================
-       FOOTER
-       ========================= */
-
-    footer {
-
-      text-align: center;
-
-      color: #94a3b8;
-
-      margin-top: 20px;
-
-      font-size: .85rem;
-    }
-
-
-    footer strong {
-
-      color: #facc15;
-    }
-
   </style>
-
 </head>
-
 
 <body>
 
+  <div class="container">
 
-<div class="container">
+    <header class="header">
 
+      <img
+        src="logo-aigle.png"
+        class="logo"
+        alt="Cercle des Agents"
+      >
 
-  <!-- =========================
-       HEADER
-       ========================= -->
+      <h1>Modifier mon profil</h1>
 
-  <header class="header">
+      <p>UNIS • INFORMÉS • PLUS FORTS</p>
 
-    <div class="logo">
-      🛡️
-    </div>
-
-
-    <h1>
-      CERCLE<span>DES</span>AGENTS
-    </h1>
+    </header>
 
 
-    <p>
-      Unis • Informés • Plus forts
-    </p>
+    <section class="card">
 
-  </header>
+      <div id="message"></div>
 
 
+      <!-- PHOTO -->
 
-  <!-- =========================
-       CARTE
-       ========================= -->
+      <div class="photo-section">
 
-  <main class="card">
+        <div class="photo-wrapper">
 
+          <img
+            id="avatarPreview"
+            src=""
+            alt="Photo de profil"
+          >
 
-    <h2>
-      ✏️ Modifier mon profil
-    </h2>
+          <div
+            id="initials"
+            class="initials"
+          >
+            CA
+          </div>
 
+        </div>
 
-    <!-- CHARGEMENT -->
+        <label
+          for="photoInput"
+          class="photo-button"
+        >
+          📷 Choisir ma photo
+        </label>
 
-    <div
-      id="loading"
-      class="loading"
-    >
-      Chargement de ton profil...
-    </div>
+        <input
+          id="photoInput"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+        >
 
+        <div class="photo-info">
+          JPG, PNG ou WebP • maximum 5 Mo
+        </div>
 
-
-    <!-- =========================
-         FORMULAIRE
-         ========================= -->
-
-    <form
-      id="profile-form"
-      style="display:none;"
-    >
+      </div>
 
 
       <!-- EMAIL -->
 
       <div class="email-info">
-
-        📧 Adresse e-mail :
-
-        <strong id="email-display">
-          —
-        </strong>
-
+        📧 <strong>E-mail :</strong>
+        <span id="emailDisplay">Chargement...</span>
       </div>
-
 
 
       <!-- PRENOM -->
 
-      <label for="prenom">
-        Prénom *
-      </label>
+      <div class="form-group">
 
+        <label for="prenom">
+          Prénom
+        </label>
 
-      <input
-        type="text"
-        id="prenom"
-        required
-        placeholder="Ex. Jean"
-      >
+        <input
+          type="text"
+          id="prenom"
+          placeholder="Ton prénom"
+        >
 
+      </div>
 
 
       <!-- NOM -->
 
-      <label for="nom">
-        Nom *
-      </label>
+      <div class="form-group">
 
+        <label for="nom">
+          Nom
+        </label>
 
-      <input
-        type="text"
-        id="nom"
-        required
-        placeholder="Ex. Dupont"
-      >
+        <input
+          type="text"
+          id="nom"
+          placeholder="Ton nom"
+        >
 
+      </div>
 
 
       <!-- VILLE -->
 
-      <label for="ville">
-        📍 Ville *
-      </label>
+      <div class="form-group">
 
+        <label for="ville">
+          Ville
+        </label>
 
-      <input
-        type="text"
-        id="ville"
-        required
-        placeholder="Ex. Abidjan"
-      >
+        <input
+          type="text"
+          id="ville"
+          placeholder="Exemple : Abidjan"
+        >
 
+      </div>
 
 
       <!-- ENTREPRISE -->
 
-      <label for="entreprise">
-        🏢 Entreprise
-      </label>
+      <div class="form-group">
 
+        <label for="entreprise">
+          Entreprise
+        </label>
 
-      <input
-        type="text"
-        id="entreprise"
-        placeholder="Ex. GSP Sécurité"
-      >
+        <input
+          type="text"
+          id="entreprise"
+          placeholder="Nom de ton entreprise"
+        >
 
+      </div>
 
 
       <!-- TYPE AGENT -->
 
-      <label for="type_agent">
-        🛡️ Type d'agent *
-      </label>
+      <div class="form-group">
 
+        <label for="type_agent">
+          Type d'agent
+        </label>
 
-      <select
-        id="type_agent"
-        required
-      >
+        <select id="type_agent">
 
-        <option value="">
-          Choisir votre spécialité
-        </option>
+          <option value="">
+            Sélectionner
+          </option>
 
+          <option value="surete">
+            Agent de sûreté
+          </option>
 
-        <option value="commercial">
-          Commercial
-        </option>
+          <option value="securite">
+            Agent de sécurité
+          </option>
 
+          <option value="gardiennage">
+            Agent de gardiennage
+          </option>
 
-        <option value="technique">
-          Technique
-        </option>
+          <option value="controle">
+            Agent de contrôle
+          </option>
 
+          <option value="superviseur">
+            Superviseur
+          </option>
 
-        <option value="support">
-          Support
-        </option>
+          <option value="chef_equipe">
+            Chef d'équipe
+          </option>
 
+          <option value="autre">
+            Autre
+          </option>
 
-        <option value="surveillance">
-          Surveillance
-        </option>
+        </select>
 
-
-        <option value="gardiennage">
-          Gardiennage
-        </option>
-
-
-        <option value="controle_acces">
-          Contrôle d'accès
-        </option>
-
-
-        <option value="evenementiel">
-          Événementiel
-        </option>
-
-
-        <option value="superviseur">
-          Superviseur
-        </option>
-
-
-        <option value="autre">
-          Autre
-        </option>
-
-      </select>
-
+      </div>
 
 
       <!-- PRESENTATION -->
 
-      <label for="presentation">
-        📝 Présentation
-      </label>
+      <div class="form-group">
 
+        <label for="presentation">
+          Présentation
+        </label>
 
-      <textarea
-        id="presentation"
-        placeholder="Présente-toi en quelques mots..."
-      ></textarea>
+        <textarea
+          id="presentation"
+          placeholder="Présente-toi aux autres agents..."
+        ></textarea>
 
+      </div>
 
-
-      <!-- ENREGISTRER -->
 
       <button
-        type="submit"
-        class="save-btn"
-        id="save-btn"
+        class="save"
+        id="saveBtn"
       >
-
-        💾 Enregistrer mes modifications
-
+        💾 Enregistrer les modifications
       </button>
 
 
-
-      <!-- RETOUR -->
-
-      <button
-        type="button"
-        class="back-btn"
-        onclick="window.location.href='profil.html'"
+      <a
+        href="profil.html"
+        class="back"
       >
+        ← Retour à mon profil
+      </a>
 
-        👤 Retour à mon profil
+    </section>
 
-      </button>
+  </div>
 
 
-    </form>
+  <script>
 
+    /* =========================================
+       SUPABASE
+    ========================================= */
 
+    const SUPABASE_URL =
+      "https://quzgphbougaujzqrhjza.supabase.co";
 
-    <!-- MESSAGE -->
+    const SUPABASE_KEY =
+      "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
 
-    <div
-      id="message"
-      class="message"
-    ></div>
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
 
 
-  </main>
+    let currentUser = null;
+    let currentProfile = null;
+    let selectedPhoto = null;
 
 
+    /* =========================================
+       MESSAGE
+    ========================================= */
 
-  <!-- FOOTER -->
+    function showMessage(text, type) {
 
-  <footer>
+      const box =
+        document.getElementById("message");
 
-    Cercledesagents —
+      box.textContent = text;
 
-    <strong>
-      Unis • Informés • Plus forts
-    </strong>
+      box.className = type;
 
-  </footer>
+      box.style.display = "block";
 
-
-</div>
-
-
-
-<script>
-
-
-/* =====================================================
-   CONFIGURATION SUPABASE
-   ===================================================== */
-
-
-const SUPABASE_URL =
-  "https://quzgphbougaujzqrhjza.supabase.co";
-
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
-
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY,
-    {
-      auth: {
-
-        /*
-         * Garder la session lorsque
-         * l'utilisateur change de page.
-         */
-
-        persistSession: true,
-
-        autoRefreshToken: true,
-
-        detectSessionInUrl: true
-
-      }
-    }
-  );
-
-
-
-/* =====================================================
-   ELEMENTS
-   ===================================================== */
-
-
-const loading =
-  document.getElementById("loading");
-
-
-const form =
-  document.getElementById("profile-form");
-
-
-const message =
-  document.getElementById("message");
-
-
-const saveBtn =
-  document.getElementById("save-btn");
-
-
-
-/* =====================================================
-   AFFICHER UN MESSAGE
-   ===================================================== */
-
-
-function showMessage(
-  text,
-  type
-) {
-
-  message.textContent =
-    text;
-
-  message.className =
-    "message " + type;
-
-}
-
-
-
-/* =====================================================
-   RECUPERER LA SESSION
-   ===================================================== */
-
-
-async function getCurrentUser() {
-
-  /*
-   * Première méthode :
-   * récupération de la session locale.
-   */
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient.auth.getSession();
-
-
-  if (error) {
-
-    throw error;
-
-  }
-
-
-  /*
-   * Si une session existe,
-   * on récupère l'utilisateur.
-   */
-
-  if (
-    data &&
-    data.session &&
-    data.session.user
-  ) {
-
-    return data.session.user;
-
-  }
-
-
-  /*
-   * Deuxième vérification :
-   * demander directement à Supabase
-   * l'utilisateur actuellement connecté.
-   */
-
-  const {
-    data: userData,
-    error: userError
-  } =
-    await supabaseClient.auth.getUser();
-
-
-  if (userError) {
-
-    /*
-     * Si aucune session n'existe,
-     * on retourne simplement null.
-     */
-
-    if (
-      userError.message &&
-      userError.message
-        .toLowerCase()
-        .includes("auth session missing")
-    ) {
-
-      return null;
-
-    }
-
-    throw userError;
-
-  }
-
-
-  return userData.user || null;
-
-}
-
-
-
-/* =====================================================
-   CHARGEMENT DU PROFIL
-   ===================================================== */
-
-
-async function loadProfile() {
-
-  try {
-
-
-    /*
-     * Récupérer l'utilisateur connecté.
-     */
-
-    const user =
-      await getCurrentUser();
-
-
-    /*
-     * Aucun utilisateur connecté.
-     */
-
-    if (!user) {
-
-      window.location.href =
-        "connexion.html";
-
-      return;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
 
     }
 
 
-    /*
-     * Afficher l'adresse e-mail.
-     */
+    /* =========================================
+       INIT
+    ========================================= */
 
-    document.getElementById(
-      "email-display"
-    ).textContent =
-      user.email ||
-      "Non renseigné";
+    async function init() {
 
+      const {
+        data,
+        error
+      } = await supabaseClient.auth.getUser();
 
 
-    /*
-     * Récupérer le profil.
-     */
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("profiles")
-        .select(
-          "prenom, nom, email, ville, entreprise, type_agent, presentation"
-        )
-        .eq(
-          "id",
-          user.id
-        )
-        .maybeSingle();
-
-
-    /*
-     * Erreur Supabase.
-     */
-
-    if (error) {
-
-      throw error;
-
-    }
-
-
-
-    /*
-     * Si le profil existe,
-     * remplir le formulaire.
-     */
-
-    if (data) {
-
-
-      document.getElementById(
-        "prenom"
-      ).value =
-        data.prenom || "";
-
-
-      document.getElementById(
-        "nom"
-      ).value =
-        data.nom || "";
-
-
-      document.getElementById(
-        "ville"
-      ).value =
-        data.ville || "";
-
-
-      document.getElementById(
-        "entreprise"
-      ).value =
-        data.entreprise || "";
-
-
-      document.getElementById(
-        "type_agent"
-      ).value =
-        data.type_agent || "";
-
-
-      document.getElementById(
-        "presentation"
-      ).value =
-        data.presentation || "";
-
-    }
-
-
-
-    /*
-     * Cacher le chargement.
-     */
-
-    loading.style.display =
-      "none";
-
-
-    /*
-     * Afficher le formulaire.
-     */
-
-    form.style.display =
-      "block";
-
-
-  }
-
-  catch (error) {
-
-
-    console.error(
-      "Erreur chargement profil :",
-      error
-    );
-
-
-    loading.style.display =
-      "none";
-
-
-    showMessage(
-      "Impossible de charger ton profil : " +
-      (
-        error.message ||
-        "erreur inconnue"
-      ),
-      "error"
-    );
-
-  }
-
-}
-
-
-
-/* =====================================================
-   ENREGISTREMENT DU PROFIL
-   ===================================================== */
-
-
-form.addEventListener(
-  "submit",
-  async function(event) {
-
-    event.preventDefault();
-
-
-    /*
-     * Désactiver le bouton
-     */
-
-    saveBtn.disabled =
-      true;
-
-
-    saveBtn.textContent =
-      "⏳ Enregistrement...";
-
-
-    message.className =
-      "message";
-
-
-    message.textContent =
-      "";
-
-
-
-    try {
-
-
-      /*
-       * Récupérer la session.
-       */
-
-      const user =
-        await getCurrentUser();
-
-
-      /*
-       * Vérifier l'utilisateur.
-       */
-
-      if (!user) {
+      if (error || !data?.user) {
 
         window.location.href =
           "connexion.html";
@@ -1073,264 +533,537 @@ form.addEventListener(
       }
 
 
-
-      /*
-       * Récupérer les données
-       * du formulaire.
-       */
-
-      const prenom =
-        document
-          .getElementById("prenom")
-          .value
-          .trim();
+      currentUser = data.user;
 
 
-      const nom =
-        document
-          .getElementById("nom")
-          .value
-          .trim();
+      document.getElementById("emailDisplay")
+        .textContent =
+          currentUser.email || "";
 
 
-      const ville =
-        document
-          .getElementById("ville")
-          .value
-          .trim();
+      await loadProfile();
+
+    }
 
 
-      const entreprise =
-        document
-          .getElementById("entreprise")
-          .value
-          .trim();
+    /* =========================================
+       CHARGER PROFIL
+    ========================================= */
 
-
-      const type_agent =
-        document
-          .getElementById("type_agent")
-          .value;
-
-
-      const presentation =
-        document
-          .getElementById("presentation")
-          .value
-          .trim();
-
-
-
-      /*
-       * Vérification prénom / nom / ville.
-       */
-
-      if (
-        !prenom ||
-        !nom ||
-        !ville
-      ) {
-
-        throw new Error(
-          "Veuillez renseigner le prénom, le nom et la ville."
-        );
-
-      }
-
-
-
-      /*
-       * Vérification du type d'agent.
-       */
-
-      if (!type_agent) {
-
-        throw new Error(
-          "Veuillez choisir votre type d'agent."
-        );
-
-      }
-
-
-
-      /*
-       * ENREGISTREMENT SUPABASE
-       *
-       * Si le profil existe :
-       * il est mis à jour.
-       *
-       * S'il n'existe pas :
-       * il est créé.
-       */
+    async function loadProfile() {
 
       const {
+        data,
         error
-      } =
-        await supabaseClient
-          .from("profiles")
-          .upsert(
+      } = await supabaseClient
+        .from("profiles")
+        .select(`
+          id,
+          prenom,
+          nom,
+          email,
+          ville,
+          entreprise,
+          type_agent,
+          presentation,
+          avatar_path
+        `)
+        .eq("id", currentUser.id)
+        .maybeSingle();
 
-            {
-
-              id:
-                user.id,
-
-              prenom:
-                prenom,
-
-              nom:
-                nom,
-
-              email:
-                user.email,
-
-              ville:
-                ville,
-
-              entreprise:
-                entreprise ||
-                null,
-
-              type_agent:
-                type_agent,
-
-              presentation:
-                presentation ||
-                null
-
-            },
-
-            {
-              onConflict:
-                "id"
-            }
-
-          );
-
-
-
-      /*
-       * Vérifier l'erreur.
-       */
 
       if (error) {
 
-        throw error;
+        showMessage(
+          "❌ Impossible de charger ton profil : " +
+          error.message,
+          "error"
+        );
+
+        return;
 
       }
 
 
+      currentProfile = data || {};
 
-      /*
-       * Message de succès.
-       */
 
-      showMessage(
-        "✅ Profil enregistré avec succès !",
-        "success"
+      document.getElementById("prenom")
+        .value =
+          currentProfile.prenom || "";
+
+
+      document.getElementById("nom")
+        .value =
+          currentProfile.nom || "";
+
+
+      document.getElementById("ville")
+        .value =
+          currentProfile.ville || "";
+
+
+      document.getElementById("entreprise")
+        .value =
+          currentProfile.entreprise || "";
+
+
+      document.getElementById("type_agent")
+        .value =
+          currentProfile.type_agent || "";
+
+
+      document.getElementById("presentation")
+        .value =
+          currentProfile.presentation || "";
+
+
+      if (currentProfile.avatar_path) {
+
+        displayAvatar(
+          currentProfile.avatar_path
+        );
+
+      } else {
+
+        displayInitials();
+
+      }
+
+    }
+
+
+    /* =========================================
+       INITIALes
+    ========================================= */
+
+    function getInitials() {
+
+      const prenom =
+        document.getElementById("prenom")
+          .value
+          .trim()
+          .charAt(0)
+          .toUpperCase();
+
+      const nom =
+        document.getElementById("nom")
+          .value
+          .trim()
+          .charAt(0)
+          .toUpperCase();
+
+      return (
+        (prenom + nom) || "CA"
+      );
+
+    }
+
+
+    function displayInitials() {
+
+      document.getElementById("avatarPreview")
+        .style.display = "none";
+
+      const initials =
+        document.getElementById("initials");
+
+      initials.textContent =
+        getInitials();
+
+      initials.style.display =
+        "flex";
+
+    }
+
+
+    /* =========================================
+       AFFICHER AVATAR EXISTANT
+    ========================================= */
+
+    function displayAvatar(path) {
+
+      const {
+        data
+      } = supabaseClient
+        .storage
+        .from("avatars")
+        .getPublicUrl(path);
+
+
+      if (data?.publicUrl) {
+
+        const image =
+          document.getElementById("avatarPreview");
+
+        image.src =
+          data.publicUrl;
+
+        image.style.display =
+          "block";
+
+        document.getElementById("initials")
+          .style.display =
+          "none";
+
+      }
+
+    }
+
+
+    /* =========================================
+       CHOIX PHOTO
+    ========================================= */
+
+    document
+      .getElementById("photoInput")
+      .addEventListener(
+        "change",
+        function(event) {
+
+          const file =
+            event.target.files[0];
+
+
+          if (!file) {
+            return;
+          }
+
+
+          /* Vérification format */
+
+          const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+          ];
+
+
+          if (!allowedTypes.includes(file.type)) {
+
+            showMessage(
+              "❌ Format non autorisé. Utilise JPG, PNG ou WebP.",
+              "error"
+            );
+
+            this.value = "";
+
+            return;
+
+          }
+
+
+          /* Vérification taille */
+
+          if (file.size > 5 * 1024 * 1024) {
+
+            showMessage(
+              "❌ La photo dépasse 5 Mo.",
+              "error"
+            );
+
+            this.value = "";
+
+            return;
+
+          }
+
+
+          selectedPhoto = file;
+
+
+          /* Aperçu */
+
+          const reader =
+            new FileReader();
+
+
+          reader.onload =
+            function(e) {
+
+              const image =
+                document.getElementById(
+                  "avatarPreview"
+                );
+
+              image.src =
+                e.target.result;
+
+              image.style.display =
+                "block";
+
+              document.getElementById(
+                "initials"
+              ).style.display =
+                "none";
+
+            };
+
+
+          reader.readAsDataURL(file);
+
+        }
       );
 
 
+    /* =========================================
+       UPLOAD PHOTO
+    ========================================= */
+
+    async function uploadAvatar() {
+
+      if (!selectedPhoto) {
+
+        return currentProfile?.avatar_path || null;
+
+      }
+
+
+      const extension =
+        selectedPhoto.name
+          .split(".")
+          .pop()
+          .toLowerCase();
+
 
       /*
-       * Retour au profil.
-       */
+        Chaque utilisateur possède son propre dossier.
+      */
 
-      setTimeout(
+      const filePath =
+        currentUser.id +
+        "/avatar." +
+        extension;
+
+
+      const {
+        error
+      } = await supabaseClient
+        .storage
+        .from("avatars")
+        .upload(
+          filePath,
+          selectedPhoto,
+          {
+            cacheControl: "3600",
+            upsert: true,
+            contentType: selectedPhoto.type
+          }
+        );
+
+
+      if (error) {
+
+        throw new Error(
+          "Erreur lors de l'envoi de la photo : " +
+          error.message
+        );
+
+      }
+
+
+      return filePath;
+
+    }
+
+
+    /* =========================================
+       ENREGISTRER
+    ========================================= */
+
+    document
+      .getElementById("saveBtn")
+      .addEventListener(
+        "click",
+        async function() {
+
+          const button = this;
+
+
+          button.disabled = true;
+
+          button.textContent =
+            "⏳ Enregistrement...";
+
+
+          try {
+
+            /*
+              1. Envoyer la photo si une nouvelle
+              photo a été sélectionnée.
+            */
+
+            const avatarPath =
+              await uploadAvatar();
+
+
+            /*
+              2. Récupérer les données du formulaire.
+            */
+
+            const profileData = {
+
+              id: currentUser.id,
+
+              prenom:
+                document.getElementById("prenom")
+                  .value
+                  .trim(),
+
+              nom:
+                document.getElementById("nom")
+                  .value
+                  .trim(),
+
+              email:
+                currentUser.email,
+
+              ville:
+                document.getElementById("ville")
+                  .value
+                  .trim(),
+
+              entreprise:
+                document.getElementById("entreprise")
+                  .value
+                  .trim(),
+
+              type_agent:
+                document.getElementById("type_agent")
+                  .value,
+
+              presentation:
+                document.getElementById("presentation")
+                  .value
+                  .trim(),
+
+              avatar_path:
+                avatarPath
+
+            };
+
+
+            /*
+              3. Enregistrer dans profiles.
+            */
+
+            const {
+              error
+            } = await supabaseClient
+              .from("profiles")
+              .upsert(
+                profileData,
+                {
+                  onConflict: "id"
+                }
+              );
+
+
+            if (error) {
+
+              throw new Error(
+                "Impossible d'enregistrer le profil : " +
+                error.message
+              );
+
+            }
+
+
+            currentProfile =
+              profileData;
+
+            selectedPhoto = null;
+
+
+            showMessage(
+              "✅ Ton profil a été mis à jour avec succès !",
+              "success"
+            );
+
+
+            button.textContent =
+              "✅ Profil enregistré";
+
+
+            setTimeout(
+              function() {
+
+                window.location.href =
+                  "profil.html";
+
+              },
+              1200
+            );
+
+
+          } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+              "❌ " + error.message,
+              "error"
+            );
+
+
+            button.disabled =
+              false;
+
+            button.textContent =
+              "💾 Enregistrer les modifications";
+
+          }
+
+        }
+      );
+
+
+    /* =========================================
+       ACTUALISER LES INITIALES
+       PENDANT LA SAISIE
+    ========================================= */
+
+    document
+      .getElementById("prenom")
+      .addEventListener(
+        "input",
         function() {
 
-          window.location.href =
-            "profil.html";
+          if (!selectedPhoto &&
+              !currentProfile?.avatar_path) {
 
-        },
-        1000
+            displayInitials();
+
+          }
+
+        }
       );
 
 
-    }
+    document
+      .getElementById("nom")
+      .addEventListener(
+        "input",
+        function() {
 
-    catch (error) {
+          if (!selectedPhoto &&
+              !currentProfile?.avatar_path) {
 
+            displayInitials();
 
-      console.error(
-        "Erreur sauvegarde profil :",
-        error
+          }
+
+        }
       );
 
 
-      showMessage(
-        "❌ " +
-        (
-          error.message ||
-          "Impossible d'enregistrer le profil."
-        ),
-        "error"
-      );
+    /* =========================================
+       DÉMARRAGE
+    ========================================= */
 
-    }
+    init();
 
-
-    finally {
-
-
-      saveBtn.disabled =
-        false;
-
-
-      saveBtn.textContent =
-        "💾 Enregistrer mes modifications";
-
-    }
-
-  }
-);
-
-
-
-/* =====================================================
-   SURVEILLER LA SESSION SUPABASE
-   ===================================================== */
-
-
-supabaseClient.auth.onAuthStateChange(
-  function(event, session) {
-
-    console.log(
-      "État authentification :",
-      event
-    );
-
-
-    /*
-     * Si Supabase signale explicitement
-     * une déconnexion, retour connexion.
-     */
-
-    if (
-      event === "SIGNED_OUT"
-    ) {
-
-      window.location.href =
-        "connexion.html";
-
-    }
-
-  }
-);
-
-
-
-/* =====================================================
-   DEMARRAGE
-   ===================================================== */
-
-
-loadProfile();
-
-
-</script>
-
+  </script>
 
 </body>
-
 </html>
