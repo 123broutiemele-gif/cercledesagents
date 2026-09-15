@@ -1,276 +1,556 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Cercle des Agents — Mon profil</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
+
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
       background:
-        radial-gradient(circle at top right, #075985 0%, transparent 35%),
-        linear-gradient(135deg, #0f172a, #172554);
+        radial-gradient(
+          circle at top right,
+          #075985 0%,
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          #0f172a,
+          #172554
+        );
+
       color: #f8fafc;
+
       min-height: 100vh;
+
       padding: 20px;
+
     }
+
 
     .container {
+
       width: 100%;
+
       max-width: 600px;
+
       margin: auto;
+
     }
+
 
     .header {
+
       text-align: center;
+
       padding: 25px 10px;
+
     }
+
 
     .logo {
+
       width: 90px;
+
       height: 90px;
+
       margin: 0 auto 15px;
+
       border-radius: 50%;
-      background: linear-gradient(135deg, #facc15, #f97316);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          135deg,
+          #facc15,
+          #f97316
+        );
+
+      box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.35);
+
     }
+
+
+    .logo img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+
+    }
+
 
     .header h1 {
+
       font-size: 1.8rem;
+
       font-weight: 800;
+
     }
+
 
     .header h1 span {
+
       color: #facc15;
+
     }
+
 
     .header p {
+
       color: #94a3b8;
+
       margin-top: 6px;
+
     }
+
 
     .card {
-      background: rgba(30, 41, 59, .96);
-      border: 1px solid #334155;
+
+      background:
+        rgba(30, 41, 59, .96);
+
+      border:
+        1px solid #334155;
+
       border-radius: 22px;
+
       padding: 25px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+
+      box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.35);
+
     }
+
 
     .profile-top {
+
       text-align: center;
+
       margin-bottom: 25px;
+
     }
+
 
     .avatar {
-      width: 110px;
-      height: 110px;
+
+      width: 120px;
+
+      height: 120px;
+
       margin: 0 auto 15px;
+
       border-radius: 50%;
+
       background: #0f172a;
+
       border: 4px solid #facc15;
+
+      overflow: hidden;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: 48px;
+
+      box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.35);
+
     }
+
+
+    .avatar img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+
+    }
+
 
     .profile-top h2 {
+
       font-size: 1.6rem;
+
       margin-top: 8px;
+
     }
+
 
     .badge {
+
       display: inline-block;
+
       margin-top: 10px;
+
       padding: 8px 16px;
+
       border-radius: 999px;
+
       background: #172554;
+
       color: #facc15;
+
       border: 1px solid #facc15;
+
       font-size: .9rem;
+
       font-weight: 700;
+
     }
+
 
     .info {
+
       margin-top: 20px;
+
     }
+
 
     .info-item {
+
       background: #0f172a;
-      border: 1px solid #334155;
+
+      border:
+        1px solid #334155;
+
       border-radius: 14px;
+
       padding: 15px;
+
       margin-bottom: 12px;
+
     }
+
 
     .info-label {
+
       color: #94a3b8;
+
       font-size: .85rem;
+
       margin-bottom: 6px;
+
     }
+
 
     .info-value {
+
       color: #f8fafc;
+
       font-size: 1rem;
+
       word-break: break-word;
+
     }
+
 
     .presentation {
+
       line-height: 1.6;
+
       white-space: pre-wrap;
+
     }
+
 
     .buttons {
+
       margin-top: 25px;
+
       display: grid;
+
       gap: 12px;
+
     }
+
 
     button {
+
       width: 100%;
+
       padding: 15px;
+
       border: none;
+
       border-radius: 12px;
+
       font-size: 1rem;
+
       font-weight: 700;
+
       cursor: pointer;
+
     }
 
-    .home-btn {
-      background: #facc15;
-      color: #172554;
-    }
-
-    .logout-btn {
-      background: #dc2626;
-      color: white;
-    }
 
     .edit-btn {
+
       background: #0284c7;
+
       color: white;
+
     }
+
+
+    .home-btn {
+
+      background: #facc15;
+
+      color: #172554;
+
+    }
+
+
+    .logout-btn {
+
+      background: #dc2626;
+
+      color: white;
+
+    }
+
 
     button:disabled {
+
       opacity: .6;
+
       cursor: not-allowed;
+
     }
+
 
     .message {
+
       margin-top: 18px;
+
       padding: 14px;
+
       border-radius: 12px;
+
       text-align: center;
+
       display: none;
+
       line-height: 1.5;
+
     }
+
 
     .success {
+
       display: block;
+
       background: #064e3b;
+
       color: #a7f3d0;
-      border: 1px solid #10b981;
+
+      border:
+        1px solid #10b981;
+
     }
+
 
     .error {
+
       display: block;
+
       background: #7f1d1d;
+
       color: #fecaca;
-      border: 1px solid #ef4444;
+
+      border:
+        1px solid #ef4444;
+
     }
+
 
     .loading {
+
       text-align: center;
+
       color: #94a3b8;
+
       padding: 30px 10px;
+
     }
+
 
     footer {
+
       text-align: center;
+
       color: #94a3b8;
+
       margin-top: 20px;
+
       font-size: .9rem;
+
       padding-bottom: 20px;
+
     }
 
+
     footer strong {
+
       color: #facc15;
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
+
 
   <header class="header">
 
+
     <div class="logo">
-      🛡️
+
+      <img
+        src="logo-aigle.png"
+        alt="Cercle des Agents"
+      >
+
     </div>
 
+
     <h1>
+
       CERCLE<span>DES</span>AGENTS
+
     </h1>
 
+
     <p>
+
       Unis • Informés • Plus forts
+
     </p>
+
 
   </header>
 
 
   <main class="card">
 
-    <div id="loading" class="loading">
+
+    <div
+      id="loading"
+      class="loading"
+    >
+
       Chargement de ton profil...
+
     </div>
 
 
-    <div id="profile" style="display:none;">
+    <div
+      id="profile"
+      style="display:none;"
+    >
+
 
       <div class="profile-top">
 
-        <div class="avatar">
+
+        <!-- PHOTO DE PROFIL -->
+
+        <div
+          class="avatar"
+          id="avatar-container"
+        >
+
           👤
+
         </div>
+
 
         <h2 id="nom-complet">
+
           —
+
         </h2>
 
-        <div class="badge" id="type-agent">
+
+        <div
+          class="badge"
+          id="type-agent"
+        >
+
           Agent
+
         </div>
+
 
       </div>
 
 
       <div class="info">
 
+
         <div class="info-item">
 
           <div class="info-label">
+
             📧 Adresse e-mail
+
           </div>
 
-          <div class="info-value" id="email">
+          <div
+            class="info-value"
+            id="email"
+          >
+
             —
+
           </div>
 
         </div>
@@ -279,11 +559,18 @@
         <div class="info-item">
 
           <div class="info-label">
+
             📍 Ville
+
           </div>
 
-          <div class="info-value" id="ville">
+          <div
+            class="info-value"
+            id="ville"
+          >
+
             Non renseignée
+
           </div>
 
         </div>
@@ -292,11 +579,18 @@
         <div class="info-item">
 
           <div class="info-label">
+
             🏢 Entreprise
+
           </div>
 
-          <div class="info-value" id="entreprise">
+          <div
+            class="info-value"
+            id="entreprise"
+          >
+
             Non renseignée
+
           </div>
 
         </div>
@@ -305,11 +599,18 @@
         <div class="info-item">
 
           <div class="info-label">
+
             🛡️ Type d'agent
+
           </div>
 
-          <div class="info-value" id="type-agent-detail">
+          <div
+            class="info-value"
+            id="type-agent-detail"
+          >
+
             Non renseigné
+
           </div>
 
         </div>
@@ -318,72 +619,103 @@
         <div class="info-item">
 
           <div class="info-label">
+
             📝 Présentation
+
           </div>
 
-          <div class="info-value presentation" id="presentation">
+          <div
+            class="info-value presentation"
+            id="presentation"
+          >
+
             Aucune présentation renseignée.
+
           </div>
 
         </div>
+
 
       </div>
 
 
       <div class="buttons">
 
-        <!-- MODIFIER LE PROFIL -->
+
         <button
           class="edit-btn"
-          onclick="window.location.href='modifier-profil.html'"
+          onclick="
+            window.location.href='modifier-profil.html'
+          "
         >
+
           ✏️ Modifier mon profil
+
         </button>
 
 
-        <!-- RETOUR À L'ACCUEIL -->
         <button
           class="home-btn"
-          onclick="window.location.href='accueil.html'"
+          onclick="
+            window.location.href='accueil.html'
+          "
         >
+
           🏠 Retour à l'accueil
+
         </button>
 
 
-        <!-- DÉCONNEXION -->
         <button
           class="logout-btn"
           id="logout-btn"
         >
+
           🚪 Se déconnecter
+
         </button>
 
+
       </div>
+
 
     </div>
 
 
-    <div id="message" class="message"></div>
+    <div
+      id="message"
+      class="message"
+    ></div>
+
 
   </main>
 
 
   <footer>
+
     Cercledesagents —
-    <strong>Unis • Informés • Plus forts</strong>
+
+    <strong>
+      Unis • Informés • Plus forts
+    </strong>
+
   </footer>
+
 
 </div>
 
 
 <script>
 
+
 /* ============================================================
    SUPABASE
    ============================================================ */
 
+
 const SUPABASE_URL =
   "https://quzgphbougaujzqrhjza.supabase.co";
+
 
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
@@ -400,26 +732,43 @@ const supabaseClient =
    ELEMENTS
    ============================================================ */
 
+
 const loading =
-  document.getElementById("loading");
+  document.getElementById(
+    "loading"
+  );
+
 
 const profile =
-  document.getElementById("profile");
+  document.getElementById(
+    "profile"
+  );
+
 
 const message =
-  document.getElementById("message");
+  document.getElementById(
+    "message"
+  );
+
 
 const logoutBtn =
-  document.getElementById("logout-btn");
+  document.getElementById(
+    "logout-btn"
+  );
 
 
 /* ============================================================
    MESSAGE
    ============================================================ */
 
-function showMessage(text, type) {
 
-  message.textContent = text;
+function showMessage(
+  text,
+  type
+) {
+
+  message.textContent =
+    text;
 
   message.className =
     "message " + type;
@@ -431,7 +780,13 @@ function showMessage(text, type) {
    VALEUR DE SECOURS
    ============================================================ */
 
-function valeur(data, metadata, champ, valeurDefaut) {
+
+function valeur(
+  data,
+  metadata,
+  champ,
+  valeurDefaut
+) {
 
   if (
     data &&
@@ -439,8 +794,11 @@ function valeur(data, metadata, champ, valeurDefaut) {
     data[champ] !== undefined &&
     String(data[champ]).trim() !== ""
   ) {
+
     return data[champ];
+
   }
+
 
   if (
     metadata &&
@@ -448,10 +806,107 @@ function valeur(data, metadata, champ, valeurDefaut) {
     metadata[champ] !== undefined &&
     String(metadata[champ]).trim() !== ""
   ) {
+
     return metadata[champ];
+
   }
 
+
   return valeurDefaut;
+
+}
+
+
+/* ============================================================
+   AFFICHER PHOTO
+   ============================================================ */
+
+
+function displayAvatar(
+  avatarPath
+) {
+
+  const avatarContainer =
+    document.getElementById(
+      "avatar-container"
+    );
+
+
+  if (!avatarPath) {
+
+    avatarContainer.innerHTML =
+      "👤";
+
+    return;
+
+  }
+
+
+  const {
+    data: avatarData
+  } =
+    supabaseClient
+      .storage
+      .from("avatars")
+      .getPublicUrl(
+        avatarPath
+      );
+
+
+  if (
+    !avatarData ||
+    !avatarData.publicUrl
+  ) {
+
+    avatarContainer.innerHTML =
+      "👤";
+
+    return;
+
+  }
+
+
+  const imageUrl =
+    avatarData.publicUrl +
+    "?v=" +
+    Date.now();
+
+
+  const img =
+    document.createElement(
+      "img"
+    );
+
+
+  img.src =
+    imageUrl;
+
+  img.alt =
+    "Photo de profil";
+
+
+  img.onerror =
+    function() {
+
+      console.error(
+        "Impossible d'afficher l'avatar :",
+        imageUrl
+      );
+
+      avatarContainer.innerHTML =
+        "👤";
+
+    };
+
+
+  avatarContainer.innerHTML =
+    "";
+
+
+  avatarContainer.appendChild(
+    img
+  );
+
 }
 
 
@@ -459,25 +914,36 @@ function valeur(data, metadata, champ, valeurDefaut) {
    CHARGEMENT DU PROFIL
    ============================================================ */
 
+
 async function loadProfile() {
 
+
   try {
+
+
+    /* Utilisateur connecté */
 
     const {
       data: authData,
       error: authError
-    } = await supabaseClient.auth.getUser();
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
 
 
     if (authError) {
+
       throw authError;
+
     }
 
 
-    const user = authData.user;
+    const user =
+      authData.user;
 
 
-    /* Aucun utilisateur connecté */
+    /* Pas connecté */
 
     if (!user) {
 
@@ -485,6 +951,7 @@ async function loadProfile() {
         "connexion.html";
 
       return;
+
     }
 
 
@@ -494,32 +961,29 @@ async function loadProfile() {
     );
 
 
-    /* Métadonnées Auth */
+    /* Métadonnées */
 
     const metadata =
       user.user_metadata || {};
 
 
-    /* Recherche du profil */
+    /* Profil */
 
     const {
       data: profileData,
       error: profileError
-    } = await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .maybeSingle();
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
 
 
     if (profileError) {
 
-      console.error(
-        "Erreur profiles :",
-        profileError
-      );
-
       throw profileError;
+
     }
 
 
@@ -527,7 +991,25 @@ async function loadProfile() {
       profileData || {};
 
 
-    /* Récupération des valeurs */
+    console.log(
+      "Profil récupéré :",
+      data
+    );
+
+
+    /* ========================================================
+       PHOTO
+       ======================================================== */
+
+    displayAvatar(
+      data.avatar_path || null
+    );
+
+
+    /* ========================================================
+       DONNÉES
+       ======================================================== */
+
 
     const prenom =
       valeur(
@@ -537,6 +1019,7 @@ async function loadProfile() {
         ""
       );
 
+
     const nom =
       valeur(
         data,
@@ -545,11 +1028,13 @@ async function loadProfile() {
         ""
       );
 
+
     const email =
       data.email ||
       metadata.email ||
       user.email ||
       "Non renseigné";
+
 
     const ville =
       valeur(
@@ -559,6 +1044,7 @@ async function loadProfile() {
         "Non renseignée"
       );
 
+
     const entreprise =
       valeur(
         data,
@@ -567,6 +1053,7 @@ async function loadProfile() {
         "Non renseignée"
       );
 
+
     const typeAgent =
       valeur(
         data,
@@ -574,6 +1061,7 @@ async function loadProfile() {
         "type_agent",
         "Agent"
       );
+
 
     const presentation =
       valeur(
@@ -584,7 +1072,7 @@ async function loadProfile() {
       );
 
 
-    /* Nom complet */
+    /* Nom */
 
     const nomComplet =
       `${prenom} ${nom}`.trim();
@@ -596,7 +1084,7 @@ async function loadProfile() {
       nomComplet || "Agent";
 
 
-    /* Affichage */
+    /* Email */
 
     document.getElementById(
       "email"
@@ -604,17 +1092,23 @@ async function loadProfile() {
       email;
 
 
+    /* Ville */
+
     document.getElementById(
       "ville"
     ).textContent =
       ville;
 
 
+    /* Entreprise */
+
     document.getElementById(
       "entreprise"
     ).textContent =
       entreprise;
 
+
+    /* Type */
 
     document.getElementById(
       "type-agent"
@@ -628,26 +1122,32 @@ async function loadProfile() {
       typeAgent;
 
 
+    /* Présentation */
+
     document.getElementById(
       "presentation"
     ).textContent =
       presentation;
 
 
-    /* Affichage de la page */
+    /* Affichage */
 
     loading.style.display =
       "none";
 
+
     profile.style.display =
       "block";
 
+
   } catch (error) {
+
 
     console.error(
       "Erreur chargement profil :",
       error
     );
+
 
     loading.style.display =
       "none";
@@ -655,7 +1155,10 @@ async function loadProfile() {
 
     showMessage(
       "Impossible de charger ton profil : " +
-      (error.message || "Erreur inconnue"),
+      (
+        error.message ||
+        "Erreur inconnue"
+      ),
       "error"
     );
 
@@ -668,12 +1171,15 @@ async function loadProfile() {
    DÉCONNEXION
    ============================================================ */
 
+
 logoutBtn.addEventListener(
   "click",
-  async () => {
+  async function() {
+
 
     logoutBtn.disabled =
       true;
+
 
     logoutBtn.textContent =
       "Déconnexion...";
@@ -682,20 +1188,28 @@ logoutBtn.addEventListener(
     const {
       error
     } =
-      await supabaseClient.auth.signOut({
-        scope: "local"
-      });
+      await supabaseClient
+        .auth
+        .signOut({
+          scope: "local"
+        });
 
 
     if (error) {
 
-      console.error(error);
+
+      console.error(
+        error
+      );
+
 
       logoutBtn.disabled =
         false;
 
+
       logoutBtn.textContent =
         "🚪 Se déconnecter";
+
 
       showMessage(
         "Erreur lors de la déconnexion : " +
@@ -703,7 +1217,9 @@ logoutBtn.addEventListener(
         "error"
       );
 
+
       return;
+
     }
 
 
@@ -718,9 +1234,12 @@ logoutBtn.addEventListener(
    DÉMARRAGE
    ============================================================ */
 
+
 loadProfile();
 
+
 </script>
+
 
 </body>
 </html>
