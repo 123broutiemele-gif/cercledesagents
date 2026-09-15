@@ -1,894 +1,914 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cercle des Agents — Membres</title>
+  <title>Cercle des Agents — Membres</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-*{
-  box-sizing:border-box;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:
-    radial-gradient(circle at top,#075985 0%,transparent 35%),
-    linear-gradient(135deg,#0f172a,#172554);
-  color:#fff;
-  min-height:100vh;
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, #075985 0%, transparent 35%),
+        linear-gradient(135deg, #07111f, #0f172a, #172554);
+      color: white;
+      min-height: 100vh;
+    }
 
-header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:rgba(15,23,42,.95);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(255,255,255,.1);
-  padding:12px 16px;
-}
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7, 17, 31, .95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 12px 16px;
+    }
 
-.header-inner{
-  max-width:1100px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+    .topbar-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.logo{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-}
+    .logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #0f172a;
+    }
 
-.brand{
-  flex:1;
-}
+    .brand {
+      flex: 1;
+    }
 
-.brand h1{
-  margin:0;
-  font-size:18px;
-}
+    .brand strong {
+      display: block;
+      font-size: 17px;
+    }
 
-.brand p{
-  margin:3px 0 0;
-  color:#cbd5e1;
-  font-size:12px;
-}
+    .brand span {
+      color: #cbd5e1;
+      font-size: 12px;
+    }
 
-.back{
-  border:0;
-  background:#334155;
-  color:white;
-  padding:10px 13px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:bold;
-}
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px 14px 100px;
+    }
 
-.back:hover{
-  background:#475569;
-}
+    .hero {
+      background: rgba(30, 41, 59, .82);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    }
 
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:22px 15px 50px;
-}
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 25px;
+    }
 
-.hero{
-  background:rgba(30,41,59,.85);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:20px;
-  padding:22px;
-  margin-bottom:18px;
-  box-shadow:0 15px 40px rgba(0,0,0,.25);
-}
+    .hero p {
+      margin: 0;
+      color: #cbd5e1;
+    }
 
-.hero h2{
-  margin:0 0 8px;
-  font-size:25px;
-}
+    .search-box {
+      margin-top: 18px;
+    }
 
-.hero p{
-  margin:0;
-  color:#cbd5e1;
-}
+    .search-box input {
+      width: 100%;
+      padding: 15px 17px;
+      border-radius: 14px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: white;
+      outline: none;
+      font-size: 15px;
+    }
 
-.search-box{
-  margin-top:18px;
-  position:relative;
-}
+    .search-box input:focus {
+      border-color: #facc15;
+      box-shadow: 0 0 0 3px rgba(250,204,21,.1);
+    }
 
-.search-box input{
-  width:100%;
-  padding:15px 18px 15px 46px;
-  border-radius:14px;
-  border:1px solid #475569;
-  background:#0f172a;
-  color:white;
-  font-size:16px;
-  outline:none;
-}
+    .status {
+      margin: 15px 0;
+      padding: 13px 15px;
+      border-radius: 12px;
+      background: rgba(15,23,42,.8);
+      color: #cbd5e1;
+      font-size: 14px;
+    }
 
-.search-box input::placeholder{
-  color:#94a3b8;
-}
+    .status.error {
+      background: rgba(127,29,29,.4);
+      border: 1px solid rgba(248,113,113,.4);
+      color: #fecaca;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
 
-.search-box input:focus{
-  border-color:#facc15;
-  box-shadow:0 0 0 3px rgba(250,204,21,.12);
-}
+    .members {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+    }
 
-.search-icon{
-  position:absolute;
-  left:16px;
-  top:13px;
-  font-size:20px;
-}
+    .member {
+      background: rgba(30,41,59,.88);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 17px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: .2s;
+    }
 
-.count{
-  margin:18px 0 12px;
-  color:#cbd5e1;
-  font-size:14px;
-}
+    .member:hover {
+      transform: translateY(-2px);
+      border-color: rgba(250,204,21,.35);
+    }
 
-.members{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-}
+    .avatar {
+      width: 65px;
+      height: 65px;
+      min-width: 65px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: linear-gradient(135deg, #075985, #1e3a8a);
+      border: 2px solid rgba(250,204,21,.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      font-weight: bold;
+    }
 
-.card{
-  background:rgba(30,41,59,.92);
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:18px;
-  padding:18px;
-  transition:.2s;
-  box-shadow:0 8px 25px rgba(0,0,0,.15);
-}
+    .member-info {
+      min-width: 0;
+      flex: 1;
+    }
 
-.card:hover{
-  transform:translateY(-3px);
-  border-color:rgba(250,204,21,.5);
-}
+    .member-name {
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
 
-.avatar{
-  width:72px;
-  height:72px;
-  border-radius:50%;
-  object-fit:cover;
-  display:block;
-  margin-bottom:13px;
-  border:3px solid #facc15;
-  background:#334155;
-}
+    .member-type {
+      color: #facc15;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
 
-.avatar-letter{
-  width:72px;
-  height:72px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#0369a1,#f59e0b);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:27px;
-  font-weight:bold;
-  margin-bottom:13px;
-}
+    .detail {
+      color: #cbd5e1;
+      font-size: 13px;
+      margin: 4px 0;
+      overflow-wrap: anywhere;
+    }
 
-.name{
-  font-size:19px;
-  font-weight:bold;
-  margin-bottom:7px;
-}
+    .profile-btn {
+      margin-top: 10px;
+      border: none;
+      border-radius: 10px;
+      padding: 9px 12px;
+      background: #facc15;
+      color: #111827;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-.type{
-  display:inline-block;
-  background:rgba(250,204,21,.13);
-  color:#fde68a;
-  border:1px solid rgba(250,204,21,.3);
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:12px;
-  margin-bottom:12px;
-}
+    .profile-btn:active {
+      transform: scale(.97);
+    }
 
-.info{
-  color:#cbd5e1;
-  font-size:14px;
-  line-height:1.6;
-}
+    .empty {
+      text-align: center;
+      padding: 45px 20px;
+      color: #cbd5e1;
+      background: rgba(30,41,59,.7);
+      border-radius: 18px;
+    }
 
-.presentation{
-  margin-top:10px;
-  color:#94a3b8;
-  font-size:13px;
-  line-height:1.5;
-}
+    .back {
+      display: inline-block;
+      margin-bottom: 15px;
+      color: #facc15;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-.profile-btn{
-  width:100%;
-  margin-top:15px;
-  padding:11px;
-  border:0;
-  border-radius:12px;
-  background:#facc15;
-  color:#111827;
-  font-weight:bold;
-  cursor:pointer;
-  font-size:14px;
-}
+    .counter {
+      color: #94a3b8;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
 
-.profile-btn:hover{
-  background:#fde047;
-}
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px 10px 90px;
+      }
 
-.loading,
-.empty,
-.error{
-  text-align:center;
-  padding:40px 20px;
-  background:rgba(30,41,59,.8);
-  border-radius:18px;
-  color:#cbd5e1;
-  grid-column:1 / -1;
-}
+      .hero {
+        padding: 18px;
+      }
 
-.error{
-  color:#fecaca;
-}
+      .hero h1 {
+        font-size: 22px;
+      }
 
-@media(max-width:850px){
-  .members{
-    grid-template-columns:repeat(2,1fr);
-  }
-}
-
-@media(max-width:600px){
-
-  .container{
-    padding:15px 12px 35px;
-  }
-
-  .hero{
-    padding:18px;
-  }
-
-  .hero h2{
-    font-size:21px;
-  }
-
-  .members{
-    grid-template-columns:1fr;
-  }
-
-  .back{
-    padding:9px 10px;
-  }
-
-  .brand h1{
-    font-size:16px;
-  }
-
-  .brand p{
-    font-size:11px;
-  }
-
-}
-</style>
+      .members {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-
-  <div class="header-inner">
-
-    <img
-      src="logo-aigle.png"
-      class="logo"
-      alt="Cercle des Agents"
-    >
-
-    <div class="brand">
-
-      <h1>Cercle des Agents</h1>
-
-      <p>
-        Unis • Informés • Plus forts
-      </p>
-
-    </div>
-
-    <button
-      class="back"
-      onclick="window.location.href='accueil.html'"
-    >
-      ← Accueil
-    </button>
-
-  </div>
-
-</header>
-
-
-<main class="container">
-
-  <section class="hero">
-
-    <h2>
-      👥 Membres du Cercle
-    </h2>
-
-    <p>
-      Retrouvez les agents de sécurité privée inscrits sur le réseau.
-    </p>
-
-    <div class="search-box">
-
-      <span class="search-icon">
-        🔎
-      </span>
-
-      <input
-        type="search"
-        id="searchInput"
-        placeholder="Rechercher un agent, une ville, une entreprise..."
-        autocomplete="off"
+  <header class="topbar">
+    <div class="topbar-inner">
+      <img
+        src="logo-aigle.png"
+        class="logo"
+        alt="Cercle des Agents"
       >
 
+      <div class="brand">
+        <strong>Cercle des Agents</strong>
+        <span>Unis • Informés • Plus forts</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <a href="accueil.html" class="back">
+      ← Retour à l'accueil
+    </a>
+
+    <section class="hero">
+
+      <h1>👥 Les membres</h1>
+
+      <p>
+        Découvrez les agents inscrits sur le Cercle des Agents.
+      </p>
+
+      <div class="search-box">
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="🔎 Rechercher un agent, une ville ou une entreprise..."
+        >
+      </div>
+
+    </section>
+
+    <div id="status" class="status">
+      🔄 Chargement des membres...
     </div>
 
-  </section>
+    <div id="counter" class="counter"></div>
 
+    <section id="members" class="members"></section>
 
-  <div
-    class="count"
-    id="count"
-  >
-    Chargement des membres...
-  </div>
-
-
-  <section
-    id="members"
-    class="members"
-  >
-
-    <div class="loading">
-      ⏳ Chargement des membres...
-    </div>
-
-  </section>
-
-</main>
-
+  </main>
 
 <script>
 
-/* =========================================================
-   SUPABASE
-========================================================= */
+  /* =====================================================
+     SUPABASE
+  ===================================================== */
 
-const SUPABASE_URL =
-  "https://quzgphbougaujzqrhjza.supabase.co";
+  const SUPABASE_URL =
+    "https://quzgphbougaujzqrhjza.supabase.co";
 
-const SUPABASE_KEY =
-  "sb_publishable_Zkqah5_D7E_LKWLMp6ZFm6A_7BOyjCu1";
+  const SUPABASE_KEY =
+    "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
 
-const supabase =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* =========================================================
-   VARIABLES
-========================================================= */
-
-let allMembers = [];
-
-
-/* =========================================================
-   VÉRIFIER LA CONNEXION
-========================================================= */
-
-async function checkUser(){
-
-  const {
-    data,
-    error
-  } = await supabase.auth.getUser();
-
-
-  if(error || !data.user){
-
-    window.location.href =
-      "connexion.html";
-
-    return null;
-  }
-
-
-  return data.user;
-}
-
-
-/* =========================================================
-   CHARGER LES MEMBRES
-========================================================= */
-
-async function loadMembers(){
-
-  const container =
-    document.getElementById("members");
-
-  const count =
-    document.getElementById("count");
-
-
-  container.innerHTML = `
-    <div class="loading">
-      ⏳ Chargement des membres...
-    </div>
-  `;
-
-
-  const {
-    data,
-    error
-  } = await supabase
-    .from("profiles")
-    .select(`
-      id,
-      prenom,
-      nom,
-      ville,
-      entreprise,
-      type_agent,
-      presentation,
-      avatar_path
-    `)
-    .order(
-      "prenom",
-      {
-        ascending:true
-      }
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
     );
 
 
-  if(error){
+  /* =====================================================
+     VARIABLES
+  ===================================================== */
 
-    console.error(
-      "Erreur membres :",
+  let currentUser = null;
+  let allMembers = [];
+
+
+  const membersContainer =
+    document.getElementById("members");
+
+  const statusBox =
+    document.getElementById("status");
+
+  const counter =
+    document.getElementById("counter");
+
+  const searchInput =
+    document.getElementById("searchInput");
+
+
+  /* =====================================================
+     MESSAGE
+  ===================================================== */
+
+  function showStatus(message, error = false) {
+
+    statusBox.textContent = message;
+
+    statusBox.className =
       error
-    );
-
-
-    container.innerHTML = `
-      <div class="error">
-
-        ❌ Impossible de charger les membres.
-
-        <br><br>
-
-        ${escapeHtml(error.message)}
-
-      </div>
-    `;
-
-
-    count.textContent = "";
-
-    return;
+        ? "status error"
+        : "status";
   }
 
 
-  allMembers = data || [];
+  /* =====================================================
+     INITIALISATION
+  ===================================================== */
+
+  async function init() {
+
+    try {
+
+      showStatus("🔐 Vérification de votre connexion...");
+
+      const {
+        data: { user },
+        error: authError
+      } = await supabaseClient.auth.getUser();
 
 
-  renderMembers(
-    allMembers
-  );
+      if (authError) {
 
-}
+        throw new Error(
+          "Erreur d'authentification : " +
+          authError.message
+        );
 
-
-/* =========================================================
-   AFFICHER LES MEMBRES
-========================================================= */
-
-function renderMembers(members){
-
-  const container =
-    document.getElementById("members");
-
-  const count =
-    document.getElementById("count");
+      }
 
 
-  count.textContent =
-    `${members.length} membre${members.length > 1 ? "s" : ""}`;
+      if (!user) {
+
+        showStatus(
+          "⚠️ Vous devez être connecté pour consulter les membres.",
+          true
+        );
+
+        membersContainer.innerHTML = `
+          <div class="empty">
+            <h3>Connexion nécessaire</h3>
+            <p>
+              Connectez-vous pour accéder aux membres.
+            </p>
+
+            <button
+              class="profile-btn"
+              onclick="window.location.href='connexion.html'"
+            >
+              Se connecter
+            </button>
+          </div>
+        `;
+
+        return;
+      }
 
 
-  if(!members.length){
+      currentUser = user;
 
-    container.innerHTML = `
-      <div class="empty">
+      await loadMembers();
 
-        🔎 Aucun membre trouvé.
+    } catch (error) {
 
-      </div>
-    `;
+      console.error("ERREUR INIT :", error);
 
-    return;
+      showStatus(
+        "❌ Impossible d'initialiser la page.\n\n" +
+        error.message,
+        true
+      );
+
+    }
+
   }
 
 
-  container.innerHTML = members
-    .map(member => {
+  /* =====================================================
+     CHARGER LES MEMBRES
+  ===================================================== */
+
+  async function loadMembers() {
+
+    try {
+
+      showStatus("🔄 Chargement des membres...");
+
+
+      /*
+       * IMPORTANT :
+       * On utilise select("*") afin d'éviter qu'un champ
+       * manquant dans la table profiles bloque toute la page.
+       */
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .from("profiles")
+        .select("*")
+        .order("created_at", {
+          ascending: false
+        });
+
+
+      if (error) {
+
+        console.error(
+          "ERREUR SUPABASE PROFILES :",
+          error
+        );
+
+        throw new Error(
+          "Supabase refuse l'accès aux profils.\n\n" +
+          "Message : " +
+          error.message +
+          "\n\n" +
+          "Code : " +
+          (error.code || "inconnu")
+        );
+
+      }
+
+
+      allMembers = data || [];
+
+
+      console.log(
+        "MEMBRES CHARGÉS :",
+        allMembers
+      );
+
+
+      showStatus(
+        "✅ Membres chargés avec succès."
+      );
+
+
+      renderMembers(allMembers);
+
+    } catch (error) {
+
+      console.error(
+        "ERREUR CHARGEMENT MEMBRES :",
+        error
+      );
+
+      showStatus(
+        "❌ ERREUR DE CHARGEMENT DES MEMBRES\n\n" +
+        error.message,
+        true
+      );
+
+      membersContainer.innerHTML = `
+        <div class="empty">
+          <h3>⚠️ Impossible d'afficher les membres</h3>
+
+          <p>
+            L'erreur exacte est affichée dans le message rouge
+            ci-dessus.
+          </p>
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  /* =====================================================
+     AFFICHER LES MEMBRES
+  ===================================================== */
+
+  function renderMembers(members) {
+
+    membersContainer.innerHTML = "";
+
+    counter.textContent =
+      members.length +
+      (members.length > 1
+        ? " membres"
+        : " membre");
+
+
+    if (members.length === 0) {
+
+      membersContainer.innerHTML = `
+        <div class="empty">
+
+          <h3>👥 Aucun membre trouvé</h3>
+
+          <p>
+            Aucun profil n'est actuellement disponible.
+          </p>
+
+        </div>
+      `;
+
+      return;
+    }
+
+
+    members.forEach(member => {
+
+      const card =
+        document.createElement("article");
+
+      card.className = "member";
+
+
+      /* -------------------------
+         NOM
+      ------------------------- */
 
       const prenom =
-        member.prenom || "";
+        member.prenom ||
+        member.first_name ||
+        "";
 
       const nom =
-        member.nom || "";
-
+        member.nom ||
+        member.last_name ||
+        "";
 
       const fullName =
         `${prenom} ${nom}`.trim() ||
-        "Agent";
+        "Agent du Cercle";
 
 
-      const firstLetter =
-        fullName
-          .charAt(0)
-          .toUpperCase();
+      /* -------------------------
+         TYPE D'AGENT
+      ------------------------- */
+
+      const type =
+        formatAgentType(
+          member.type_agent ||
+          member.type ||
+          ""
+        );
 
 
-      let avatar = "";
+      /* -------------------------
+         VILLE
+      ------------------------- */
+
+      const ville =
+        member.ville ||
+        member.city ||
+        "";
 
 
-      /* PHOTO */
+      /* -------------------------
+         ENTREPRISE
+      ------------------------- */
 
-      if(member.avatar_path){
+      const entreprise =
+        member.entreprise ||
+        member.company ||
+        "";
 
-        avatar = `
 
-          <img
-            class="avatar"
-            src="${getAvatarUrl(member.avatar_path)}"
-            alt="Photo de ${escapeHtml(fullName)}"
-            onerror="
-              this.style.display='none';
-              this.nextElementSibling.style.display='flex';
-            "
-          >
+      /* -------------------------
+         PRÉSENTATION
+      ------------------------- */
 
-          <div
-            class="avatar-letter"
-            style="display:none;"
-          >
-            ${escapeHtml(firstLetter)}
+      const presentation =
+        member.presentation ||
+        "";
+
+
+      /* -------------------------
+         AVATAR
+      ------------------------- */
+
+      const avatarPath =
+        member.avatar_path ||
+        member.avatar ||
+        "";
+
+
+      let avatarHTML;
+
+
+      if (avatarPath) {
+
+        const {
+          data: avatarData
+        } = supabaseClient
+          .storage
+          .from("avatars")
+          .getPublicUrl(avatarPath);
+
+
+        if (
+          avatarData &&
+          avatarData.publicUrl
+        ) {
+
+          avatarHTML = `
+            <img
+              src="${escapeHTML(avatarData.publicUrl)}"
+              class="avatar"
+              alt="Photo de ${escapeHTML(fullName)}"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            >
+
+            <div
+              class="avatar"
+              style="display:none;"
+            >
+              ${getInitials(fullName)}
+            </div>
+          `;
+
+        } else {
+
+          avatarHTML = `
+            <div class="avatar">
+              ${getInitials(fullName)}
+            </div>
+          `;
+
+        }
+
+      } else {
+
+        avatarHTML = `
+          <div class="avatar">
+            ${getInitials(fullName)}
           </div>
-
         `;
 
       }
 
-      else{
 
-        avatar = `
+      /* -------------------------
+         HTML
+      ------------------------- */
 
-          <div class="avatar-letter">
-            ${escapeHtml(firstLetter)}
+      card.innerHTML = `
+
+        ${avatarHTML}
+
+        <div class="member-info">
+
+          <div class="member-name">
+            ${escapeHTML(fullName)}
           </div>
-
-        `;
-
-      }
-
-
-      return `
-
-        <article class="card">
-
-          ${avatar}
-
-
-          <div class="name">
-
-            ${escapeHtml(fullName)}
-
-          </div>
-
 
           ${
-            member.type_agent
-            ?
-            `
-              <div class="type">
-
-                🛡️
-                ${escapeHtml(
-                  formatAgentType(
-                    member.type_agent
-                  )
-                )}
-
-              </div>
-            `
-            :
-            ""
+            type
+              ? `
+                <div class="member-type">
+                  🛡️ ${escapeHTML(type)}
+                </div>
+              `
+              : ""
           }
-
-
-          <div class="info">
-
-            ${
-              member.ville
-              ?
-              `
-                📍
-                ${escapeHtml(member.ville)}
-                <br>
-              `
-              :
-              ""
-            }
-
-
-            ${
-              member.entreprise
-              ?
-              `
-                🏢
-                ${escapeHtml(member.entreprise)}
-              `
-              :
-              ""
-            }
-
-          </div>
-
 
           ${
-            member.presentation
-            ?
-            `
-              <div class="presentation">
-
-                ${escapeHtml(
-                  member.presentation
-                )}
-
-              </div>
-            `
-            :
-            ""
+            ville
+              ? `
+                <div class="detail">
+                  📍 ${escapeHTML(ville)}
+                </div>
+              `
+              : ""
           }
 
+          ${
+            entreprise
+              ? `
+                <div class="detail">
+                  🏢 ${escapeHTML(entreprise)}
+                </div>
+              `
+              : ""
+          }
+
+          ${
+            presentation
+              ? `
+                <div class="detail">
+                  💬 ${escapeHTML(
+                    presentation.substring(0, 100)
+                  )}${presentation.length > 100 ? "..." : ""}
+                </div>
+              `
+              : ""
+          }
 
           <button
             class="profile-btn"
-            onclick="openProfile('${member.id}')"
+            onclick="openProfile('${escapeHTML(member.id || "")}')"
           >
-
-            👤 Voir le profil
-
+            Voir le profil
           </button>
 
-
-        </article>
+        </div>
 
       `;
 
-    })
-    .join("");
 
-}
+      membersContainer.appendChild(card);
+
+    });
+
+  }
 
 
-/* =========================================================
-   RECHERCHE
-========================================================= */
+  /* =====================================================
+     RECHERCHE
+  ===================================================== */
 
-document
-  .getElementById("searchInput")
-  .addEventListener(
+  searchInput.addEventListener(
     "input",
-    function(){
+    function() {
 
       const search =
         this.value
-          .trim()
-          .toLowerCase();
+          .toLowerCase()
+          .trim();
 
 
-      if(!search){
+      if (!search) {
 
-        renderMembers(
-          allMembers
-        );
+        renderMembers(allMembers);
 
         return;
       }
 
 
       const filtered =
-        allMembers.filter(
-          member => {
+        allMembers.filter(member => {
 
-            const text = [
+          const text = [
 
-              member.prenom,
-              member.nom,
-              member.ville,
-              member.entreprise,
-              member.type_agent,
-              member.presentation
+            member.prenom,
+            member.nom,
+            member.ville,
+            member.entreprise,
+            member.type_agent,
+            member.presentation
 
-            ]
+          ]
             .filter(Boolean)
             .join(" ")
             .toLowerCase();
 
 
-            return text.includes(
-              search
-            );
+          return text.includes(search);
 
-          }
-        );
+        });
 
 
-      renderMembers(
-        filtered
-      );
+      renderMembers(filtered);
 
     }
   );
 
 
-/* =========================================================
-   URL PHOTO AVATAR
-========================================================= */
+  /* =====================================================
+     PROFIL
+  ===================================================== */
 
-function getAvatarUrl(path){
+  function openProfile(id) {
 
-  if(!path){
+    if (!id) {
 
-    return "";
+      alert(
+        "Ce membre ne possède pas encore d'identifiant de profil."
+      );
+
+      return;
+    }
+
+
+    window.location.href =
+      "profil.html?id=" +
+      encodeURIComponent(id);
+
   }
 
 
-  if(path.startsWith("http")){
+  /* =====================================================
+     TYPE AGENT
+  ===================================================== */
 
-    return path;
+  function formatAgentType(type) {
+
+    const types = {
+
+      surete: "Agent de sûreté",
+
+      securite: "Agent de sécurité",
+
+      surveillance: "Agent de surveillance",
+
+      incendie: "Agent de sécurité incendie",
+
+      cynophile: "Agent cynophile",
+
+      protection: "Agent de protection",
+
+      autre: "Autre"
+
+    };
+
+
+    return types[type] || type;
+
   }
 
 
-  const {
-    data
-  } = supabase.storage
-    .from("avatars")
-    .getPublicUrl(path);
+  /* =====================================================
+     INITIALES
+  ===================================================== */
+
+  function getInitials(name) {
+
+    const parts =
+      name
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
 
 
-  return data.publicUrl;
+    if (parts.length === 1) {
 
-}
+      return parts[0]
+        .substring(0, 2)
+        .toUpperCase();
 
-
-/* =========================================================
-   TYPE D'AGENT
-========================================================= */
-
-function formatAgentType(type){
-
-  const types = {
-
-    surete:
-      "Agent de sûreté",
-
-    securite:
-      "Agent de sécurité",
-
-    incendie:
-      "Agent de sécurité incendie",
-
-    cynophile:
-      "Agent cynophile",
-
-    rondier:
-      "Rondier",
-
-    gardiennage:
-      "Agent de gardiennage",
-
-    autre:
-      "Autre"
-
-  };
+    }
 
 
-  return types[type] || type;
+    return (
+      parts[0][0] +
+      parts[parts.length - 1][0]
+    ).toUpperCase();
 
-}
-
-
-/* =========================================================
-   OUVRIR LE PROFIL
-========================================================= */
-
-function openProfile(id){
-
-  window.location.href =
-    `profil.html?id=${encodeURIComponent(id)}`;
-
-}
-
-
-/* =========================================================
-   PROTECTION HTML
-========================================================= */
-
-function escapeHtml(value){
-
-  return String(
-    value ?? ""
-  )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
-
-}
-
-
-/* =========================================================
-   DÉMARRAGE
-========================================================= */
-
-(async function(){
-
-  const user =
-    await checkUser();
-
-
-  if(!user){
-
-    return;
   }
 
 
-  await loadMembers();
+  /* =====================================================
+     PROTECTION HTML
+  ===================================================== */
 
-})();
+  function escapeHTML(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  /* =====================================================
+     LANCER
+  ===================================================== */
+
+  init();
 
 </script>
 
