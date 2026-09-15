@@ -1,975 +1,1236 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Cercle des Agents — Accueil</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:
-    radial-gradient(circle at top,#075985 0%,transparent 35%),
-    linear-gradient(135deg,#0f172a,#172554);
-  color:white;
-  min-height:100vh;
-}
-
-button,
-input,
-textarea{
-  font-family:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:100;
-  height:68px;
-  background:rgba(15,23,42,.95);
-  backdrop-filter:blur(15px);
-  border-bottom:1px solid rgba(255,255,255,.1);
-}
-
-.topbar-inner{
-  max-width:1250px;
-  height:100%;
-  margin:auto;
-  padding:0 15px;
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.logo{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-}
-
-.brand{
-  min-width:190px;
-}
-
-.brand strong{
-  display:block;
-  font-size:17px;
-}
-
-.brand small{
-  color:#94a3b8;
-  font-size:11px;
-}
-
-.search{
-  flex:1;
-  max-width:480px;
-  margin:auto;
-}
-
-.search input{
-  width:100%;
-  padding:12px 17px;
-  border-radius:25px;
-  border:1px solid #334155;
-  background:#1e293b;
-  color:white;
-  outline:none;
-}
-
-.search input:focus{
-  border-color:#facc15;
-}
-
-.user-mini{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  overflow:hidden;
-  background:#334155;
-  border:2px solid #facc15;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-}
-
-.user-mini img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.layout{
-  max-width:1250px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:220px minmax(0,650px) 260px;
-  gap:18px;
-  padding:20px 15px 80px;
-}
-
-.sidebar,
-.rightbar{
-  position:sticky;
-  top:88px;
-  height:max-content;
-}
-
-.menu{
-  background:rgba(30,41,59,.85);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:18px;
-  padding:10px;
-}
-
-.menu button{
-  width:100%;
-  text-align:left;
-  border:0;
-  background:transparent;
-  color:#e2e8f0;
-  padding:13px 12px;
-  border-radius:12px;
-  margin-bottom:3px;
-  font-size:14px;
-}
-
-.menu button:hover,
-.menu button.active{
-  background:#334155;
-  color:#facc15;
-}
-
-.community{
-  background:rgba(30,41,59,.85);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:18px;
-  padding:18px;
-}
-
-.community h3{
-  margin:0 0 12px;
-}
-
-.community p{
-  color:#cbd5e1;
-  font-size:13px;
-  line-height:1.6;
-}
-
-.center{
-  min-width:0;
-}
-
-.welcome{
-  background:linear-gradient(135deg,#075985,#1e3a8a);
-  border-radius:20px;
-  padding:22px;
-  margin-bottom:16px;
-  border:1px solid rgba(255,255,255,.12);
-}
-
-.welcome h2{
-  margin:0 0 7px;
-}
-
-.welcome p{
-  margin:0;
-  color:#dbeafe;
-}
-
-.composer{
-  background:rgba(30,41,59,.9);
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:18px;
-  padding:17px;
-  margin-bottom:16px;
-}
-
-.composer-top{
-  display:flex;
-  gap:12px;
-}
-
-.composer-avatar{
-  width:45px;
-  height:45px;
-  border-radius:50%;
-  background:#334155;
-  overflow:hidden;
-  flex:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-}
-
-.composer-avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.composer textarea{
-  width:100%;
-  min-height:85px;
-  resize:vertical;
-  background:#0f172a;
-  color:white;
-  border:1px solid #334155;
-  border-radius:14px;
-  padding:13px;
-  outline:none;
-}
-
-.composer textarea:focus{
-  border-color:#facc15;
-}
-
-.location-selected{
-  display:none;
-  background:#0f172a;
-  border:1px solid #475569;
-  border-radius:12px;
-  padding:10px;
-  margin-top:10px;
-  color:#cbd5e1;
-  font-size:13px;
-}
-
-.composer-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:12px;
-}
-
-.action{
-  border:0;
-  border-radius:11px;
-  padding:10px 13px;
-  background:#334155;
-  color:#e2e8f0;
-}
-
-.action:hover{
-  background:#475569;
-}
-
-.publish{
-  margin-left:auto;
-  background:#facc15;
-  color:#111827;
-  font-weight:bold;
-}
-
-.publish:hover{
-  background:#fde047;
-}
-
-.preview{
-  display:none;
-  margin-top:12px;
-  position:relative;
-}
-
-.preview img{
-  max-width:100%;
-  max-height:300px;
-  border-radius:14px;
-  display:block;
-}
-
-.remove-photo{
-  position:absolute;
-  top:8px;
-  right:8px;
-  border:0;
-  background:#dc2626;
-  color:white;
-  width:32px;
-  height:32px;
-  border-radius:50%;
-}
-
-.post{
-  background:rgba(30,41,59,.9);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:18px;
-  padding:17px;
-  margin-bottom:16px;
-}
-
-.post-head{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.post-avatar{
-  width:45px;
-  height:45px;
-  border-radius:50%;
-  background:#334155;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  flex:none;
-}
-
-.post-avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.post-author{
-  flex:1;
-}
-
-.post-author strong{
-  display:block;
-}
-
-.post-date{
-  color:#94a3b8;
-  font-size:11px;
-}
-
-.post-menu{
-  background:transparent;
-  border:0;
-  color:#cbd5e1;
-  font-size:20px;
-}
-
-.post-content{
-  margin-top:14px;
-  white-space:pre-wrap;
-  line-height:1.6;
-  color:#f1f5f9;
-}
-
-.post-image{
-  width:100%;
-  max-height:500px;
-  object-fit:cover;
-  border-radius:14px;
-  margin-top:13px;
-}
-
-.post-location{
-  margin-top:12px;
-  background:#0f172a;
-  border-radius:12px;
-  padding:10px;
-  font-size:13px;
-  color:#cbd5e1;
-}
-
-.post-location a{
-  color:#facc15;
-  text-decoration:none;
-}
-
-.stats{
-  display:flex;
-  gap:18px;
-  color:#94a3b8;
-  font-size:13px;
-  padding:12px 0 8px;
-}
-
-.post-actions{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  border-top:1px solid #334155;
-  border-bottom:1px solid #334155;
-}
-
-.post-actions button{
-  background:transparent;
-  border:0;
-  color:#cbd5e1;
-  padding:11px 5px;
-}
-
-.post-actions button:hover{
-  background:#334155;
-}
-
-.post-actions button.liked{
-  color:#facc15;
-}
-
-.comments{
-  margin-top:12px;
-}
-
-.comment{
-  display:flex;
-  gap:8px;
-  margin-bottom:9px;
-}
-
-.comment-body{
-  background:#0f172a;
-  border-radius:12px;
-  padding:8px 11px;
-  flex:1;
-}
-
-.comment-name{
-  font-weight:bold;
-  font-size:12px;
-}
-
-.comment-text{
-  font-size:13px;
-  color:#cbd5e1;
-  margin-top:3px;
-}
-
-.comment-form{
-  display:flex;
-  gap:7px;
-  margin-top:10px;
-}
-
-.comment-form input{
-  flex:1;
-  background:#0f172a;
-  border:1px solid #334155;
-  color:white;
-  border-radius:12px;
-  padding:10px;
-  outline:none;
-}
-
-.comment-form button{
-  border:0;
-  background:#facc15;
-  color:#111827;
-  border-radius:12px;
-  padding:0 14px;
-  font-weight:bold;
-}
-
-.loading,
-.empty,
-.error{
-  background:rgba(30,41,59,.85);
-  border-radius:18px;
-  padding:35px 20px;
-  text-align:center;
-  color:#cbd5e1;
-}
-
-.error{
-  color:#fecaca;
-}
-
-.mobile-nav{
-  display:none;
-}
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  z-index:300;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.modal-box{
-  width:100%;
-  max-width:430px;
-  background:#1e293b;
-  border-radius:18px;
-  padding:20px;
-}
-
-.modal-box h3{
-  margin-top:0;
-}
-
-.modal-box input{
-  width:100%;
-  padding:12px;
-  background:#0f172a;
-  border:1px solid #475569;
-  color:white;
-  border-radius:10px;
-}
-
-.modal-buttons{
-  display:flex;
-  gap:8px;
-  margin-top:15px;
-}
-
-.modal-buttons button{
-  flex:1;
-  padding:11px;
-  border:0;
-  border-radius:10px;
-}
-
-.cancel{
-  background:#475569;
-  color:white;
-}
-
-.confirm{
-  background:#facc15;
-  color:#111827;
-  font-weight:bold;
-}
-
-@media(max-width:1050px){
-
-  .layout{
-    grid-template-columns:190px minmax(0,1fr);
-  }
-
-  .rightbar{
-    display:none;
-  }
-
-}
-
-@media(max-width:700px){
-
-  .topbar{
-    height:62px;
-  }
-
-  .brand{
-    min-width:0;
-  }
-
-  .brand strong{
-    font-size:14px;
-  }
-
-  .brand small{
-    display:none;
-  }
-
-  .search{
-    display:none;
-  }
-
-  .layout{
-    display:block;
-    padding:12px 10px 85px;
-  }
-
-  .sidebar{
-    display:none;
-  }
-
-  .mobile-nav{
-    display:flex;
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    z-index:200;
-    background:rgba(15,23,42,.97);
-    border-top:1px solid #334155;
-    padding:7px 4px;
-    justify-content:space-around;
-  }
-
-  .mobile-nav button{
-    border:0;
-    background:transparent;
-    color:#cbd5e1;
-    font-size:11px;
-    padding:6px;
-  }
-
-  .mobile-nav button:hover{
-    color:#facc15;
-  }
-
-  .welcome{
-    padding:18px;
-  }
-
-  .composer-actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-  }
-
-  .publish{
-    margin-left:0;
-  }
-
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cercle des Agents — Accueil</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #07111f;
+      --bg2: #0d1b2e;
+      --card: #102238;
+      --card2: #142b44;
+      --blue: #0ea5e9;
+      --blue2: #0284c7;
+      --yellow: #facc15;
+      --orange: #f97316;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(148,163,184,.16);
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(14,165,233,.18), transparent 35%),
+        linear-gradient(135deg, var(--bg), #0f172a 55%, #172554);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================= */
+
+    .topbar {
+      height: 70px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,17,31,.94);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 230px;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .brand-subtitle {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .search-box {
+      flex: 1;
+      max-width: 520px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 43px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: #0b192b;
+      color: white;
+      padding: 0 18px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--blue);
+    }
+
+    .top-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: white;
+      border-radius: 50%;
+      font-size: 18px;
+    }
+
+    .icon-btn:hover {
+      background: var(--card2);
+    }
+
+    .top-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--blue);
+      cursor: pointer;
+      background: #1e293b;
+    }
+
+    /* =========================
+       LAYOUT
+    ========================= */
+
+    .layout {
+      max-width: 1450px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 235px minmax(0, 680px) 270px;
+      gap: 22px;
+      padding: 24px;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar {
+      position: sticky;
+      top: 94px;
+      height: max-content;
+    }
+
+    .nav-card,
+    .info-card {
+      background: rgba(16,34,56,.88);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.15);
+    }
+
+    .nav-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 0;
+      background: transparent;
+      color: #dbeafe;
+      padding: 13px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      text-align: left;
+      margin-bottom: 4px;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: rgba(14,165,233,.14);
+      color: white;
+    }
+
+    .nav-item.active {
+      border-left: 3px solid var(--yellow);
+    }
+
+    .nav-icon {
+      width: 24px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .logout {
+      margin-top: 10px;
+      color: #fca5a5;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main {
+      min-width: 0;
+    }
+
+    .welcome {
+      background:
+        linear-gradient(135deg, rgba(14,165,233,.22), rgba(249,115,22,.12)),
+        var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .welcome h1 {
+      font-size: 24px;
+      margin-bottom: 7px;
+    }
+
+    .welcome p {
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .welcome strong {
+      color: var(--yellow);
+    }
+
+    /* =========================
+       COMPOSER
+    ========================= */
+
+    .composer {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 17px;
+      margin-bottom: 18px;
+    }
+
+    .composer-top {
+      display: flex;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #1e293b;
+      flex-shrink: 0;
+    }
+
+    .composer textarea {
+      flex: 1;
+      min-height: 90px;
+      resize: vertical;
+      background: #0a182a;
+      color: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .composer textarea:focus {
+      border-color: var(--blue);
+    }
+
+    .composer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .composer-btn {
+      border: 1px solid var(--border);
+      background: #0c1b2e;
+      color: #dbeafe;
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 13px;
+    }
+
+    .composer-btn:hover {
+      border-color: var(--blue);
+    }
+
+    .publish-btn {
+      margin-left: auto;
+      border: none;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      color: white;
+      font-weight: bold;
+      border-radius: 11px;
+      padding: 10px 18px;
+    }
+
+    .publish-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .photo-preview {
+      margin-top: 12px;
+      position: relative;
+      display: none;
+    }
+
+    .photo-preview img {
+      width: 100%;
+      max-height: 330px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .remove-preview {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(0,0,0,.75);
+      color: white;
+      font-size: 18px;
+    }
+
+    /* LOCATION */
+
+    .location-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 13px;
+      background: #0a182a;
+      border: 1px solid var(--border);
+    }
+
+    .location-box button {
+      border: 1px solid var(--border);
+      background: var(--card2);
+      color: white;
+      border-radius: 9px;
+      padding: 9px 11px;
+      margin: 4px;
+      font-size: 12px;
+    }
+
+    .selected-location {
+      margin-top: 8px;
+      color: #bae6fd;
+      font-size: 13px;
+      display: none;
+    }
+
+    /* =========================
+       POST
+    ========================= */
+
+    .feed-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin: 20px 0 12px;
+    }
+
+    .post {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 17px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .post-author {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .post-author strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .post-meta {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    .post-menu {
+      position: relative;
+    }
+
+    .menu-btn {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      color: #cbd5e1;
+      font-size: 20px;
+      border-radius: 50%;
+    }
+
+    .menu-btn:hover {
+      background: rgba(255,255,255,.08);
+    }
+
+    .menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 38px;
+      z-index: 20;
+      width: 150px;
+      background: #0b192b;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,.4);
+    }
+
+    .menu button {
+      width: 100%;
+      padding: 11px;
+      background: transparent;
+      color: white;
+      border: 0;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .menu button:hover {
+      background: rgba(255,255,255,.08);
+    }
+
+    .menu .delete {
+      color: #fca5a5;
+    }
+
+    .post-content {
+      margin-top: 13px;
+      line-height: 1.55;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .post-image {
+      width: 100%;
+      max-height: 520px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin-top: 13px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+
+    .post-location {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 11px;
+      color: #7dd3fc;
+      font-size: 12px;
+    }
+
+    .post-location a {
+      color: #7dd3fc;
+    }
+
+    .post-stats {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 12px 2px 9px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .post-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      padding-top: 7px;
+    }
+
+    .post-action {
+      border: 0;
+      background: transparent;
+      color: #cbd5e1;
+      padding: 9px 4px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    .post-action:hover {
+      background: rgba(255,255,255,.06);
+    }
+
+    .post-action.liked {
+      color: #38bdf8;
+      font-weight: bold;
+    }
+
+    /* COMMENTS */
+
+    .comments {
+      margin-top: 9px;
+      display: none;
+    }
+
+    .comment-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .comment {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .comment .avatar {
+      width: 32px;
+      height: 32px;
+    }
+
+    .comment-bubble {
+      background: #0b192b;
+      border-radius: 12px;
+      padding: 8px 10px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .comment-bubble strong {
+      font-size: 12px;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .comment-bubble p {
+      font-size: 12px;
+      color: #dbeafe;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .comment-input-row {
+      display: flex;
+      gap: 7px;
+      margin-top: 9px;
+    }
+
+    .comment-input {
+      flex: 1;
+      min-width: 0;
+      background: #0a182a;
+      color: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 9px 13px;
+      outline: none;
+    }
+
+    .comment-send {
+      width: 40px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+    }
+
+    /* =========================
+       RIGHT SIDEBAR
+    ========================= */
+
+    .rightbar {
+      position: sticky;
+      top: 94px;
+      height: max-content;
+    }
+
+    .info-card {
+      margin-bottom: 15px;
+    }
+
+    .info-card h3 {
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .info-card p {
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .info-link {
+      display: block;
+      padding: 9px 0;
+      color: #7dd3fc;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-link:last-child {
+      border-bottom: 0;
+    }
+
+    /* =========================
+       EMPTY / LOADING
+    ========================= */
+
+    .loading,
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(255,255,255,.15);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: auto auto 12px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 999;
+      max-width: 350px;
+      background: #07111f;
+      color: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 16px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.4);
+      display: none;
+      font-size: 13px;
+    }
+
+    .toast.success {
+      border-color: rgba(34,197,94,.5);
+    }
+
+    .toast.error {
+      border-color: rgba(239,68,68,.5);
+    }
+
+    /* =========================
+       MOBILE NAV
+    ========================= */
+
+    .mobile-nav {
+      display: none;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 200px minmax(0, 1fr);
+      }
+
+      .rightbar {
+        display: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        height: 62px;
+        padding: 0 12px;
+      }
+
+      .brand {
+        min-width: auto;
+      }
+
+      .brand img {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-text {
+        display: none;
+      }
+
+      .search-box {
+        display: block;
+      }
+
+      .search-box input {
+        height: 39px;
+        font-size: 12px;
+      }
+
+      .top-actions .icon-btn {
+        display: none;
+      }
+
+      .top-avatar {
+        width: 39px;
+        height: 39px;
+      }
+
+      .layout {
+        display: block;
+        padding: 13px 10px 85px;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        width: 100%;
+      }
+
+      .welcome {
+        padding: 17px;
+      }
+
+      .welcome h1 {
+        font-size: 20px;
+      }
+
+      .composer {
+        padding: 13px;
+      }
+
+      .composer textarea {
+        min-height: 80px;
+      }
+
+      .publish-btn {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .post {
+        padding: 13px;
+        border-radius: 15px;
+      }
+
+      .post-image {
+        max-height: 420px;
+      }
+
+      .mobile-nav {
+        display: flex;
+        position: fixed;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        z-index: 200;
+        background: rgba(7,17,31,.96);
+        border: 1px solid var(--border);
+        border-radius: 17px;
+        padding: 7px;
+        justify-content: space-around;
+        backdrop-filter: blur(15px);
+      }
+
+      .mobile-nav button {
+        flex: 1;
+        border: 0;
+        background: transparent;
+        color: #94a3b8;
+        padding: 7px 3px;
+        font-size: 10px;
+      }
+
+      .mobile-nav button span {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 2px;
+      }
+
+      .mobile-nav button.active {
+        color: white;
+      }
+
+      .toast {
+        left: 12px;
+        right: 12px;
+        bottom: 80px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="topbar">
+  <!-- =========================
+       TOPBAR
+  ========================= -->
 
-  <div class="topbar-inner">
+  <header class="topbar">
 
-    <img
-      src="logo-aigle.png"
-      class="logo"
-      alt="Cercle des Agents"
-    >
+    <a href="accueil.html" class="brand">
+      <img src="logo-aigle.png" alt="Cercle des Agents">
 
-    <div class="brand">
-      <strong>Cercle des Agents</strong>
-      <small>Unis • Informés • Plus forts</small>
-    </div>
+      <div class="brand-text">
+        <div class="brand-title">Cercle des Agents</div>
+        <div class="brand-subtitle">Unis • Informés • Plus forts</div>
+      </div>
+    </a>
 
-    <div class="search">
+    <div class="search-box">
       <input
-        id="globalSearch"
         type="search"
-        placeholder="🔎 Rechercher une publication..."
+        id="searchInput"
+        placeholder="Rechercher une publication..."
+        autocomplete="off"
       >
     </div>
 
-    <div
-      class="user-mini"
-      id="topAvatar"
-    >
-      A
-    </div>
-
-  </div>
-
-</header>
-
-
-<main class="layout">
-
-
-  <!-- MENU GAUCHE -->
-
-  <aside class="sidebar">
-
-    <nav class="menu">
-
+    <div class="top-actions">
       <button
-        class="active"
-        onclick="window.location.href='accueil.html'"
-      >
-        🏠 Accueil
-      </button>
-
-      <button
+        class="icon-btn"
+        title="Membres"
         onclick="window.location.href='membres.html'"
       >
-        👥 Membres
+        👥
       </button>
 
       <button
-        onclick="window.location.href='accueil.html#publications'"
-      >
-        📰 Publications
-      </button>
-
-      <button
-        onclick="alert('La messagerie sera disponible prochainement.')"
-      >
-        💬 Messages
-      </button>
-
-      <button
-        onclick="alert('Les notifications seront disponibles prochainement.')"
-      >
-        🔔 Notifications
-      </button>
-
-      <button
+        class="icon-btn"
+        title="Mon profil"
         onclick="window.location.href='profil.html'"
       >
-        👤 Mon profil
+        👤
       </button>
 
-      <button
-        onclick="window.location.href='modifier-profil.html'"
+      <img
+        id="topAvatar"
+        class="top-avatar"
+        src=""
+        alt="Profil"
+        onclick="window.location.href='profil.html'"
       >
-        ⚙️ Modifier mon profil
-      </button>
-
-      <button
-        onclick="logout()"
-      >
-        🚪 Déconnexion
-      </button>
-
-    </nav>
-
-  </aside>
-
-
-  <!-- CENTRE -->
-
-  <section class="center">
-
-
-    <div class="welcome">
-
-      <h2 id="welcomeTitle">
-        Bienvenue 👋
-      </h2>
-
-      <p>
-        Le réseau professionnel des agents de sécurité privée.
-      </p>
-
     </div>
 
+  </header>
 
-    <!-- COMPOSER -->
 
-    <section class="composer">
+  <!-- =========================
+       LAYOUT
+  ========================= -->
 
-      <div class="composer-top">
+  <div class="layout">
 
-        <div
-          class="composer-avatar"
-          id="composerAvatar"
-        >
-          A
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+      <div class="nav-card">
+
+        <button class="nav-item active" onclick="goHome()">
+          <span class="nav-icon">🏠</span>
+          Accueil
+        </button>
+
+        <button class="nav-item" onclick="window.location.href='membres.html'">
+          <span class="nav-icon">👥</span>
+          Membres
+        </button>
+
+        <button class="nav-item" onclick="focusComposer()">
+          <span class="nav-icon">📝</span>
+          Publication
+        </button>
+
+        <button class="nav-item" onclick="showSoon('Messages')">
+          <span class="nav-icon">💬</span>
+          Messages
+        </button>
+
+        <button class="nav-item" onclick="showSoon('Notifications')">
+          <span class="nav-icon">🔔</span>
+          Notifications
+        </button>
+
+        <button class="nav-item" onclick="window.location.href='profil.html'">
+          <span class="nav-icon">👤</span>
+          Mon profil
+        </button>
+
+        <button class="nav-item" onclick="window.location.href='modifier-profil.html'">
+          <span class="nav-icon">⚙️</span>
+          Modifier mon profil
+        </button>
+
+        <button class="nav-item logout" onclick="logout()">
+          <span class="nav-icon">🚪</span>
+          Déconnexion
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main">
+
+      <section class="welcome">
+
+        <h1>
+          Bonjour <strong id="welcomeName">Agent</strong> 👋
+        </h1>
+
+        <p>
+          Bienvenue dans le <strong>Cercle des Agents</strong>,
+          le réseau professionnel des agents de sécurité privée.
+        </p>
+
+      </section>
+
+
+      <!-- =========================
+           COMPOSER
+      ========================= -->
+
+      <section class="composer" id="composer">
+
+        <div class="composer-top">
+
+          <img
+            id="composerAvatar"
+            class="avatar"
+            src=""
+            alt="Profil"
+          >
+
+          <textarea
+            id="postContent"
+            placeholder="Quoi de neuf dans le monde des agents ?"
+          ></textarea>
+
         </div>
 
-        <textarea
-          id="postContent"
-          placeholder="Quoi de neuf dans le monde de la sécurité ?"
-        ></textarea>
+
+        <!-- PHOTO PREVIEW -->
+
+        <div class="photo-preview" id="photoPreview">
+
+          <img id="previewImage" src="" alt="Aperçu">
+
+          <button
+            class="remove-preview"
+            onclick="removeSelectedImage()"
+            type="button"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <!-- LOCATION -->
+
+        <div class="location-box" id="locationBox">
+
+          <button type="button" onclick="useCurrentLocation()">
+            📱 Utiliser ma position
+          </button>
+
+          <button type="button" onclick="enterLocation()">
+            📝 Saisir un lieu
+          </button>
+
+          <button type="button" onclick="clearLocation()">
+            ✕ Annuler
+          </button>
+
+          <div
+            class="selected-location"
+            id="selectedLocation"
+          ></div>
+
+        </div>
+
+
+        <div class="composer-actions">
+
+          <label class="composer-btn">
+            📷 Photo
+            <input
+              class="file-input"
+              type="file"
+              id="imageInput"
+              accept="image/jpeg,image/png,image/webp"
+            >
+          </label>
+
+          <button
+            class="composer-btn"
+            type="button"
+            onclick="toggleLocationBox()"
+          >
+            📍 Localisation
+          </button>
+
+          <button
+            class="composer-btn"
+            type="button"
+            onclick="addEmoji()"
+          >
+            😊 Emoji
+          </button>
+
+          <button
+            class="publish-btn"
+            id="publishBtn"
+            type="button"
+            onclick="publishPost()"
+          >
+            Publier
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <div class="feed-title">
+        Publications récentes
+      </div>
+
+
+      <!-- =========================
+           FEED
+      ========================= -->
+
+      <div id="feed">
+
+        <div class="loading">
+          <div class="spinner"></div>
+          Chargement des publications...
+        </div>
+
+      </div>
+
+    </main>
+
+
+    <!-- =========================
+         RIGHT BAR
+    ========================= -->
+
+    <aside class="rightbar">
+
+      <div class="info-card">
+
+        <h3>🛡️ Cercle des Agents</h3>
+
+        <p>
+          Un espace réservé aux professionnels de la
+          sécurité privée pour échanger, s'informer
+          et développer leur réseau.
+        </p>
 
       </div>
 
 
-      <div
-        class="location-selected"
-        id="locationSelected"
-      ></div>
+      <div class="info-card">
 
+        <h3>👥 Communauté</h3>
 
-      <div
-        class="preview"
-        id="imagePreview"
-      >
-
-        <img
-          id="previewImg"
-          src=""
-          alt="Aperçu"
+        <a
+          class="info-link"
+          href="membres.html"
         >
+          👥 Voir les membres
+        </a>
 
-        <button
-          class="remove-photo"
-          onclick="removePhoto()"
+        <a
+          class="info-link"
+          href="profil.html"
         >
-          ×
-        </button>
+          👤 Mon profil
+        </a>
+
+        <a
+          class="info-link"
+          href="modifier-profil.html"
+        >
+          ⚙️ Modifier mon profil
+        </a>
 
       </div>
 
 
-      <div class="composer-actions">
+      <div class="info-card">
 
-        <button
-          class="action"
-          onclick="document.getElementById('photoInput').click()"
-        >
-          📷 Photo
-        </button>
+        <h3>💡 Conseil</h3>
 
-        <button
-          class="action"
-          onclick="chooseLocation()"
-        >
-          📍 Localisation
-        </button>
-
-        <button
-          class="action"
-          onclick="useMyPosition()"
-        >
-          📱 Ma position
-        </button>
-
-        <button
-          class="action"
-          onclick="manualLocation()"
-        >
-          📝 Saisir un lieu
-        </button>
-
-        <button
-          class="action publish"
-          id="publishBtn"
-          onclick="publishPost()"
-        >
-          Publier
-        </button>
+        <p>
+          Partage des informations utiles,
+          respecte les autres agents et protège
+          les informations sensibles.
+        </p>
 
       </div>
 
-
-      <input
-        type="file"
-        id="photoInput"
-        accept="image/jpeg,image/png,image/webp"
-        style="display:none"
-      >
-
-    </section>
-
-
-    <div id="publications">
-
-      <div
-        class="loading"
-        id="feed"
-      >
-        ⏳ Chargement des publications...
-      </div>
-
-    </div>
-
-
-  </section>
-
-
-  <!-- DROITE -->
-
-  <aside class="rightbar">
-
-    <div class="community">
-
-      <h3>🛡️ Cercle des Agents</h3>
-
-      <p>
-        Une communauté dédiée aux professionnels
-        de la sécurité privée.
-      </p>
-
-      <p>
-        🤝 Échangez<br>
-        📚 Informez-vous<br>
-        💬 Partagez<br>
-        👥 Développez votre réseau
-      </p>
-
-    </div>
-
-  </aside>
-
-</main>
-
-
-<!-- NAVIGATION MOBILE -->
-
-<nav class="mobile-nav">
-
-  <button
-    onclick="window.location.href='accueil.html'"
-  >
-    🏠<br>Accueil
-  </button>
-
-  <button
-    onclick="window.location.href='membres.html'"
-  >
-    👥<br>Membres
-  </button>
-
-  <button
-    onclick="window.location.href='profil.html'"
-  >
-    👤<br>Profil
-  </button>
-
-  <button
-    onclick="window.location.href='modifier-profil.html'"
-  >
-    ⚙️<br>Profil
-  </button>
-
-  <button
-    onclick="logout()"
-  >
-    🚪<br>Sortir
-  </button>
-
-</nav>
-
-
-<!-- MODAL LOCALISATION -->
-
-<div
-  class="modal"
-  id="locationModal"
->
-
-  <div class="modal-box">
-
-    <h3>📍 Ajouter un lieu</h3>
-
-    <input
-      id="locationInput"
-      type="text"
-      placeholder="Exemple : Cocody, Abidjan"
-    >
-
-    <div class="modal-buttons">
-
-      <button
-        class="cancel"
-        onclick="closeLocationModal()"
-      >
-        Annuler
-      </button>
-
-      <button
-        class="confirm"
-        onclick="saveManualLocation()"
-      >
-        Ajouter
-      </button>
-
-    </div>
+    </aside>
 
   </div>
 
-</div>
+
+  <!-- =========================
+       MOBILE NAV
+  ========================= -->
+
+  <nav class="mobile-nav">
+
+    <button
+      class="active"
+      onclick="goHome()"
+    >
+      <span>🏠</span>
+      Accueil
+    </button>
+
+    <button
+      onclick="window.location.href='membres.html'"
+    >
+      <span>👥</span>
+      Membres
+    </button>
+
+    <button
+      onclick="focusComposer()"
+    >
+      <span>➕</span>
+      Publier
+    </button>
+
+    <button
+      onclick="window.location.href='profil.html'"
+    >
+      <span>👤</span>
+      Profil
+    </button>
+
+    <button
+      onclick="logout()"
+    >
+      <span>🚪</span>
+      Sortir
+    </button>
+
+  </nav>
+
+
+  <!-- TOAST -->
+
+  <div id="toast" class="toast"></div>
 
 
 <script>
-
 /* =========================================================
    SUPABASE
 ========================================================= */
@@ -977,10 +1238,14 @@ button{
 const SUPABASE_URL =
   "https://quzgphbougaujzqrhjza.supabase.co";
 
+/*
+ IMPORTANT :
+ Cette clé est la bonne clé publishable.
+*/
 const SUPABASE_KEY =
-  "sb_publishable_Zkqah5_D7E_LKWLMp6ZFm6A_7BOyjCu1";
+  "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
 
-const supabase =
+const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
@@ -993,263 +1258,418 @@ const supabase =
 
 let currentUser = null;
 let currentProfile = null;
+
 let selectedFile = null;
 
-let selectedLocation = {
-  name:null,
-  lat:null,
-  lng:null,
-  type:null
-};
+let selectedLocation = null;
+
+let posts = [];
+
+let searchText = "";
 
 
 /* =========================================================
-   AUTHENTIFICATION
+   AVATAR PAR DÉFAUT
 ========================================================= */
 
-async function checkUser(){
+const DEFAULT_AVATAR =
+  "data:image/svg+xml;charset=UTF-8," +
+  encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="120"
+         height="120"
+         viewBox="0 0 120 120">
+
+      <rect width="120"
+            height="120"
+            fill="#1e293b"/>
+
+      <circle cx="60"
+              cy="43"
+              r="22"
+              fill="#94a3b8"/>
+
+      <path
+        d="M20 110
+           C25 78 42 68 60 68
+           C78 68 95 78 100 110Z"
+        fill="#64748b"/>
+    </svg>
+  `);
+
+
+/* =========================================================
+   INITIALISATION
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async function() {
+
+    setupEvents();
+
+    await checkAuth();
+
+  }
+);
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+function setupEvents() {
+
+  const imageInput =
+    document.getElementById("imageInput");
+
+  if (imageInput) {
+
+    imageInput.addEventListener(
+      "change",
+      handleImageSelection
+    );
+
+  }
+
+
+  const searchInput =
+    document.getElementById("searchInput");
+
+  if (searchInput) {
+
+    searchInput.addEventListener(
+      "input",
+      function(e) {
+
+        searchText =
+          e.target.value
+            .trim()
+            .toLowerCase();
+
+        renderPosts();
+
+      }
+    );
+
+  }
+
+
+  document.addEventListener(
+    "click",
+    function(e) {
+
+      if (!e.target.closest(".post-menu")) {
+
+        document
+          .querySelectorAll(".menu")
+          .forEach(function(menu) {
+
+            menu.style.display = "none";
+
+          });
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+async function checkAuth() {
 
   const {
     data,
     error
-  } = await supabase.auth.getUser();
+  } =
+    await supabaseClient.auth.getUser();
 
-
-  if(error || !data.user){
+  if (
+    error ||
+    !data ||
+    !data.user
+  ) {
 
     window.location.href =
       "connexion.html";
 
-    return null;
+    return;
+
   }
 
+  currentUser =
+    data.user;
 
-  currentUser = data.user;
 
-  return currentUser;
+  await loadProfile();
+
+  await loadPosts();
+
 }
 
 
 /* =========================================================
-   PROFIL
+   PROFILE
 ========================================================= */
 
-async function loadProfile(){
+async function loadProfile() {
 
   const {
     data,
     error
-  } = await supabase
-    .from("profiles")
-    .select(`
-      id,
-      prenom,
-      nom,
-      ville,
-      entreprise,
-      type_agent,
-      presentation,
-      avatar_path
-    `)
-    .eq(
-      "id",
-      currentUser.id
-    )
-    .maybeSingle();
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        id,
+        prenom,
+        nom,
+        ville,
+        entreprise,
+        type_agent,
+        presentation,
+        avatar_path
+      `)
+      .eq("id", currentUser.id)
+      .maybeSingle();
 
 
-  if(error){
+  if (error) {
 
-    console.error(error);
+    console.error(
+      "Erreur profil :",
+      error
+    );
 
-    return;
   }
 
 
-  currentProfile = data;
+  currentProfile =
+    data || {
+      id: currentUser.id,
+      prenom:
+        currentUser.user_metadata?.prenom ||
+        "Agent",
+      nom:
+        currentUser.user_metadata?.nom ||
+        "",
+      avatar_path: null
+    };
 
 
   const firstName =
-    data?.prenom ||
-    currentUser.email?.split("@")[0] ||
+    currentProfile.prenom ||
     "Agent";
 
 
   document.getElementById(
-    "welcomeTitle"
+    "welcomeName"
   ).textContent =
-    `Bienvenue ${firstName} 👋`;
+    firstName;
 
 
-  updateAvatar(
-    "topAvatar",
-    data,
-    firstName
-  );
+  const avatar =
+    getAvatarUrl(
+      currentProfile.avatar_path
+    );
 
 
-  updateAvatar(
-    "composerAvatar",
-    data,
-    firstName
-  );
+  document.getElementById(
+    "topAvatar"
+  ).src = avatar;
+
+
+  document.getElementById(
+    "composerAvatar"
+  ).src = avatar;
 
 }
 
 
 /* =========================================================
-   AVATAR
+   AVATAR URL
 ========================================================= */
 
-function updateAvatar(
-  elementId,
-  profile,
-  name
-){
+function getAvatarUrl(path) {
 
-  const element =
-    document.getElementById(
-      elementId
-    );
+  if (!path) {
 
-
-  if(!element) return;
-
-
-  const letter =
-    String(name)
-      .charAt(0)
-      .toUpperCase();
-
-
-  if(profile?.avatar_path){
-
-    const {
-      data
-    } = supabase.storage
-      .from("avatars")
-      .getPublicUrl(
-        profile.avatar_path
-      );
-
-
-    element.innerHTML = `
-      <img
-        src="${data.publicUrl}"
-        alt="Avatar"
-      >
-    `;
-
-  }else{
-
-    element.textContent =
-      letter;
+    return DEFAULT_AVATAR;
 
   }
 
+
+  if (
+    path.startsWith("http://") ||
+    path.startsWith("https://")
+  ) {
+
+    return path;
+
+  }
+
+
+  const {
+    data
+  } =
+    supabaseClient
+      .storage
+      .from("avatars")
+      .getPublicUrl(path);
+
+
+  return data?.publicUrl ||
+    DEFAULT_AVATAR;
+
 }
 
 
 /* =========================================================
-   CHARGER PUBLICATIONS
+   LOAD POSTS
 ========================================================= */
 
-async function loadPosts(){
+async function loadPosts() {
 
   const feed =
-    document.getElementById(
-      "feed"
-    );
+    document.getElementById("feed");
+
+
+  feed.innerHTML = `
+    <div class="loading">
+      <div class="spinner"></div>
+      Chargement des publications...
+    </div>
+  `;
 
 
   const {
-    data:posts,
+    data,
     error
-  } = await supabase
-    .from("posts")
-    .select(`
-      id,
-      user_id,
-      content,
-      image_url,
-      location_name,
-      location_lat,
-      location_lng,
-      location_type,
-      created_at
-    `)
-    .order(
-      "created_at",
-      {
-        ascending:false
-      }
-    )
-    .limit(30);
+  } =
+    await supabaseClient
+      .from("posts")
+      .select(`
+        id,
+        user_id,
+        content,
+        image_url,
+        created_at,
+        location_name,
+        location_lat,
+        location_lng,
+        location_type
+      `)
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(50);
 
 
-  if(error){
+  if (error) {
 
     console.error(error);
 
     feed.innerHTML = `
-      <div class="error">
+      <div class="empty">
         ❌ Impossible de charger les publications.<br><br>
-        ${escapeHtml(error.message)}
+        <small>
+          ${escapeHtml(error.message)}
+        </small>
       </div>
     `;
 
     return;
+
   }
 
 
-  if(!posts || !posts.length){
+  posts = data || [];
+
+
+  if (!posts.length) {
 
     feed.innerHTML = `
       <div class="empty">
-        📰 Aucune publication pour le moment.<br><br>
+        <div style="font-size:40px;margin-bottom:10px;">
+          📝
+        </div>
+
+        Aucune publication pour le moment.<br>
         Soyez le premier agent à publier !
       </div>
     `;
 
     return;
+
   }
 
 
+  await enrichPosts();
+
+}
+
+
+/* =========================================================
+   ENRICH POSTS
+========================================================= */
+
+async function enrichPosts() {
+
   const userIds =
-    [...new Set(
-      posts.map(
-        post => post.user_id
+    [
+      ...new Set(
+        posts.map(
+          post => post.user_id
+        )
       )
-    )];
+    ];
 
 
-  const {
-    data:profiles
-  } = await supabase
-    .from("profiles")
-    .select(`
-      id,
-      prenom,
-      nom,
-      avatar_path
-    `)
-    .in(
-      "id",
-      userIds
+  let profilesMap = {};
+
+
+  if (userIds.length) {
+
+    const {
+      data
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(`
+          id,
+          prenom,
+          nom,
+          ville,
+          entreprise,
+          type_agent,
+          avatar_path
+        `)
+        .in(
+          "id",
+          userIds
+        );
+
+
+    (data || []).forEach(
+      profile => {
+
+        profilesMap[
+          profile.id
+        ] =
+          profile;
+
+      }
     );
 
-
-  const profileMap = {};
-
-  (profiles || []).forEach(
-    profile => {
-
-      profileMap[
-        profile.id
-      ] = profile;
-
-    }
-  );
+  }
 
 
   const postIds =
@@ -1258,832 +1678,619 @@ async function loadPosts(){
     );
 
 
-  const {
-    data:likes
-  } = await supabase
-    .from("likes")
-    .select(
-      "post_id,user_id"
-    )
-    .in(
-      "post_id",
-      postIds
-    );
-
-
-  const {
-    data:comments
-  } = await supabase
-    .from("comments")
-    .select(`
-      id,
-      post_id,
-      user_id,
-      content,
-      created_at
-    `)
-    .in(
-      "post_id",
-      postIds
-    )
-    .order(
-      "created_at",
-      {
-        ascending:true
-      }
-    );
-
-
-  const likesByPost = {};
-
-  (likes || []).forEach(
-    like => {
-
-      if(!likesByPost[like.post_id]){
-        likesByPost[like.post_id] = [];
-      }
-
-      likesByPost[
-        like.post_id
-      ].push(like);
-
-    }
-  );
-
-
-  const commentsByPost = {};
-
-  (comments || []).forEach(
-    comment => {
-
-      if(!commentsByPost[comment.post_id]){
-        commentsByPost[comment.post_id] = [];
-      }
-
-      commentsByPost[
-        comment.post_id
-      ].push(comment);
-
-    }
-  );
-
-
-  feed.innerHTML =
-    posts.map(
-      post => {
-
-        const profile =
-          profileMap[
-            post.user_id
-          ] || {};
-
-
-        const fullName =
-          `${profile.prenom || ""} ${profile.nom || ""}`
-          .trim() ||
-          "Agent";
-
-
-        const firstLetter =
-          fullName
-            .charAt(0)
-            .toUpperCase();
-
-
-        const postLikes =
-          likesByPost[
-            post.id
-          ] || [];
-
-
-        const liked =
-          postLikes.some(
-            like =>
-              like.user_id ===
-              currentUser.id
-          );
-
-
-        const postComments =
-          commentsByPost[
-            post.id
-          ] || [];
-
-
-        let avatarHTML =
-          `<span>${escapeHtml(firstLetter)}</span>`;
-
-
-        if(profile.avatar_path){
-
-          const {
-            data
-          } = supabase.storage
-            .from("avatars")
-            .getPublicUrl(
-              profile.avatar_path
-            );
-
-
-          avatarHTML = `
-            <img
-              src="${data.publicUrl}"
-              alt="Avatar"
-            >
-          `;
-
-        }
-
-
-        let commentsHTML =
-          postComments.map(
-            comment => {
-
-              const commenter =
-                profileMap[
-                  comment.user_id
-                ] || {};
-
-
-              const commenterName =
-                `${commenter.prenom || ""} ${commenter.nom || ""}`
-                .trim() ||
-                "Agent";
-
-
-              return `
-                <div class="comment">
-
-                  <div class="comment-body">
-
-                    <div class="comment-name">
-                      ${escapeHtml(commenterName)}
-                    </div>
-
-                    <div class="comment-text">
-                      ${escapeHtml(comment.content)}
-                    </div>
-
-                  </div>
-
-                </div>
-              `;
-
-            }
-          ).join("");
-
-
-        let locationHTML = "";
-
-
-        if(post.location_name){
-
-          locationHTML = `
-            <div class="post-location">
-
-              📍
-              ${escapeHtml(post.location_name)}
-
-              ${
-                post.location_lat &&
-                post.location_lng
-                ?
-                `
-                  <br><br>
-
-                  <a
-                    href="https://www.google.com/maps?q=${post.location_lat},${post.location_lng}"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    🗺️ Voir sur Google Maps
-                  </a>
-                `
-                :
-                ""
-              }
-
-            </div>
-          `;
-
-        }
-
-
-        return `
-
-          <article
-            class="post"
-            data-post-id="${post.id}"
-          >
-
-            <div class="post-head">
-
-              <div class="post-avatar">
-                ${avatarHTML}
-              </div>
-
-              <div class="post-author">
-
-                <strong>
-                  ${escapeHtml(fullName)}
-                </strong>
-
-                <span class="post-date">
-                  ${formatDate(post.created_at)}
-                </span>
-
-              </div>
-
-              ${
-                post.user_id === currentUser.id
-                ?
-                `
-                  <button
-                    class="post-menu"
-                    onclick="postMenu('${post.id}')"
-                  >
-                    ⋮
-                  </button>
-                `
-                :
-                ""
-              }
-
-            </div>
-
-
-            ${
-              post.content
-              ?
-              `
-                <div class="post-content">
-                  ${escapeHtml(post.content)}
-                </div>
-              `
-              :
-              ""
-            }
-
-
-            ${
-              post.image_url
-              ?
-              `
-                <img
-                  class="post-image"
-                  src="${escapeHtml(post.image_url)}"
-                  alt="Publication"
-                  loading="lazy"
-                >
-              `
-              :
-              ""
-            }
-
-
-            ${locationHTML}
-
-
-            <div class="stats">
-
-              <span>
-                👍 ${postLikes.length} J'aime
-              </span>
-
-              <span>
-                💬 ${postComments.length} commentaire${postComments.length > 1 ? "s" : ""}
-              </span>
-
-            </div>
-
-
-            <div class="post-actions">
-
-              <button
-                class="${liked ? "liked" : ""}"
-                onclick="toggleLike('${post.id}',${liked})"
-              >
-                👍 J'aime
-              </button>
-
-              <button
-                onclick="focusComment('${post.id}')"
-              >
-                💬 Commenter
-              </button>
-
-              <button
-                onclick="sharePost('${post.id}')"
-              >
-                ↗️ Partager
-              </button>
-
-            </div>
-
-
-            <div class="comments">
-
-              ${commentsHTML}
-
-              <div class="comment-form">
-
-                <input
-                  id="comment-${post.id}"
-                  type="text"
-                  placeholder="Écrire un commentaire..."
-                  maxlength="500"
-                >
-
-                <button
-                  onclick="addComment('${post.id}')"
-                >
-                  Envoyer
-                </button>
-
-              </div>
-
-            </div>
-
-          </article>
-
-        `;
-
-      }
-    ).join("");
-
-}
-
-
-/* =========================================================
-   PUBLIER
-========================================================= */
-
-async function publishPost(){
-
-  const contentInput =
-    document.getElementById(
-      "postContent"
-    );
-
-  const publishBtn =
-    document.getElementById(
-      "publishBtn"
-    );
-
-
-  const content =
-    contentInput.value.trim();
-
-
-  if(!content && !selectedFile){
-
-    alert(
-      "Écris quelque chose ou ajoute une photo."
-    );
-
-    return;
-  }
-
-
-  publishBtn.disabled = true;
-  publishBtn.textContent =
-    "Publication...";
-
-
-  try{
-
-    let imageUrl = null;
-
-
-    /* UPLOAD PHOTO */
-
-    if(selectedFile){
-
-      const extension =
-        selectedFile.name
-          .split(".")
-          .pop()
-          .toLowerCase();
-
-
-      const fileName =
-        `${currentUser.id}/${Date.now()}.${extension}`;
-
-
-      const {
-        error:uploadError
-      } = await supabase.storage
-        .from("post-images")
-        .upload(
-          fileName,
-          selectedFile,
+  let likes = [];
+  let comments = [];
+
+
+  if (postIds.length) {
+
+    const likesResponse =
+      await supabaseClient
+        .from("likes")
+        .select(`
+          id,
+          post_id,
+          user_id
+        `)
+        .in(
+          "post_id",
+          postIds
+        );
+
+
+    likes =
+      likesResponse.data || [];
+
+
+    const commentsResponse =
+      await supabaseClient
+        .from("comments")
+        .select(`
+          id,
+          post_id,
+          user_id,
+          content,
+          created_at
+        `)
+        .in(
+          "post_id",
+          postIds
+        )
+        .order(
+          "created_at",
           {
-            contentType:
-              selectedFile.type,
-            upsert:false
+            ascending: true
           }
         );
 
 
-      if(uploadError){
+    comments =
+      commentsResponse.data || [];
 
-        throw uploadError;
-      }
-
-
-      const {
-        data
-      } = supabase.storage
-        .from("post-images")
-        .getPublicUrl(
-          fileName
-        );
+  }
 
 
-      imageUrl =
-        data.publicUrl;
+  const commentUserIds =
+    [
+      ...new Set(
+        comments.map(
+          comment =>
+            comment.user_id
+        )
+      )
+    ];
 
-    }
 
-
-    /* PUBLICATION */
+  if (commentUserIds.length) {
 
     const {
-      error
-    } = await supabase
-      .from("posts")
-      .insert({
-
-        user_id:
-          currentUser.id,
-
-        content:
-          content || null,
-
-        image_url:
-          imageUrl,
-
-        location_name:
-          selectedLocation.name,
-
-        location_lat:
-          selectedLocation.lat,
-
-        location_lng:
-          selectedLocation.lng,
-
-        location_type:
-          selectedLocation.type
-
-      });
-
-
-    if(error){
-
-      throw error;
-    }
-
-
-    contentInput.value = "";
-
-    removePhoto();
-
-    clearLocation();
-
-    await loadPosts();
-
-  }
-
-  catch(error){
-
-    console.error(error);
-
-    alert(
-      "Impossible de publier : " +
-      error.message
-    );
-
-  }
-
-  finally{
-
-    publishBtn.disabled =
-      false;
-
-    publishBtn.textContent =
-      "Publier";
-
-  }
-
-}
-
-
-/* =========================================================
-   PHOTO
-========================================================= */
-
-document
-  .getElementById("photoInput")
-  .addEventListener(
-    "change",
-    function(){
-
-      const file =
-        this.files[0];
-
-
-      if(!file) return;
-
-
-      if(file.size >
-        5 * 1024 * 1024
-      ){
-
-        alert(
-          "La photo ne doit pas dépasser 5 Mo."
+      data
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(`
+          id,
+          prenom,
+          nom,
+          avatar_path
+        `)
+        .in(
+          "id",
+          commentUserIds
         );
 
-        this.value = "";
 
-        return;
+    (data || []).forEach(
+      profile => {
+
+        profilesMap[
+          profile.id
+        ] =
+          profile;
+
       }
-
-
-      if(![
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-      ].includes(file.type)){
-
-        alert(
-          "Format accepté : JPG, PNG ou WEBP."
-        );
-
-        this.value = "";
-
-        return;
-      }
-
-
-      selectedFile =
-        file;
-
-
-      const reader =
-        new FileReader();
-
-
-      reader.onload =
-        function(event){
-
-          document
-            .getElementById(
-              "previewImg"
-            )
-            .src =
-              event.target.result;
-
-
-          document
-            .getElementById(
-              "imagePreview"
-            )
-            .style.display =
-              "block";
-
-        };
-
-
-      reader.readAsDataURL(file);
-
-    }
-  );
-
-
-function removePhoto(){
-
-  selectedFile = null;
-
-  document
-    .getElementById(
-      "photoInput"
-    )
-    .value = "";
-
-
-  document
-    .getElementById(
-      "imagePreview"
-    )
-    .style.display =
-      "none";
-
-}
-
-
-/* =========================================================
-   LOCALISATION
-========================================================= */
-
-function chooseLocation(){
-
-  document
-    .getElementById(
-      "locationModal"
-    )
-    .style.display =
-      "flex";
-
-}
-
-
-function closeLocationModal(){
-
-  document
-    .getElementById(
-      "locationModal"
-    )
-    .style.display =
-      "none";
-
-}
-
-
-function manualLocation(){
-
-  chooseLocation();
-
-}
-
-
-function saveManualLocation(){
-
-  const input =
-    document.getElementById(
-      "locationInput"
     );
 
-
-  const value =
-    input.value.trim();
-
-
-  if(!value){
-
-    alert(
-      "Saisis un lieu."
-    );
-
-    return;
   }
 
 
-  selectedLocation = {
+  posts =
+    posts.map(post => {
 
-    name:value,
+      return {
 
-    lat:null,
+        ...post,
 
-    lng:null,
+        profile:
+          profilesMap[
+            post.user_id
+          ] || null,
 
-    type:"manual"
+        likes:
+          likes.filter(
+            like =>
+              like.post_id ===
+              post.id
+          ),
 
-  };
-
-
-  showLocation();
-
-  input.value = "";
-
-  closeLocationModal();
-
-}
-
-
-function useMyPosition(){
-
-  if(!navigator.geolocation){
-
-    alert(
-      "La géolocalisation n'est pas disponible sur cet appareil."
-    );
-
-    return;
-  }
-
-
-  if(!confirm(
-    "Autoriser le navigateur à utiliser votre position pour cette publication ?"
-  )){
-
-    return;
-  }
-
-
-  navigator.geolocation.getCurrentPosition(
-
-    function(position){
-
-      selectedLocation = {
-
-        name:
-          "Ma position actuelle",
-
-        lat:
-          position.coords.latitude,
-
-        lng:
-          position.coords.longitude,
-
-        type:
-          "gps"
+        comments:
+          comments.filter(
+            comment =>
+              comment.post_id ===
+              post.id
+          )
 
       };
 
+    });
 
-      showLocation();
 
-    },
-
-    function(){
-
-      alert(
-        "Impossible d'obtenir votre position."
-      );
-
-    },
-
-    {
-      enableHighAccuracy:true,
-      timeout:10000,
-      maximumAge:60000
-    }
-
-  );
+  renderPosts();
 
 }
 
 
-function showLocation(){
+/* =========================================================
+   RENDER POSTS
+========================================================= */
 
-  const box =
-    document.getElementById(
-      "locationSelected"
-    );
+function renderPosts() {
+
+  const feed =
+    document.getElementById("feed");
 
 
-  if(!selectedLocation.name){
+  let filteredPosts =
+    posts.filter(post => {
 
-    box.style.display =
-      "none";
+      if (!searchText) {
+
+        return true;
+
+      }
+
+
+      const text =
+        [
+          post.content || "",
+          post.location_name || "",
+          post.profile?.prenom || "",
+          post.profile?.nom || "",
+          post.profile?.ville || "",
+          post.profile?.entreprise || ""
+        ]
+          .join(" ")
+          .toLowerCase();
+
+
+      return text.includes(
+        searchText
+      );
+
+    });
+
+
+  if (!filteredPosts.length) {
+
+    feed.innerHTML = `
+      <div class="empty">
+        🔎 Aucune publication trouvée.
+      </div>
+    `;
 
     return;
+
   }
 
 
-  box.innerHTML = `
-    📍 ${escapeHtml(selectedLocation.name)}
-
-    <button
-      onclick="clearLocation()"
-      style="
-        float:right;
-        border:0;
-        background:#dc2626;
-        color:white;
-        border-radius:8px;
-        padding:3px 8px;
-      "
-    >
-      ×
-    </button>
-  `;
-
-
-  box.style.display =
-    "block";
+  feed.innerHTML =
+    filteredPosts
+      .map(
+        post =>
+          renderPost(post)
+      )
+      .join("");
 
 }
 
 
-function clearLocation(){
+/* =========================================================
+   RENDER ONE POST
+========================================================= */
 
-  selectedLocation = {
+function renderPost(post) {
 
-    name:null,
-    lat:null,
-    lng:null,
-    type:null
-
-  };
+  const profile =
+    post.profile || {};
 
 
-  document
-    .getElementById(
-      "locationSelected"
-    )
-    .style.display =
-      "none";
+  const fullName =
+    [
+      profile.prenom,
+      profile.nom
+    ]
+      .filter(Boolean)
+      .join(" ") ||
+    "Agent";
+
+
+  const avatar =
+    getAvatarUrl(
+      profile.avatar_path
+    );
+
+
+  const date =
+    formatDate(
+      post.created_at
+    );
+
+
+  const liked =
+    post.likes.some(
+      like =>
+        like.user_id ===
+        currentUser.id
+    );
+
+
+  const location =
+    post.location_name
+      ? `
+        <div class="post-location">
+          📍
+
+          ${
+            post.location_lat &&
+            post.location_lng
+
+              ? `
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    post.location_lat +
+                    "," +
+                    post.location_lng
+                  )}"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  ${escapeHtml(post.location_name)}
+                </a>
+              `
+
+              : `
+                ${escapeHtml(
+                  post.location_name
+                )}
+              `
+          }
+
+        </div>
+      `
+      : "";
+
+
+  const image =
+    post.image_url
+      ? `
+        <img
+          class="post-image"
+          src="${escapeHtml(post.image_url)}"
+          alt="Photo de publication"
+          loading="lazy"
+        >
+      `
+      : "";
+
+
+  const comments =
+    renderComments(
+      post
+    );
+
+
+  const canEdit =
+    post.user_id ===
+    currentUser.id;
+
+
+  return `
+
+    <article
+      class="post"
+      id="post-${post.id}"
+    >
+
+      <div class="post-header">
+
+        <img
+          class="avatar"
+          src="${avatar}"
+          alt=""
+        >
+
+        <div class="post-author">
+
+          <strong>
+            ${escapeHtml(fullName)}
+          </strong>
+
+          <div class="post-meta">
+            ${date}
+          </div>
+
+        </div>
+
+
+        ${
+          canEdit
+            ? `
+              <div class="post-menu">
+
+                <button
+                  class="menu-btn"
+                  onclick="togglePostMenu('${post.id}')"
+                >
+                  ⋮
+                </button>
+
+                <div
+                  class="menu"
+                  id="menu-${post.id}"
+                >
+
+                  <button
+                    onclick="editPost('${post.id}')"
+                  >
+                    ✏️ Modifier
+                  </button>
+
+                  <button
+                    class="delete"
+                    onclick="deletePost('${post.id}')"
+                  >
+                    🗑️ Supprimer
+                  </button>
+
+                </div>
+
+              </div>
+            `
+            : ""
+        }
+
+      </div>
+
+
+      ${
+        post.content
+          ? `
+            <div class="post-content">
+              ${escapeHtml(
+                post.content
+              )}
+            </div>
+          `
+          : ""
+      }
+
+
+      ${image}
+
+      ${location}
+
+
+      <div class="post-stats">
+
+        <span>
+          ${
+            post.likes.length
+          }
+          ${
+            post.likes.length > 1
+              ? "J'aime"
+              : "J'aime"
+          }
+        </span>
+
+        <span>
+          ${
+            post.comments.length
+          }
+          ${
+            post.comments.length > 1
+              ? "commentaires"
+              : "commentaire"
+          }
+        </span>
+
+      </div>
+
+
+      <div class="post-actions">
+
+        <button
+          class="post-action ${liked ? "liked" : ""}"
+          onclick="toggleLike('${post.id}')"
+        >
+          ${liked ? "👍" : "♡"} J'aime
+        </button>
+
+        <button
+          class="post-action"
+          onclick="toggleComments('${post.id}')"
+        >
+          💬 Commenter
+        </button>
+
+        <button
+          class="post-action"
+          onclick="sharePost('${post.id}')"
+        >
+          ↗️ Partager
+        </button>
+
+      </div>
+
+
+      <div
+        class="comments"
+        id="comments-${post.id}"
+      >
+
+        <div class="comment-list">
+
+          ${comments}
+
+        </div>
+
+
+        <div class="comment-input-row">
+
+          <input
+            class="comment-input"
+            id="comment-input-${post.id}"
+            type="text"
+            placeholder="Écrire un commentaire..."
+            maxlength="500"
+            onkeydown="handleCommentKey(event, '${post.id}')"
+          >
+
+          <button
+            class="comment-send"
+            onclick="addComment('${post.id}')"
+          >
+            ➤
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+function renderComments(post) {
+
+  if (!post.comments.length) {
+
+    return `
+      <div
+        style="
+          color:#64748b;
+          font-size:12px;
+          padding:8px 0;
+        "
+      >
+        Aucun commentaire pour le moment.
+      </div>
+    `;
+
+  }
+
+
+  return post.comments
+    .map(comment => {
+
+      const profile =
+        comment.profile ||
+        findProfileForComment(
+          comment.user_id
+        );
+
+
+      const name =
+        [
+          profile?.prenom,
+          profile?.nom
+        ]
+          .filter(Boolean)
+          .join(" ") ||
+        "Agent";
+
+
+      const avatar =
+        getAvatarUrl(
+          profile?.avatar_path
+        );
+
+
+      const deleteButton =
+        comment.user_id ===
+        currentUser.id
+
+          ? `
+            <button
+              onclick="deleteComment('${comment.id}', '${post.id}')"
+              style="
+                background:none;
+                border:0;
+                color:#f87171;
+                font-size:10px;
+                margin-top:4px;
+                cursor:pointer;
+              "
+            >
+              Supprimer
+            </button>
+          `
+          : "";
+
+
+      return `
+
+        <div class="comment">
+
+          <img
+            class="avatar"
+            src="${avatar}"
+            alt=""
+          >
+
+          <div class="comment-bubble">
+
+            <strong>
+              ${escapeHtml(name)}
+            </strong>
+
+            <p>
+              ${escapeHtml(
+                comment.content
+              )}
+            </p>
+
+            ${deleteButton}
+
+          </div>
+
+        </div>
+
+      `;
+
+    })
+    .join("");
+
+}
+
+
+function findProfileForComment(userId) {
+
+  const post =
+    posts.find(post =>
+      post.comments.some(
+        comment =>
+          comment.user_id ===
+          userId
+      )
+    );
+
+
+  if (!post) {
+
+    return null;
+
+  }
+
+
+  if (
+    post.profile &&
+    post.user_id === userId
+  ) {
+
+    return post.profile;
+
+  }
+
+
+  return null;
 
 }
 
@@ -2092,285 +2299,486 @@ function clearLocation(){
    LIKE
 ========================================================= */
 
-async function toggleLike(
-  postId,
-  alreadyLiked
-){
+async function toggleLike(postId) {
 
-  if(alreadyLiked){
+  if (!currentUser) return;
+
+
+  const post =
+    posts.find(
+      item =>
+        item.id === postId
+    );
+
+
+  if (!post) return;
+
+
+  const existing =
+    post.likes.find(
+      like =>
+        like.user_id ===
+        currentUser.id
+    );
+
+
+  if (existing) {
 
     const {
       error
-    } = await supabase
-      .from("likes")
-      .delete()
-      .eq(
-        "post_id",
-        postId
-      )
-      .eq(
-        "user_id",
-        currentUser.id
+    } =
+      await supabaseClient
+        .from("likes")
+        .delete()
+        .eq(
+          "id",
+          existing.id
+        );
+
+
+    if (error) {
+
+      showToast(
+        "Impossible de retirer le J'aime.",
+        "error"
       );
 
-
-    if(error){
-
-      alert(error.message);
-
       return;
+
     }
 
-  }
 
-  else{
+    post.likes =
+      post.likes.filter(
+        like =>
+          like.id !==
+          existing.id
+      );
+
+  } else {
 
     const {
+      data,
       error
-    } = await supabase
-      .from("likes")
-      .insert({
-
-        post_id:
-          postId,
-
-        user_id:
-          currentUser.id
-
-      });
+    } =
+      await supabaseClient
+        .from("likes")
+        .insert({
+          post_id: postId,
+          user_id: currentUser.id
+        })
+        .select()
+        .single();
 
 
-    if(error){
+    if (error) {
 
-      alert(error.message);
+      showToast(
+        "Impossible d'aimer cette publication.",
+        "error"
+      );
 
       return;
+
     }
+
+
+    post.likes.push(data);
 
   }
 
 
-  await loadPosts();
+  renderPosts();
 
 }
 
 
 /* =========================================================
-   COMMENTAIRE
+   COMMENTS TOGGLE
 ========================================================= */
 
-async function addComment(
+function toggleComments(postId) {
+
+  const element =
+    document.getElementById(
+      "comments-" + postId
+    );
+
+
+  if (!element) return;
+
+
+  element.style.display =
+    element.style.display === "block"
+      ? "none"
+      : "block";
+
+
+  if (
+    element.style.display === "block"
+  ) {
+
+    setTimeout(
+      function() {
+
+        const input =
+          document.getElementById(
+            "comment-input-" +
+            postId
+          );
+
+        if (input) {
+
+          input.focus();
+
+        }
+
+      },
+      100
+    );
+
+  }
+
+}
+
+
+function handleCommentKey(
+  event,
   postId
-){
+) {
+
+  if (
+    event.key === "Enter"
+  ) {
+
+    event.preventDefault();
+
+    addComment(postId);
+
+  }
+
+}
+
+
+/* =========================================================
+   ADD COMMENT
+========================================================= */
+
+async function addComment(postId) {
 
   const input =
     document.getElementById(
-      `comment-${postId}`
+      "comment-input-" +
+      postId
     );
+
+
+  if (!input) return;
 
 
   const content =
     input.value.trim();
 
 
-  if(!content) return;
+  if (!content) {
+
+    return;
+
+  }
 
 
   const {
+    data,
     error
-  } = await supabase
-    .from("comments")
-    .insert({
-
-      post_id:
-        postId,
-
-      user_id:
-        currentUser.id,
-
-      content:
-        content
-
-    });
+  } =
+    await supabaseClient
+      .from("comments")
+      .insert({
+        post_id: postId,
+        user_id: currentUser.id,
+        content: content
+      })
+      .select()
+      .single();
 
 
-  if(error){
+  if (error) {
 
-    alert(error.message);
+    console.error(error);
+
+    showToast(
+      "Impossible d'ajouter le commentaire.",
+      "error"
+    );
 
     return;
+
+  }
+
+
+  const post =
+    posts.find(
+      item =>
+        item.id === postId
+    );
+
+
+  if (post) {
+
+    post.comments.push({
+      ...data,
+      profile: currentProfile
+    });
+
   }
 
 
   input.value = "";
 
-  await loadPosts();
+  renderPosts();
+
+
+  setTimeout(
+    function() {
+
+      const comments =
+        document.getElementById(
+          "comments-" +
+          postId
+        );
+
+      if (comments) {
+
+        comments.style.display =
+          "block";
+
+      }
+
+    },
+    50
+  );
 
 }
 
 
 /* =========================================================
-   FOCUS COMMENTAIRE
+   DELETE COMMENT
 ========================================================= */
 
-function focusComment(
+async function deleteComment(
+  commentId,
   postId
-){
+) {
 
-  const input =
-    document.getElementById(
-      `comment-${postId}`
-    );
+  if (
+    !confirm(
+      "Supprimer ce commentaire ?"
+    )
+  ) {
 
-
-  if(input){
-
-    input.focus();
+    return;
 
   }
 
-}
-
-
-/* =========================================================
-   PARTAGER
-========================================================= */
-
-async function sharePost(
-  postId
-){
-
-  const url =
-    `${window.location.origin}${window.location.pathname}#post-${postId}`;
-
-
-  const text =
-    "Publication sur Cercle des Agents";
-
-
-  if(navigator.share){
-
-    try{
-
-      await navigator.share({
-
-        title:
-          "Cercle des Agents",
-
-        text:
-          text,
-
-        url:
-          url
-
-      });
-
-    }
-
-    catch(error){
-
-      console.log(
-        "Partage annulé"
-      );
-
-    }
-
-  }
-
-  else{
-
-    try{
-
-      await navigator.clipboard.writeText(
-        url
-      );
-
-      alert(
-        "Lien copié !"
-      );
-
-    }
-
-    catch(error){
-
-      prompt(
-        "Copie ce lien :",
-        url
-      );
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   MENU PUBLICATION
-========================================================= */
-
-async function postMenu(
-  postId
-){
-
-  const choice =
-    prompt(
-      "Tape :\n1 = Modifier\n2 = Supprimer\n\nAnnuler = rien"
-    );
-
-
-  if(choice === "1"){
-
-    await editPost(
-      postId
-    );
-
-  }
-
-  else if(choice === "2"){
-
-    await deletePost(
-      postId
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   MODIFIER PUBLICATION
-========================================================= */
-
-async function editPost(
-  postId
-){
 
   const {
-    data:post
-  } = await supabase
-    .from("posts")
-    .select(
-      "content"
-    )
-    .eq(
-      "id",
-      postId
-    )
-    .eq(
-      "user_id",
-      currentUser.id
-    )
-    .maybeSingle();
+    error
+  } =
+    await supabaseClient
+      .from("comments")
+      .delete()
+      .eq(
+        "id",
+        commentId
+      );
 
 
-  if(!post){
+  if (error) {
 
-    alert(
-      "Publication introuvable."
+    showToast(
+      "Impossible de supprimer le commentaire.",
+      "error"
     );
 
     return;
+
+  }
+
+
+  const post =
+    posts.find(
+      item =>
+        item.id === postId
+    );
+
+
+  if (post) {
+
+    post.comments =
+      post.comments.filter(
+        comment =>
+          comment.id !==
+          commentId
+      );
+
+  }
+
+
+  renderPosts();
+
+}
+
+
+/* =========================================================
+   SHARE
+========================================================= */
+
+async function sharePost(postId) {
+
+  const post =
+    posts.find(
+      item =>
+        item.id === postId
+    );
+
+
+  if (!post) return;
+
+
+  const shareUrl =
+    window.location.href
+      .split("#")[0] +
+    "#post-" +
+    postId;
+
+
+  const text =
+    post.content
+      ? post.content.substring(
+          0,
+          180
+        )
+      : "Publication du Cercle des Agents";
+
+
+  if (
+    navigator.share
+  ) {
+
+    try {
+
+      await navigator.share({
+        title:
+          "Cercle des Agents",
+        text:
+          text,
+        url:
+          shareUrl
+      });
+
+      return;
+
+    } catch (error) {
+
+      if (
+        error.name ===
+        "AbortError"
+      ) {
+
+        return;
+
+      }
+
+    }
+
+  }
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      shareUrl
+    );
+
+
+    showToast(
+      "Lien copié !",
+      "success"
+    );
+
+  } catch (error) {
+
+    prompt(
+      "Copiez ce lien :",
+      shareUrl
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   POST MENU
+========================================================= */
+
+function togglePostMenu(postId) {
+
+  const menu =
+    document.getElementById(
+      "menu-" +
+      postId
+    );
+
+
+  if (!menu) return;
+
+
+  const visible =
+    menu.style.display ===
+    "block";
+
+
+  document
+    .querySelectorAll(".menu")
+    .forEach(
+      item =>
+        item.style.display =
+          "none"
+    );
+
+
+  menu.style.display =
+    visible
+      ? "none"
+      : "block";
+
+}
+
+
+/* =========================================================
+   EDIT POST
+========================================================= */
+
+async function editPost(postId) {
+
+  const post =
+    posts.find(
+      item =>
+        item.id === postId
+    );
+
+
+  if (!post) return;
+
+
+  if (
+    post.user_id !==
+    currentUser.id
+  ) {
+
+    return;
+
   }
 
 
@@ -2381,194 +2789,804 @@ async function editPost(
     );
 
 
-  if(newContent === null){
+  if (
+    newContent === null
+  ) {
 
     return;
+
   }
+
+
+  const content =
+    newContent.trim();
 
 
   const {
     error
-  } = await supabase
-    .from("posts")
-    .update({
+  } =
+    await supabaseClient
+      .from("posts")
+      .update({
+        content: content
+      })
+      .eq(
+        "id",
+        postId
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      );
 
-      content:
-        newContent.trim()
 
-    })
-    .eq(
-      "id",
-      postId
-    )
-    .eq(
-      "user_id",
-      currentUser.id
+  if (error) {
+
+    showToast(
+      "Impossible de modifier la publication.",
+      "error"
     );
 
-
-  if(error){
-
-    alert(error.message);
-
     return;
+
   }
 
 
-  await loadPosts();
+  post.content =
+    content;
+
+
+  renderPosts();
+
+
+  showToast(
+    "Publication modifiée.",
+    "success"
+  );
 
 }
 
 
 /* =========================================================
-   SUPPRIMER PUBLICATION
+   DELETE POST
 ========================================================= */
 
-async function deletePost(
-  postId
-){
+async function deletePost(postId) {
 
-  if(!confirm(
-    "Supprimer cette publication ?"
-  )){
+  const post =
+    posts.find(
+      item =>
+        item.id === postId
+    );
+
+
+  if (!post) return;
+
+
+  if (
+    post.user_id !==
+    currentUser.id
+  ) {
 
     return;
+
   }
 
 
-  const {
-    data:post
-  } = await supabase
-    .from("posts")
-    .select(
-      "image_url"
+  if (
+    !confirm(
+      "Voulez-vous vraiment supprimer cette publication ?"
     )
-    .eq(
-      "id",
-      postId
-    )
-    .eq(
-      "user_id",
-      currentUser.id
-    )
-    .maybeSingle();
+  ) {
+
+    return;
+
+  }
 
 
   const {
     error
-  } = await supabase
-    .from("posts")
-    .delete()
-    .eq(
-      "id",
-      postId
-    )
-    .eq(
-      "user_id",
-      currentUser.id
+  } =
+    await supabaseClient
+      .from("posts")
+      .delete()
+      .eq(
+        "id",
+        postId
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    showToast(
+      "Impossible de supprimer la publication.",
+      "error"
     );
 
-
-  if(error){
-
-    alert(error.message);
-
     return;
+
   }
 
 
-  await loadPosts();
+  posts =
+    posts.filter(
+      item =>
+        item.id !==
+        postId
+    );
+
+
+  renderPosts();
+
+
+  showToast(
+    "Publication supprimée.",
+    "success"
+  );
 
 }
 
 
 /* =========================================================
-   RECHERCHE
+   IMAGE SELECTION
 ========================================================= */
 
-document
-  .getElementById(
-    "globalSearch"
-  )
-  .addEventListener(
-    "input",
-    function(){
+function handleImageSelection(event) {
 
-      const search =
-        this.value
-          .trim()
+  const file =
+    event.target.files?.[0];
+
+
+  if (!file) {
+
+    return;
+
+  }
+
+
+  if (
+    ![
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ].includes(
+      file.type
+    )
+  ) {
+
+    showToast(
+      "Format d'image non autorisé.",
+      "error"
+    );
+
+    event.target.value = "";
+
+    return;
+
+  }
+
+
+  if (
+    file.size >
+    5 * 1024 * 1024
+  ) {
+
+    showToast(
+      "L'image doit faire 5 Mo maximum.",
+      "error"
+    );
+
+    event.target.value = "";
+
+    return;
+
+  }
+
+
+  selectedFile =
+    file;
+
+
+  const reader =
+    new FileReader();
+
+
+  reader.onload =
+    function(e) {
+
+      document.getElementById(
+        "previewImage"
+      ).src =
+        e.target.result;
+
+
+      document.getElementById(
+        "photoPreview"
+      ).style.display =
+        "block";
+
+    };
+
+
+  reader.readAsDataURL(file);
+
+}
+
+
+function removeSelectedImage() {
+
+  selectedFile = null;
+
+
+  document.getElementById(
+    "imageInput"
+  ).value = "";
+
+
+  document.getElementById(
+    "photoPreview"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "previewImage"
+  ).src = "";
+
+}
+
+
+/* =========================================================
+   PUBLISH POST
+========================================================= */
+
+async function publishPost() {
+
+  const contentInput =
+    document.getElementById(
+      "postContent"
+    );
+
+
+  const content =
+    contentInput.value.trim();
+
+
+  if (
+    !content &&
+    !selectedFile
+  ) {
+
+    showToast(
+      "Écrivez quelque chose ou ajoutez une photo.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "publishBtn"
+    );
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "Publication...";
+
+
+  try {
+
+    let imageUrl =
+      null;
+
+
+    /* =====================
+       UPLOAD PHOTO
+    ===================== */
+
+    if (selectedFile) {
+
+      const extension =
+        selectedFile.name
+          .split(".")
+          .pop()
           .toLowerCase();
 
 
-      document
-        .querySelectorAll(
-          ".post"
-        )
-        .forEach(
-          post => {
+      const fileName =
+        currentUser.id +
+        "/" +
+        Date.now() +
+        "-" +
+        Math.random()
+          .toString(36)
+          .substring(2) +
+        "." +
+        extension;
 
-            const text =
-              post.innerText
-                .toLowerCase();
+
+      const {
+        error:
+          uploadError
+      } =
+        await supabaseClient
+          .storage
+          .from("post-images")
+          .upload(
+            fileName,
+            selectedFile,
+            {
+              cacheControl:
+                "3600",
+              upsert:
+                false,
+              contentType:
+                selectedFile.type
+            }
+          );
 
 
-            post.style.display =
-              !search ||
-              text.includes(search)
-              ?
-              ""
-              :
-              "none";
+      if (uploadError) {
 
-          }
-        );
+        throw uploadError;
+
+      }
+
+
+      const {
+        data:
+          publicData
+      } =
+        supabaseClient
+          .storage
+          .from("post-images")
+          .getPublicUrl(
+            fileName
+          );
+
+
+      imageUrl =
+        publicData.publicUrl;
 
     }
-  );
+
+
+    /* =====================
+       POST DATA
+    ===================== */
+
+    const postData = {
+
+      user_id:
+        currentUser.id,
+
+      content:
+        content ||
+        null,
+
+      image_url:
+        imageUrl,
+
+      location_name:
+        selectedLocation?.name ||
+        null,
+
+      location_lat:
+        selectedLocation?.lat ??
+        null,
+
+      location_lng:
+        selectedLocation?.lng ??
+        null,
+
+      location_type:
+        selectedLocation?.type ||
+        "manual"
+
+    };
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("posts")
+        .insert(
+          postData
+        );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    contentInput.value =
+      "";
+
+    removeSelectedImage();
+
+    clearLocation();
+
+    document.getElementById(
+      "locationBox"
+    ).style.display =
+      "none";
+
+
+    showToast(
+      "Publication publiée avec succès !",
+      "success"
+    );
+
+
+    await loadPosts();
+
+
+  } catch (error) {
+
+    console.error(
+      "Erreur publication :",
+      error
+    );
+
+
+    showToast(
+      "Erreur : " +
+      (
+        error.message ||
+        "publication impossible"
+      ),
+      "error"
+    );
+
+
+  } finally {
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Publier";
+
+  }
+
+}
 
 
 /* =========================================================
-   DATE
+   LOCATION
 ========================================================= */
 
-function formatDate(
-  date
-){
+function toggleLocationBox() {
 
-  const d =
-    new Date(date);
+  const box =
+    document.getElementById(
+      "locationBox"
+    );
 
 
-  return d.toLocaleString(
-    "fr-FR",
+  box.style.display =
+    box.style.display === "block"
+      ? "none"
+      : "block";
+
+}
+
+
+function enterLocation() {
+
+  const place =
+    prompt(
+      "Entrez le lieu à afficher :\nExemple : Cocody, Abidjan"
+    );
+
+
+  if (
+    place === null
+  ) {
+
+    return;
+
+  }
+
+
+  const name =
+    place.trim();
+
+
+  if (!name) {
+
+    return;
+
+  }
+
+
+  selectedLocation = {
+
+    name:
+      name,
+
+    lat:
+      null,
+
+    lng:
+      null,
+
+    type:
+      "manual"
+
+  };
+
+
+  displaySelectedLocation();
+
+}
+
+
+function useCurrentLocation() {
+
+  if (
+    !navigator.geolocation
+  ) {
+
+    showToast(
+      "La géolocalisation n'est pas disponible sur cet appareil.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showToast(
+    "Recherche de votre position...",
+    "success"
+  );
+
+
+  navigator.geolocation.getCurrentPosition(
+
+    function(position) {
+
+      const lat =
+        position.coords.latitude;
+
+      const lng =
+        position.coords.longitude;
+
+
+      selectedLocation = {
+
+        name:
+          "Ma position actuelle",
+
+        lat:
+          lat,
+
+        lng:
+          lng,
+
+        type:
+          "gps"
+
+      };
+
+
+      displaySelectedLocation();
+
+
+      showToast(
+        "Position ajoutée à la publication.",
+        "success"
+      );
+
+    },
+
+    function(error) {
+
+      console.error(error);
+
+      showToast(
+        "Impossible d'obtenir votre position. Vérifiez l'autorisation de localisation.",
+        "error"
+      );
+
+    },
+
     {
-      day:"2-digit",
-      month:"2-digit",
-      year:"numeric",
-      hour:"2-digit",
-      minute:"2-digit"
+      enableHighAccuracy:
+        true,
+
+      timeout:
+        10000,
+
+      maximumAge:
+        0
+
     }
+
+  );
+
+}
+
+
+function displaySelectedLocation() {
+
+  const element =
+    document.getElementById(
+      "selectedLocation"
+    );
+
+
+  if (
+    !selectedLocation
+  ) {
+
+    element.style.display =
+      "none";
+
+    element.textContent =
+      "";
+
+    return;
+
+  }
+
+
+  element.innerHTML =
+    "📍 " +
+    escapeHtml(
+      selectedLocation.name
+    );
+
+
+  element.style.display =
+    "block";
+
+}
+
+
+function clearLocation() {
+
+  selectedLocation =
+    null;
+
+
+  const element =
+    document.getElementById(
+      "selectedLocation"
+    );
+
+
+  element.textContent =
+    "";
+
+  element.style.display =
+    "none";
+
+}
+
+
+/* =========================================================
+   EMOJI
+========================================================= */
+
+function addEmoji() {
+
+  const textarea =
+    document.getElementById(
+      "postContent"
+    );
+
+
+  textarea.value +=
+    " 😊";
+
+
+  textarea.focus();
+
+}
+
+
+/* =========================================================
+   FOCUS COMPOSER
+========================================================= */
+
+function focusComposer() {
+
+  const composer =
+    document.getElementById(
+      "composer"
+    );
+
+
+  composer.scrollIntoView({
+    behavior:
+      "smooth",
+    block:
+      "center"
+  });
+
+
+  setTimeout(
+    function() {
+
+      document.getElementById(
+        "postContent"
+      ).focus();
+
+    },
+    500
   );
 
 }
 
 
 /* =========================================================
-   DÉCONNEXION
+   HOME
 ========================================================= */
 
-async function logout(){
+function goHome() {
 
-  if(!confirm(
-    "Voulez-vous vous déconnecter ?"
-  )){
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =========================================================
+   SOON
+========================================================= */
+
+function showSoon(name) {
+
+  showToast(
+    name +
+    " sera disponible dans une prochaine version.",
+    "success"
+  );
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function logout() {
+
+  if (
+    !confirm(
+      "Voulez-vous vous déconnecter ?"
+    )
+  ) {
 
     return;
+
   }
 
 
-  await supabase.auth.signOut({
-    scope:"local"
+  await supabaseClient.auth.signOut({
+    scope:
+      "local"
   });
 
 
@@ -2579,61 +3597,232 @@ async function logout(){
 
 
 /* =========================================================
-   PROTECTION HTML
+   DATE
 ========================================================= */
 
-function escapeHtml(
-  value
-){
+function formatDate(dateString) {
 
-  return String(
-    value ?? ""
-  )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
+  const date =
+    new Date(
+      dateString
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return "";
+
+  }
+
+
+  const now =
+    new Date();
+
+
+  const diff =
+    now.getTime() -
+    date.getTime();
+
+
+  const minutes =
+    Math.floor(
+      diff / 60000
+    );
+
+
+  if (
+    minutes < 1
+  ) {
+
+    return "À l'instant";
+
+  }
+
+
+  if (
+    minutes < 60
+  ) {
+
+    return (
+      "Il y a " +
+      minutes +
+      " min"
+    );
+
+  }
+
+
+  const hours =
+    Math.floor(
+      minutes / 60
+    );
+
+
+  if (
+    hours < 24
+  ) {
+
+    return (
+      "Il y a " +
+      hours +
+      " h"
+    );
+
+  }
+
+
+  const days =
+    Math.floor(
+      hours / 24
+    );
+
+
+  if (
+    days < 7
+  ) {
+
+    return (
+      "Il y a " +
+      days +
+      " j"
+    );
+
+  }
+
+
+  return date.toLocaleDateString(
+    "fr-FR",
+    {
+      day:
+        "2-digit",
+      month:
+        "short",
+      year:
+        "numeric"
+    }
   );
 
 }
 
 
 /* =========================================================
-   DÉMARRAGE
+   ESCAPE HTML
 ========================================================= */
 
-(async function(){
+function escapeHtml(value) {
 
-  const user =
-    await checkUser();
+  if (
+    value === null ||
+    value === undefined
+  ) {
 
+    return "";
 
-  if(!user){
-
-    return;
   }
 
 
-  await loadProfile();
+  return String(value)
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
-  await loadPosts();
+}
 
-})();
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer = null;
+
+
+function showToast(
+  message,
+  type = ""
+) {
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+
+  toast.textContent =
+    message;
+
+
+  toast.className =
+    "toast " +
+    type;
+
+
+  toast.style.display =
+    "block";
+
+
+  clearTimeout(
+    toastTimer
+  );
+
+
+  toastTimer =
+    setTimeout(
+      function() {
+
+        toast.style.display =
+          "none";
+
+      },
+      3500
+    );
+
+}
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+  function(event, session) {
+
+    if (
+      event ===
+        "SIGNED_OUT" ||
+      !session
+    ) {
+
+      /*
+       Ne redirige pas immédiatement pendant
+       le chargement initial pour éviter les
+       redirections intempestives.
+      */
+
+    }
+
+  }
+);
 
 </script>
 
