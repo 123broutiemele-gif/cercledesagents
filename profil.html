@@ -161,6 +161,11 @@
       color: white;
     }
 
+    .edit-btn {
+      background: #0284c7;
+      color: white;
+    }
+
     button:disabled {
       opacity: .6;
       cursor: not-allowed;
@@ -193,11 +198,6 @@
       text-align: center;
       color: #94a3b8;
       padding: 30px 10px;
-    }
-
-    .edit-btn {
-      background: #0284c7;
-      color: white;
     }
 
     footer {
@@ -332,19 +332,25 @@
 
       <div class="buttons">
 
+        <!-- MODIFIER LE PROFIL -->
         <button
           class="edit-btn"
-          onclick="window.location.href='inscription.html'"
+          onclick="window.location.href='modifier-profil.html'"
         >
           ✏️ Modifier mon profil
         </button>
 
+
+        <!-- RETOUR À L'ACCUEIL -->
         <button
           class="home-btn"
-          onclick="window.location.href='modifier-profil.html'"
+          onclick="window.location.href='accueil.html'"
+        >
           🏠 Retour à l'accueil
         </button>
 
+
+        <!-- DÉCONNEXION -->
         <button
           class="logout-btn"
           id="logout-btn"
@@ -457,10 +463,6 @@ async function loadProfile() {
 
   try {
 
-    /*
-     * 1 — Utilisateur connecté
-     */
-
     const {
       data: authData,
       error: authError
@@ -475,9 +477,7 @@ async function loadProfile() {
     const user = authData.user;
 
 
-    /*
-     * Aucun utilisateur connecté
-     */
+    /* Aucun utilisateur connecté */
 
     if (!user) {
 
@@ -488,27 +488,19 @@ async function loadProfile() {
     }
 
 
-    console.log("Utilisateur connecté :", user);
+    console.log(
+      "Utilisateur connecté :",
+      user
+    );
 
 
-    /*
-     * 2 — Informations éventuellement
-     * enregistrées dans Auth
-     */
+    /* Métadonnées Auth */
 
     const metadata =
       user.user_metadata || {};
 
 
-    console.log(
-      "Métadonnées utilisateur :",
-      metadata
-    );
-
-
-    /*
-     * 3 — Recherche du profil
-     */
+    /* Recherche du profil */
 
     const {
       data: profileData,
@@ -531,24 +523,11 @@ async function loadProfile() {
     }
 
 
-    console.log(
-      "Profil Supabase :",
-      profileData
-    );
-
-
-    /*
-     * 4 — Si aucune ligne profiles,
-     * on utilise quand même Auth.
-     */
-
     const data =
       profileData || {};
 
 
-    /*
-     * 5 — Récupération des valeurs
-     */
+    /* Récupération des valeurs */
 
     const prenom =
       valeur(
@@ -605,9 +584,7 @@ async function loadProfile() {
       );
 
 
-    /*
-     * 6 — Nom complet
-     */
+    /* Nom complet */
 
     const nomComplet =
       `${prenom} ${nom}`.trim();
@@ -619,9 +596,7 @@ async function loadProfile() {
       nomComplet || "Agent";
 
 
-    /*
-     * 7 — Affichage
-     */
+    /* Affichage */
 
     document.getElementById(
       "email"
@@ -659,16 +634,13 @@ async function loadProfile() {
       presentation;
 
 
-    /*
-     * 8 — Affichage de la page
-     */
+    /* Affichage de la page */
 
     loading.style.display =
       "none";
 
     profile.style.display =
       "block";
-
 
   } catch (error) {
 
@@ -710,7 +682,9 @@ logoutBtn.addEventListener(
     const {
       error
     } =
-      await supabaseClient.auth.signOut();
+      await supabaseClient.auth.signOut({
+        scope: "local"
+      });
 
 
     if (error) {
