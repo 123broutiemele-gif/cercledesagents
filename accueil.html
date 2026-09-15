@@ -15,12 +15,27 @@
       padding: 0;
     }
 
+    :root {
+      --fond: #07111f;
+      --fond2: #0b1728;
+      --carte: #101f33;
+      --carte2: #14263d;
+      --bordure: rgba(255,255,255,.09);
+      --texte: #f8fafc;
+      --gris: #94a3b8;
+      --jaune: #facc15;
+      --orange: #f97316;
+      --bleu: #0ea5e9;
+      --vert: #22c55e;
+    }
+
     body {
       font-family: Arial, Helvetica, sans-serif;
       background:
-        radial-gradient(circle at top, #075985 0%, transparent 35%),
-        linear-gradient(180deg, #07152f 0%, #0f172a 100%);
-      color: #f8fafc;
+        radial-gradient(circle at top left, rgba(14,165,233,.16), transparent 30%),
+        radial-gradient(circle at top right, rgba(249,115,22,.10), transparent 25%),
+        linear-gradient(135deg, var(--fond), #020617);
+      color: var(--texte);
       min-height: 100vh;
     }
 
@@ -29,41 +44,32 @@
       color: inherit;
     }
 
-    button {
+    button,
+    textarea {
       font-family: inherit;
-      cursor: pointer;
     }
 
-    /* =========================
-       HEADER
-    ========================== */
+    /* ================= HEADER ================= */
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(7, 21, 47, 0.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .header-inner {
-      max-width: 1100px;
-      margin: auto;
-      min-height: 72px;
-      padding: 10px 16px;
-
+    .topbar {
+      height: 72px;
+      background: rgba(7,17,31,.94);
+      border-bottom: 1px solid var(--bordure);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      padding: 0 25px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(15px);
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 0;
+      gap: 12px;
+      min-width: 220px;
     }
 
     .brand img {
@@ -71,396 +77,503 @@
       height: 48px;
       object-fit: contain;
       border-radius: 50%;
-      flex-shrink: 0;
     }
 
-    .brand-text {
-      min-width: 0;
-    }
-
-    .brand-title {
+    .brand-text strong {
+      display: block;
       font-size: 17px;
-      font-weight: 900;
-      letter-spacing: 0.4px;
+      letter-spacing: .4px;
     }
 
-    .brand-subtitle {
-      color: #cbd5e1;
+    .brand-text span {
+      color: var(--jaune);
       font-size: 11px;
-      margin-top: 2px;
+      font-weight: bold;
     }
 
-    .logout-btn {
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.06);
-      color: #fff;
-      padding: 10px 13px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13px;
+    .search {
+      width: 360px;
+      position: relative;
     }
 
-    .logout-btn:hover {
-      background: rgba(255,255,255,0.12);
+    .search input {
+      width: 100%;
+      padding: 12px 18px 12px 43px;
+      border-radius: 30px;
+      border: 1px solid var(--bordure);
+      outline: none;
+      background: #0d1b2d;
+      color: white;
+      font-size: 14px;
     }
 
-    /* =========================
-       LAYOUT
-    ========================== */
-
-    .page {
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px 14px 100px;
-
-      display: grid;
-      grid-template-columns: 230px minmax(0, 1fr) 250px;
-      gap: 18px;
+    .search span {
+      position: absolute;
+      left: 16px;
+      top: 11px;
+      font-size: 18px;
+      color: var(--gris);
     }
 
-    /* =========================
-       SIDEBAR
-    ========================== */
-
-    .sidebar,
-    .rightbar,
-    .card {
-      background: rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.20);
-    }
-
-    .sidebar {
-      padding: 14px;
-      height: fit-content;
-      position: sticky;
-      top: 92px;
-    }
-
-    .user-mini {
-      padding: 12px;
-      border-radius: 14px;
-      background: linear-gradient(
-        135deg,
-        rgba(30,64,175,0.35),
-        rgba(14,116,144,0.20)
-      );
-      margin-bottom: 14px;
-    }
-
-    .avatar {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-
+    .top-actions {
       display: flex;
       align-items: center;
-      justify-content: center;
-
-      background: linear-gradient(135deg, #facc15, #f97316);
-      color: #172554;
-      font-size: 21px;
-      font-weight: 900;
-
-      margin-bottom: 9px;
+      gap: 9px;
     }
 
-    .user-name {
-      font-weight: 900;
-      font-size: 15px;
-    }
-
-    .user-email {
-      color: #94a3b8;
-      font-size: 11px;
-      margin-top: 4px;
-      word-break: break-word;
-    }
-
-    .menu {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .menu a {
-      padding: 11px 12px;
-      border-radius: 11px;
-      color: #cbd5e1;
-      font-weight: 700;
-      font-size: 14px;
-      transition: 0.2s;
-    }
-
-    .menu a:hover,
-    .menu a.active {
-      background: rgba(250,204,21,0.12);
-      color: #facc15;
-    }
-
-    /* =========================
-       MAIN
-    ========================== */
-
-    .welcome {
-      margin-bottom: 15px;
-    }
-
-    .welcome h1 {
-      font-size: 25px;
-      margin-bottom: 6px;
-    }
-
-    .welcome p {
-      color: #cbd5e1;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .highlight {
-      color: #facc15;
-      font-weight: 900;
-    }
-
-    /* =========================
-       CREATE POST
-    ========================== */
-
-    .create-post {
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-
-    .create-top {
-      display: flex;
-      gap: 11px;
-      align-items: flex-start;
-    }
-
-    .small-avatar {
+    .top-btn {
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      flex-shrink: 0;
+      border: 1px solid var(--bordure);
+      background: #0d1b2d;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
 
+    .top-btn:hover {
+      background: var(--carte2);
+    }
+
+    /* ================= LAYOUT ================= */
+
+    .layout {
+      max-width: 1450px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 250px minmax(400px, 680px) 290px;
+      gap: 22px;
+      padding: 25px;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .sidebar {
+      position: sticky;
+      top: 95px;
+      height: fit-content;
+    }
+
+    .profile-mini {
+      background: linear-gradient(145deg, #12243a, #0c192b);
+      border: 1px solid var(--bordure);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 68px;
+      height: 68px;
+      margin: auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--jaune), var(--orange));
+      color: #111827;
       display: flex;
       align-items: center;
       justify-content: center;
-
-      background: linear-gradient(135deg, #facc15, #f97316);
-      color: #172554;
-      font-weight: 900;
+      font-size: 24px;
+      font-weight: bold;
+      border: 3px solid rgba(255,255,255,.12);
     }
 
-    textarea {
+    .profile-mini h3 {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .profile-mini p {
+      color: var(--gris);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .menu {
+      background: rgba(16,31,51,.75);
+      border: 1px solid var(--bordure);
+      border-radius: 18px;
+      padding: 10px;
+    }
+
+    .menu a,
+    .logout {
       width: 100%;
-      min-height: 85px;
-      resize: vertical;
-
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 13px;
-
-      background: rgba(2,6,23,0.60);
-      color: #fff;
-
-      padding: 13px;
-      outline: none;
-
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    textarea:focus {
-      border-color: rgba(250,204,21,0.60);
-    }
-
-    .post-actions {
-      margin-top: 11px;
-
       display: flex;
-      justify-content: flex-end;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 12px;
+      border-radius: 12px;
+      color: #dbeafe;
+      font-size: 14px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .menu a:hover,
+    .menu a.active,
+    .logout:hover {
+      background: #17304d;
+      color: var(--jaune);
+    }
+
+    .menu-icon {
+      width: 25px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .logout {
+      color: #fca5a5;
+      margin-top: 4px;
+    }
+
+    /* ================= MAIN ================= */
+
+    .welcome {
+      background:
+        linear-gradient(120deg, rgba(14,165,233,.20), rgba(249,115,22,.12)),
+        #10243b;
+      border: 1px solid var(--bordure);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome::after {
+      content: "🛡️";
+      position: absolute;
+      right: 25px;
+      bottom: -12px;
+      font-size: 85px;
+      opacity: .10;
+    }
+
+    .welcome small {
+      color: var(--jaune);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .welcome h1 {
+      margin-top: 7px;
+      font-size: 27px;
+    }
+
+    .welcome p {
+      margin-top: 8px;
+      color: #cbd5e1;
+      line-height: 1.5;
+      font-size: 14px;
+      max-width: 540px;
+    }
+
+    /* ================= COMPOSER ================= */
+
+    .composer {
+      background: var(--carte);
+      border: 1px solid var(--bordure);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .composer-top {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .composer-avatar {
+      width: 45px;
+      height: 45px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--jaune), var(--orange));
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .composer textarea {
+      width: 100%;
+      min-height: 75px;
+      resize: vertical;
+      border-radius: 14px;
+      border: 1px solid var(--bordure);
+      background: #0b192b;
+      color: white;
+      outline: none;
+      padding: 14px;
+      font-size: 14px;
+    }
+
+    .composer textarea::placeholder {
+      color: #64748b;
+    }
+
+    .composer-bottom {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .post-tools {
+      display: flex;
       gap: 8px;
     }
 
-    .publish-btn {
+    .tool {
       border: none;
-      border-radius: 11px;
-      padding: 11px 17px;
-
-      background: linear-gradient(135deg, #facc15, #f97316);
-      color: #172554;
-
-      font-weight: 900;
+      background: transparent;
+      color: var(--gris);
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 8px;
     }
 
-    .publish-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    .tool:hover {
+      background: #172a42;
+      color: white;
     }
 
-    /* =========================
-       POSTS
-    ========================== */
+    .publish {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 19px;
+      background: linear-gradient(135deg, var(--jaune), var(--orange));
+      color: #111827;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .publish:hover {
+      transform: translateY(-1px);
+    }
+
+    /* ================= POST ================= */
 
     .post {
-      padding: 16px;
-      margin-bottom: 14px;
+      background: var(--carte);
+      border: 1px solid var(--bordure);
+      border-radius: 18px;
+      padding: 19px;
+      margin-bottom: 17px;
     }
 
     .post-header {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      justify-content: space-between;
+      align-items: flex-start;
     }
 
-    .post-avatar {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
+    .author {
+      display: flex;
+      gap: 11px;
+      align-items: center;
+    }
 
+    .author-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0ea5e9, #2563eb);
       display: flex;
       align-items: center;
       justify-content: center;
-
-      background: linear-gradient(135deg, #1d4ed8, #0891b2);
-      font-weight: 900;
-      color: #fff;
+      font-weight: bold;
     }
 
-    .post-author {
-      font-weight: 900;
+    .author strong {
+      display: block;
       font-size: 14px;
     }
 
-    .post-date {
-      color: #64748b;
+    .author span {
+      display: block;
+      color: var(--gris);
       font-size: 11px;
       margin-top: 3px;
     }
 
-    .post-content {
-      color: #e2e8f0;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-top: 14px;
-      white-space: pre-wrap;
+    .post-menu {
+      color: var(--gris);
+      cursor: pointer;
+      font-size: 20px;
     }
 
-    .post-footer {
-      display: flex;
-      gap: 8px;
+    .post-content {
       margin-top: 15px;
+      color: #dbeafe;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .post-tag {
+      display: inline-block;
+      margin-top: 13px;
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: rgba(14,165,233,.10);
+      color: #7dd3fc;
+      font-size: 11px;
+    }
+
+    .post-actions {
+      display: flex;
+      border-top: 1px solid var(--bordure);
+      margin-top: 17px;
       padding-top: 11px;
-      border-top: 1px solid rgba(255,255,255,0.07);
+      gap: 5px;
     }
 
     .post-action {
-      border: none;
+      flex: 1;
       background: transparent;
-      color: #94a3b8;
-      padding: 7px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .post-action:hover {
-      background: rgba(255,255,255,0.06);
-      color: #facc15;
-    }
-
-    /* =========================
-       RIGHT BAR
-    ========================== */
-
-    .rightbar {
-      padding: 16px;
-      height: fit-content;
-      position: sticky;
-      top: 92px;
-    }
-
-    .rightbar h3 {
-      font-size: 15px;
-      margin-bottom: 12px;
-    }
-
-    .info-item {
-      padding: 11px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .info-item:last-child {
-      border-bottom: none;
-    }
-
-    .info-icon {
-      font-size: 19px;
-      margin-bottom: 5px;
-    }
-
-    .info-title {
-      font-weight: 800;
+      border: none;
+      color: var(--gris);
+      padding: 9px;
+      border-radius: 9px;
+      cursor: pointer;
       font-size: 13px;
     }
 
-    .info-text {
-      color: #94a3b8;
+    .post-action:hover {
+      background: #172a42;
+      color: white;
+    }
+
+    /* ================= RIGHT ================= */
+
+    .rightbar {
+      position: sticky;
+      top: 95px;
+      height: fit-content;
+    }
+
+    .right-card {
+      background: var(--carte);
+      border: 1px solid var(--bordure);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 17px;
+    }
+
+    .right-card h3 {
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+
+    .info {
+      display: flex;
+      gap: 11px;
+      margin-bottom: 14px;
+    }
+
+    .info-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #172a42;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .info strong {
+      font-size: 13px;
+      display: block;
+    }
+
+    .info p {
+      color: var(--gris);
       font-size: 11px;
       line-height: 1.4;
       margin-top: 3px;
     }
 
-    /* =========================
-       LOADING
-    ========================== */
+    .online {
+      width: 9px;
+      height: 9px;
+      background: var(--vert);
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
 
-    .loading {
+    .community {
       text-align: center;
-      padding: 35px 15px;
-      color: #94a3b8;
+      padding: 10px 0;
     }
 
-    .error-box {
-      background: rgba(127,29,29,0.30);
-      border: 1px solid rgba(248,113,113,0.30);
-      color: #fecaca;
+    .community-number {
+      font-size: 27px;
+      font-weight: bold;
+      color: var(--jaune);
+    }
+
+    .community p {
+      color: var(--gris);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    /* ================= MESSAGE ================= */
+
+    #message {
+      position: fixed;
+      top: 88px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 300;
+      padding: 12px 18px;
       border-radius: 12px;
-      padding: 12px;
-      font-size: 13px;
-      margin-bottom: 15px;
+      background: #162a43;
+      border: 1px solid var(--bordure);
+      color: white;
       display: none;
+      font-size: 13px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.35);
     }
 
-    /* =========================
-       MOBILE NAV
-    ========================== */
+    /* ================= MOBILE ================= */
 
     .mobile-nav {
       display: none;
     }
 
-    /* =========================
-       RESPONSIVE
-    ========================== */
-
-    @media (max-width: 900px) {
-
-      .page {
-        grid-template-columns: 190px minmax(0, 1fr);
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 220px minmax(350px, 1fr);
       }
 
       .rightbar {
         display: none;
       }
+
+      .search {
+        width: 280px;
+      }
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 760px) {
 
-      .header-inner {
-        min-height: 64px;
-        padding: 8px 11px;
+      .topbar {
+        height: 64px;
+        padding: 0 13px;
+      }
+
+      .brand {
+        min-width: auto;
       }
 
       .brand img {
@@ -468,30 +581,42 @@
         height: 42px;
       }
 
-      .brand-title {
-        font-size: 15px;
+      .brand-text strong {
+        font-size: 14px;
       }
 
-      .brand-subtitle {
+      .brand-text span {
+        font-size: 9px;
+      }
+
+      .search {
         display: none;
       }
 
-      .logout-btn {
-        padding: 8px 10px;
-        font-size: 12px;
+      .top-actions .top-btn:nth-child(1) {
+        display: none;
       }
 
-      .page {
+      .layout {
         display: block;
-        padding: 15px 10px 85px;
+        padding: 14px 12px 90px;
       }
 
       .sidebar {
         display: none;
       }
 
+      .welcome {
+        padding: 20px;
+      }
+
       .welcome h1 {
-        font-size: 22px;
+        font-size: 23px;
+      }
+
+      .composer,
+      .post {
+        border-radius: 15px;
       }
 
       .mobile-nav {
@@ -499,47 +624,34 @@
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: 2000;
-
+        height: 67px;
+        background: rgba(7,17,31,.97);
+        border-top: 1px solid var(--bordure);
         display: flex;
-        justify-content: space-around;
-
-        background: rgba(7,21,47,0.97);
-        backdrop-filter: blur(14px);
-
-        border-top: 1px solid rgba(255,255,255,0.10);
-
-        padding: 8px 4px;
-      }
-
-      .mobile-nav a {
-        display: flex;
-        flex-direction: column;
         align-items: center;
-        gap: 3px;
+        justify-content: space-around;
+        z-index: 200;
+        backdrop-filter: blur(15px);
+      }
 
+      .mobile-nav a,
+      .mobile-nav button {
+        border: none;
+        background: transparent;
         color: #94a3b8;
-        font-size: 10px;
-        font-weight: 700;
-
-        padding: 5px 9px;
+        font-size: 20px;
+        text-align: center;
+        cursor: pointer;
       }
 
-      .mobile-nav a.active {
-        color: #facc15;
+      .mobile-nav span {
+        display: block;
+        font-size: 9px;
+        margin-top: 3px;
       }
 
-      .mobile-nav span:first-child {
-        font-size: 19px;
-      }
-
-      .card {
-        border-radius: 15px;
-      }
-
-      .post,
-      .create-post {
-        padding: 13px;
+      .mobile-nav .active {
+        color: var(--jaune);
       }
     }
   </style>
@@ -547,179 +659,185 @@
 
 <body>
 
-  <!-- =========================
-       HEADER
-  ========================== -->
+  <!-- ================= HEADER ================= -->
 
-  <header>
-    <div class="header-inner">
+  <header class="topbar">
 
-      <a href="accueil.html" class="brand">
+    <a href="accueil.html" class="brand">
 
-        <img
-          src="logo-aigle.png"
-          alt="Logo Cercle des Agents"
-        >
+      <img src="logo-aigle.png" alt="Cercle des Agents">
 
-        <div class="brand-text">
-          <div class="brand-title">
-            CERCLE DES AGENTS
-          </div>
+      <div class="brand-text">
+        <strong>CERCLE DES AGENTS</strong>
+        <span>UNIS • INFORMÉS • PLUS FORTS</span>
+      </div>
 
-          <div class="brand-subtitle">
-            Unis • Informés • Plus forts
-          </div>
-        </div>
+    </a>
 
-      </a>
+    <div class="search">
+      <span>🔎</span>
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="Rechercher un agent..."
+      >
+    </div>
+
+    <div class="top-actions">
 
       <button
-        class="logout-btn"
-        id="logoutBtn"
+        class="top-btn"
+        onclick="showMessage('🔔 Les notifications seront bientôt disponibles.')"
+        title="Notifications"
       >
-        🚪 Déconnexion
+        🔔
+      </button>
+
+      <button
+        class="top-btn"
+        onclick="showMessage('💬 La messagerie sera bientôt disponible.')"
+        title="Messages"
+      >
+        💬
       </button>
 
     </div>
+
   </header>
 
 
-  <!-- =========================
-       PAGE
-  ========================== -->
+  <!-- ================= LAYOUT ================= -->
 
-  <div class="page">
+  <div class="layout">
 
-    <!-- =====================
-         SIDEBAR
-    ====================== -->
+    <!-- ================= SIDEBAR ================= -->
 
     <aside class="sidebar">
 
-      <div class="user-mini">
+      <div class="profile-mini">
 
-        <div
-          class="avatar"
-          id="avatarInitial"
-        >
-          ?
+        <div class="avatar" id="avatarSide">
+          CA
         </div>
 
-        <div
-          class="user-name"
-          id="sideUserName"
-        >
-          Chargement...
-        </div>
+        <h3 id="sideName">
+          Agent
+        </h3>
 
-        <div
-          class="user-email"
-          id="sideUserEmail"
-        >
-          ...
-        </div>
+        <p id="sideType">
+          Agent de sécurité
+        </p>
 
       </div>
 
 
       <nav class="menu">
 
-        <a
-          href="accueil.html"
-          class="active"
-        >
-          🏠 Accueil
+        <a href="accueil.html" class="active">
+          <span class="menu-icon">🏠</span>
+          Accueil
         </a>
 
-        <a href="#">
-          👥 Membres
+        <a href="#" onclick="showMessage('👥 La rubrique Membres arrive bientôt.'); return false;">
+          <span class="menu-icon">👥</span>
+          Membres
         </a>
 
-        <a href="#">
-          📰 Publications
+        <a href="#" onclick="showMessage('📰 Les publications arrivent bientôt.'); return false;">
+          <span class="menu-icon">📰</span>
+          Publications
         </a>
 
-        <a href="#">
-          💬 Messages
+        <a href="#" onclick="showMessage('💬 La messagerie arrive bientôt.'); return false;">
+          <span class="menu-icon">💬</span>
+          Messages
         </a>
 
-        <a href="#">
-          🔔 Notifications
+        <a href="#" onclick="showMessage('🔔 Les notifications arrivent bientôt.'); return false;">
+          <span class="menu-icon">🔔</span>
+          Notifications
         </a>
 
         <a href="profil.html">
-          👤 Mon profil
+          <span class="menu-icon">👤</span>
+          Mon profil
         </a>
 
         <a href="modifier-profil.html">
-          ⚙️ Modifier mon profil
+          <span class="menu-icon">⚙️</span>
+          Modifier mon profil
         </a>
+
+        <button class="logout" id="logoutBtn">
+          <span class="menu-icon">🚪</span>
+          Se déconnecter
+        </button>
 
       </nav>
 
     </aside>
 
 
-    <!-- =====================
-         CONTENU PRINCIPAL
-    ====================== -->
+    <!-- ================= CONTENU PRINCIPAL ================= -->
 
     <main>
 
-      <div
-        class="error-box"
-        id="errorBox"
-      ></div>
-
-
       <section class="welcome">
 
+        <small>Réseau professionnel</small>
+
         <h1>
-          Bonjour
-          <span
-            class="highlight"
-            id="welcomeName"
-          >
-            Agent
-          </span>
-          👋
+          Bonjour <span id="firstName">Agent</span> 👋
         </h1>
 
         <p>
-          Bienvenue dans ton espace professionnel
-          <strong>Cercle des Agents</strong>.
+          Bienvenue dans le Cercle des Agents.
+          Échange avec les professionnels de la sécurité,
+          partage tes expériences et reste informé.
         </p>
 
       </section>
 
 
-      <!-- ===================
-           CRÉER UNE PUBLICATION
-      ==================== -->
+      <!-- ================= PUBLICATION ================= -->
 
-      <section class="card create-post">
+      <section class="composer">
 
-        <div class="create-top">
+        <div class="composer-top">
 
-          <div
-            class="small-avatar"
-            id="createAvatar"
-          >
-            ?
+          <div class="composer-avatar" id="composerAvatar">
+            CA
           </div>
 
           <textarea
             id="postText"
             placeholder="Quoi de neuf dans le monde de la sécurité ?"
-            maxlength="1000"
           ></textarea>
 
         </div>
 
-        <div class="post-actions">
+        <div class="composer-bottom">
+
+          <div class="post-tools">
+
+            <button
+              class="tool"
+              onclick="showMessage('📷 Les photos seront bientôt disponibles.')"
+            >
+              📷 Photo
+            </button>
+
+            <button
+              class="tool"
+              onclick="showMessage('📢 Les annonces seront bientôt disponibles.')"
+            >
+              📢 Annonce
+            </button>
+
+          </div>
 
           <button
-            class="publish-btn"
+            class="publish"
             id="publishBtn"
           >
             Publier
@@ -730,80 +848,294 @@
       </section>
 
 
-      <!-- ===================
-           PUBLICATIONS
-      ==================== -->
+      <!-- ================= FIL D'ACTUALITÉ ================= -->
 
-      <section id="postsContainer">
+      <div id="feed">
 
-        <div class="card loading">
-          Chargement des publications...
-        </div>
+        <!-- POST 1 -->
 
-      </section>
+        <article class="post">
+
+          <div class="post-header">
+
+            <div class="author">
+
+              <div class="author-avatar">
+                CA
+              </div>
+
+              <div>
+                <strong>Cercle des Agents</strong>
+                <span>Publication officielle • Aujourd'hui</span>
+              </div>
+
+            </div>
+
+            <div class="post-menu">
+              ⋯
+            </div>
+
+          </div>
+
+          <div class="post-content">
+
+            Bienvenue sur <strong>Cercle des Agents</strong> 🛡️
+
+            <br><br>
+
+            Cet espace a été créé pour permettre aux agents
+            de sécurité privée de se retrouver, d'échanger
+            leurs expériences et de partager des informations
+            utiles à leur profession.
+
+            <br><br>
+
+            <strong>Unis • Informés • Plus forts.</strong>
+
+          </div>
+
+          <span class="post-tag">
+            #CercleDesAgents
+          </span>
+
+          <div class="post-actions">
+
+            <button
+              class="post-action"
+              onclick="likePost(this)"
+            >
+              👍 J'aime
+            </button>
+
+            <button
+              class="post-action"
+              onclick="showMessage('💬 Les commentaires seront bientôt disponibles.')"
+            >
+              💬 Commenter
+            </button>
+
+            <button
+              class="post-action"
+              onclick="showMessage('🔗 Le partage sera bientôt disponible.')"
+            >
+              ↗️ Partager
+            </button>
+
+          </div>
+
+        </article>
+
+
+        <!-- POST 2 -->
+
+        <article class="post">
+
+          <div class="post-header">
+
+            <div class="author">
+
+              <div
+                class="author-avatar"
+                style="background:linear-gradient(135deg,#f97316,#ef4444)"
+              >
+                🛡️
+              </div>
+
+              <div>
+
+                <strong>Conseil sécurité</strong>
+
+                <span>
+                  Information professionnelle
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="post-menu">
+              ⋯
+            </div>
+
+          </div>
+
+          <div class="post-content">
+
+            👮 <strong>Conseil du jour</strong>
+
+            <br><br>
+
+            Un bon agent reste attentif à son environnement,
+            communique efficacement avec son équipe et respecte
+            toujours les procédures de sécurité.
+
+            <br><br>
+
+            La vigilance est une responsabilité collective.
+
+          </div>
+
+          <span class="post-tag">
+            #Sécurité #Vigilance
+          </span>
+
+          <div class="post-actions">
+
+            <button
+              class="post-action"
+              onclick="likePost(this)"
+            >
+              👍 J'aime
+            </button>
+
+            <button
+              class="post-action"
+              onclick="showMessage('💬 Les commentaires seront bientôt disponibles.')"
+            >
+              💬 Commenter
+            </button>
+
+            <button
+              class="post-action"
+              onclick="showMessage('🔗 Le partage sera bientôt disponible.')"
+            >
+              ↗️ Partager
+            </button>
+
+          </div>
+
+        </article>
+
+
+        <!-- MESSAGE DE BIENVENUE -->
+
+        <article class="post">
+
+          <div class="post-content" style="text-align:center">
+
+            <div style="font-size:42px;margin-bottom:10px">
+              🦅
+            </div>
+
+            <strong style="font-size:18px">
+              Le Cercle commence ici.
+            </strong>
+
+            <p style="margin-top:10px;color:#94a3b8">
+              Ton réseau professionnel des agents
+              de sécurité privée.
+            </p>
+
+          </div>
+
+        </article>
+
+      </div>
 
     </main>
 
 
-    <!-- =====================
-         COLONNE DROITE
-    ====================== -->
+    <!-- ================= COLONNE DROITE ================= -->
 
     <aside class="rightbar">
 
-      <h3>
-        🛡️ Cercle des Agents
-      </h3>
+      <div class="right-card">
 
-      <div class="info-item">
+        <h3>
+          👥 La communauté
+        </h3>
 
-        <div class="info-icon">
-          👥
-        </div>
+        <div class="community">
 
-        <div class="info-title">
-          Une communauté professionnelle
-        </div>
+          <div class="community-number">
+            🛡️
+          </div>
 
-        <div class="info-text">
-          Un espace réservé aux professionnels
-          de la sécurité privée.
-        </div>
+          <p>
+            Des agents réunis autour
+            de la sécurité professionnelle.
+          </p>
 
-      </div>
-
-
-      <div class="info-item">
-
-        <div class="info-icon">
-          📰
-        </div>
-
-        <div class="info-title">
-          Partager l'information
-        </div>
-
-        <div class="info-text">
-          Échangez vos expériences,
-          informations et conseils.
         </div>
 
       </div>
 
 
-      <div class="info-item">
+      <div class="right-card">
 
-        <div class="info-icon">
-          🤝
+        <h3>
+          📌 À la une
+        </h3>
+
+        <div class="info">
+
+          <div class="info-icon">
+            🛡️
+          </div>
+
+          <div>
+            <strong>
+              Professionnalisme
+            </strong>
+
+            <p>
+              Respect, vigilance et responsabilité.
+            </p>
+          </div>
+
         </div>
 
-        <div class="info-title">
-          Restons unis
+
+        <div class="info">
+
+          <div class="info-icon">
+            📢
+          </div>
+
+          <div>
+            <strong>
+              Informations
+            </strong>
+
+            <p>
+              Reste informé des actualités du secteur.
+            </p>
+          </div>
+
         </div>
 
-        <div class="info-text">
-          Unis • Informés • Plus forts.
+
+        <div class="info">
+
+          <div class="info-icon">
+            🤝
+          </div>
+
+          <div>
+            <strong>
+              Solidarité
+            </strong>
+
+            <p>
+              Un réseau professionnel plus fort ensemble.
+            </p>
+          </div>
+
         </div>
+
+      </div>
+
+
+      <div class="right-card">
+
+        <h3>
+          🟢 Statut
+        </h3>
+
+        <p style="font-size:13px;color:#cbd5e1">
+          <span class="online"></span>
+          Tu es connecté
+        </p>
 
       </div>
 
@@ -812,9 +1144,7 @@
   </div>
 
 
-  <!-- =========================
-       NAVIGATION MOBILE
-  ========================== -->
+  <!-- ================= NAVIGATION MOBILE ================= -->
 
   <nav class="mobile-nav">
 
@@ -822,42 +1152,51 @@
       href="accueil.html"
       class="active"
     >
-      <span>🏠</span>
+      🏠
       <span>Accueil</span>
     </a>
 
-    <a href="#">
-      <span>👥</span>
+    <button
+      onclick="showMessage('👥 Les membres arrivent bientôt.')"
+    >
+      👥
       <span>Membres</span>
-    </a>
+    </button>
 
-    <a href="#">
-      <span>➕</span>
+    <button
+      onclick="window.scrollTo({top:0,behavior:'smooth'})"
+    >
+      ➕
       <span>Publier</span>
-    </a>
-
-    <a href="#">
-      <span>💬</span>
-      <span>Messages</span>
-    </a>
+    </button>
 
     <a href="profil.html">
-      <span>👤</span>
+      👤
       <span>Profil</span>
     </a>
+
+    <button
+      onclick="document.getElementById('logoutBtn').click()"
+    >
+      🚪
+      <span>Sortir</span>
+    </button>
 
   </nav>
 
 
-  <!-- =========================
-       JAVASCRIPT
-  ========================== -->
+  <!-- MESSAGE -->
+
+  <div id="message"></div>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
 
   <script>
 
-    /* =========================
+    /* =========================================
        SUPABASE
-    ========================== */
+    ========================================= */
 
     const SUPABASE_URL =
       "https://quzgphbougaujzqrhjza.supabase.co";
@@ -872,141 +1211,73 @@
       );
 
 
-    /* =========================
-       ÉLÉMENTS
-    ========================== */
-
-    const welcomeName =
-      document.getElementById("welcomeName");
-
-    const sideUserName =
-      document.getElementById("sideUserName");
-
-    const sideUserEmail =
-      document.getElementById("sideUserEmail");
-
-    const avatarInitial =
-      document.getElementById("avatarInitial");
-
-    const createAvatar =
-      document.getElementById("createAvatar");
-
-    const postText =
-      document.getElementById("postText");
-
-    const publishBtn =
-      document.getElementById("publishBtn");
-
-    const postsContainer =
-      document.getElementById("postsContainer");
-
-    const errorBox =
-      document.getElementById("errorBox");
-
-    const logoutBtn =
-      document.getElementById("logoutBtn");
-
-
     let currentUser = null;
     let currentProfile = null;
 
 
-    /* =========================
-       UTILITAIRES
-    ========================== */
+    /* =========================================
+       UTILITAIRE
+    ========================================= */
 
-    function showError(message) {
+    function escapeHtml(value) {
 
-      errorBox.textContent = message;
-      errorBox.style.display = "block";
-
-    }
-
-
-    function hideError() {
-
-      errorBox.style.display = "none";
-
-    }
-
-
-    function getInitials(firstName, lastName) {
-
-      const first =
-        (firstName || "").trim();
-
-      const last =
-        (lastName || "").trim();
-
-      if (first || last) {
-
-        return (
-          (first.charAt(0) || "") +
-          (last.charAt(0) || "")
-        ).toUpperCase();
-
+      if (value === null || value === undefined) {
+        return "";
       }
 
-      return "?";
-
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
 
-    function getDisplayName(profile, user) {
+    function getInitials(prenom, nom) {
 
-      if (profile) {
+      const p =
+        (prenom || "").trim().charAt(0).toUpperCase();
 
-        const fullName =
-          [
-            profile.prenom,
-            profile.nom
-          ]
-          .filter(Boolean)
-          .join(" ")
-          .trim();
+      const n =
+        (nom || "").trim().charAt(0).toUpperCase();
 
-        if (fullName) {
-          return fullName;
-        }
-
-      }
-
-      const metadata =
-        user?.user_metadata || {};
-
-      const metadataName =
-        [
-          metadata.prenom,
-          metadata.nom
-        ]
-        .filter(Boolean)
-        .join(" ")
-        .trim();
-
-      if (metadataName) {
-        return metadataName;
-      }
-
-      return user?.email || "Agent";
+      return (p + n) || "CA";
     }
 
 
-    /* =========================
-       CHARGER L'UTILISATEUR
-    ========================== */
+    function showMessage(text) {
 
-    async function loadUser() {
+      const box =
+        document.getElementById("message");
 
-      hideError();
+      box.textContent = text;
+      box.style.display = "block";
+
+      clearTimeout(window.messageTimer);
+
+      window.messageTimer =
+        setTimeout(() => {
+
+          box.style.display = "none";
+
+        }, 3000);
+    }
+
+
+    /* =========================================
+       CHARGER LE PROFIL
+    ========================================= */
+
+    async function loadProfile() {
 
       const {
         data,
         error
-      } =
-        await supabaseClient.auth.getUser();
+      } = await supabaseClient.auth.getUser();
 
 
-      if (error || !data?.user) {
+      if (error || !data || !data.user) {
 
         window.location.href =
           "connexion.html";
@@ -1019,437 +1290,335 @@
       currentUser = data.user;
 
 
-      /*
-       * On essaie de récupérer le profil.
-       * Si la table ou les permissions posent
-       * momentanément problème, le site
-       * continue avec les informations Auth.
-       */
-
       const {
         data: profile,
         error: profileError
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select(`
-            id,
-            prenom,
-            nom,
-            email,
-            ville,
-            entreprise,
-            type_agent,
-            presentation
-          `)
-          .eq("id", currentUser.id)
-          .maybeSingle();
+      } = await supabaseClient
+        .from("profiles")
+        .select(`
+          id,
+          prenom,
+          nom,
+          email,
+          ville,
+          entreprise,
+          type_agent,
+          presentation
+        `)
+        .eq("id", currentUser.id)
+        .maybeSingle();
 
 
-      if (!profileError) {
+      if (!profileError && profile) {
 
         currentProfile = profile;
+
+      } else {
+
+        /*
+          Si le profil n'est pas encore disponible,
+          on utilise les informations Auth.
+        */
+
+        currentProfile = {
+
+          prenom:
+            currentUser.user_metadata?.prenom || "",
+
+          nom:
+            currentUser.user_metadata?.nom || "",
+
+          type_agent:
+            currentUser.user_metadata?.type_agent ||
+            "Agent de sécurité"
+
+        };
 
       }
 
 
-      const displayName =
-        getDisplayName(
-          currentProfile,
-          currentUser
-        );
-
-
-      const firstName =
-        currentProfile?.prenom ||
-        currentUser.user_metadata?.prenom ||
-        displayName.split(" ")[0] ||
-        "Agent";
-
-
-      const initials =
-        getInitials(
-          currentProfile?.prenom ||
-            currentUser.user_metadata?.prenom,
-
-          currentProfile?.nom ||
-            currentUser.user_metadata?.nom
-        );
-
-
-      welcomeName.textContent =
-        firstName;
-
-      sideUserName.textContent =
-        displayName;
-
-      sideUserEmail.textContent =
-        currentUser.email || "";
-
-      avatarInitial.textContent =
-        initials;
-
-      createAvatar.textContent =
-        initials;
-
-
-      await loadPosts();
+      updateInterface();
 
     }
 
 
-    /* =========================
-       PUBLICATIONS
-    ========================== */
+    /* =========================================
+       METTRE À JOUR L'INTERFACE
+    ========================================= */
 
-    async function loadPosts() {
+    function updateInterface() {
 
-      /*
-       * Nous essayons de charger les publications
-       * si la table "posts" existe.
-       */
+      const prenom =
+        currentProfile.prenom || "Agent";
 
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("posts")
-          .select(`
-            id,
-            user_id,
-            content,
-            created_at
-          `)
-          .order("created_at", {
-            ascending: false
-          })
-          .limit(20);
+      const nom =
+        currentProfile.nom || "";
+
+      const type =
+        currentProfile.type_agent ||
+        "Agent de sécurité";
 
 
-      /*
-       * Si la table posts n'existe pas encore,
-       * on affiche une présentation temporaire.
-       */
-
-      if (error) {
-
-        postsContainer.innerHTML = `
-
-          <article class="card post">
-
-            <div class="post-header">
-
-              <div class="post-avatar">
-                🛡️
-              </div>
-
-              <div>
-
-                <div class="post-author">
-                  Cercle des Agents
-                </div>
-
-                <div class="post-date">
-                  Bienvenue
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="post-content">
-              Bienvenue dans le Cercle des Agents !
-              
-              Cet espace deviendra ton fil d'actualité
-              professionnel où les agents pourront
-              partager leurs informations, expériences
-              et actualités.
-            </div>
-
-          </article>
-
-        `;
-
-        return;
-
-      }
+      const initials =
+        getInitials(prenom, nom);
 
 
-      if (!data || data.length === 0) {
-
-        postsContainer.innerHTML = `
-
-          <article class="card post">
-
-            <div class="post-header">
-
-              <div class="post-avatar">
-                🦅
-              </div>
-
-              <div>
-
-                <div class="post-author">
-                  Cercle des Agents
-                </div>
-
-                <div class="post-date">
-                  Aujourd'hui
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="post-content">
-              Il n'y a encore aucune publication.
-              
-              Sois le premier agent à partager
-              quelque chose avec la communauté !
-            </div>
-
-          </article>
-
-        `;
-
-        return;
-
-      }
+      document.getElementById("firstName")
+        .textContent = prenom;
 
 
-      postsContainer.innerHTML = "";
+      document.getElementById("sideName")
+        .textContent =
+          `${prenom} ${nom}`.trim();
 
 
-      data.forEach(post => {
-
-        const article =
-          document.createElement("article");
-
-        article.className =
-          "card post";
+      document.getElementById("sideType")
+        .textContent = type;
 
 
-        const initials =
-          post.user_id === currentUser.id
-            ? getInitials(
-                currentProfile?.prenom,
-                currentProfile?.nom
-              )
-            : "AG";
+      document.getElementById("avatarSide")
+        .textContent = initials;
 
 
-        const author =
-          post.user_id === currentUser.id
-            ? getDisplayName(
-                currentProfile,
-                currentUser
-              )
-            : "Agent du Cercle";
+      document.getElementById("composerAvatar")
+        .textContent = initials;
+
+    }
 
 
-        const date =
-          post.created_at
-            ? new Date(
-                post.created_at
-              ).toLocaleString(
-                "fr-FR",
-                {
-                  dateStyle: "medium",
-                  timeStyle: "short"
-                }
-              )
-            : "";
+    /* =========================================
+       PUBLICATION LOCALE
+    ========================================= */
+
+    function createLocalPost(text) {
+
+      const prenom =
+        currentProfile?.prenom || "Agent";
+
+      const nom =
+        currentProfile?.nom || "";
+
+      const initials =
+        getInitials(prenom, nom);
 
 
-        article.innerHTML = `
+      const post =
+        document.createElement("article");
 
-          <div class="post-header">
+      post.className = "post";
 
-            <div class="post-avatar">
-              ${escapeHtml(initials)}
+
+      const safeText =
+        escapeHtml(text)
+          .replace(/\n/g, "<br>");
+
+
+      post.innerHTML = `
+
+        <div class="post-header">
+
+          <div class="author">
+
+            <div class="author-avatar">
+              ${initials}
             </div>
 
             <div>
 
-              <div class="post-author">
-                ${escapeHtml(author)}
-              </div>
+              <strong>
+                ${escapeHtml(prenom)} ${escapeHtml(nom)}
+              </strong>
 
-              <div class="post-date">
-                ${escapeHtml(date)}
-              </div>
+              <span>
+                Publication • À l'instant
+              </span>
 
             </div>
 
           </div>
 
-
-          <div class="post-content">
-            ${escapeHtml(post.content || "")}
+          <div class="post-menu">
+            ⋯
           </div>
 
+        </div>
 
-          <div class="post-footer">
+        <div class="post-content">
+          ${safeText}
+        </div>
 
-            <button class="post-action">
-              👍 J'aime
-            </button>
+        <span class="post-tag">
+          #CercleDesAgents
+        </span>
 
-            <button class="post-action">
-              💬 Commenter
-            </button>
+        <div class="post-actions">
 
-            <button class="post-action">
-              ↗️ Partager
-            </button>
+          <button
+            class="post-action"
+            onclick="likePost(this)"
+          >
+            👍 J'aime
+          </button>
 
-          </div>
+          <button
+            class="post-action"
+            onclick="showMessage('💬 Les commentaires seront bientôt disponibles.')"
+          >
+            💬 Commenter
+          </button>
 
-        `;
+          <button
+            class="post-action"
+            onclick="showMessage('🔗 Le partage sera bientôt disponible.')"
+          >
+            ↗️ Partager
+          </button>
+
+        </div>
+      `;
 
 
-        postsContainer.appendChild(article);
+      const feed =
+        document.getElementById("feed");
 
-      });
+      feed.prepend(post);
 
     }
 
 
-    /* =========================
-       SÉCURITÉ HTML
-    ========================== */
+    /* =========================================
+       BOUTON PUBLIER
+    ========================================= */
 
-    function escapeHtml(value) {
+    document
+      .getElementById("publishBtn")
+      .addEventListener("click", async function() {
 
-      return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        const textarea =
+          document.getElementById("postText");
 
-    }
-
-
-    /* =========================
-       PUBLIER
-    ========================== */
-
-    publishBtn.addEventListener(
-      "click",
-      async function() {
-
-        hideError();
-
-        const content =
-          postText.value.trim();
+        const text =
+          textarea.value.trim();
 
 
-        if (!content) {
+        if (!text) {
 
-          showError(
-            "Écris quelque chose avant de publier."
+          showMessage(
+            "✍️ Écris quelque chose avant de publier."
           );
+
+          textarea.focus();
 
           return;
 
         }
-
-
-        if (!currentUser) {
-
-          showError(
-            "Ta session a expiré. Reconnecte-toi."
-          );
-
-          return;
-
-        }
-
-
-        publishBtn.disabled = true;
-        publishBtn.textContent =
-          "Publication...";
 
 
         /*
-         * Création de la publication.
-         */
+          Pour le moment, la publication est affichée
+          dans l'interface. Nous connecterons ensuite
+          le fil à une table Supabase "posts".
+        */
 
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("posts")
-            .insert({
-              user_id: currentUser.id,
-              content: content
-            });
+        createLocalPost(text);
 
+        textarea.value = "";
 
-        if (error) {
+        showMessage(
+          "✅ Publication ajoutée."
+        );
 
-          console.error(error);
-
-          showError(
-            "La publication n'a pas pu être enregistrée. La table des publications doit encore être configurée."
-          );
-
-          publishBtn.disabled = false;
-          publishBtn.textContent =
-            "Publier";
-
-          return;
-
-        }
+      });
 
 
-        postText.value = "";
+    /* =========================================
+       J'AIME
+    ========================================= */
 
-        publishBtn.disabled = false;
-        publishBtn.textContent =
-          "Publier";
+    function likePost(button) {
 
+      if (button.dataset.liked === "true") {
 
-        await loadPosts();
+        button.dataset.liked = "false";
+
+        button.textContent =
+          "👍 J'aime";
+
+        button.style.color = "";
+
+        return;
 
       }
-    );
 
 
-    /* =========================
+      button.dataset.liked = "true";
+
+      button.textContent =
+        "👍 J'aime ✓";
+
+      button.style.color =
+        "#facc15";
+
+    }
+
+
+    /* =========================================
+       RECHERCHE
+    ========================================= */
+
+    document
+      .getElementById("searchInput")
+      .addEventListener("keydown", function(event) {
+
+        if (event.key !== "Enter") {
+          return;
+        }
+
+        const value =
+          this.value.trim();
+
+        if (!value) {
+          return;
+        }
+
+        showMessage(
+          "🔎 La recherche des agents sera disponible prochainement."
+        );
+
+      });
+
+
+    /* =========================================
        DÉCONNEXION
-    ========================== */
+    ========================================= */
 
-    logoutBtn.addEventListener(
-      "click",
-      async function() {
+    document
+      .getElementById("logoutBtn")
+      .addEventListener("click", async function() {
 
-        logoutBtn.disabled = true;
-        logoutBtn.textContent =
-          "Déconnexion...";
+        this.disabled = true;
+
+        this.textContent =
+          "⏳ Déconnexion...";
 
 
         const {
           error
-        } =
-          await supabaseClient.auth.signOut({
-            scope: "local"
-          });
+        } = await supabaseClient.auth.signOut({
+          scope: "local"
+        });
 
 
         if (error) {
 
-          console.error(error);
-
-          showError(
-            "Impossible de se déconnecter."
+          showMessage(
+            "❌ Impossible de se déconnecter."
           );
 
-          logoutBtn.disabled = false;
-          logoutBtn.textContent =
-            "🚪 Déconnexion";
+          this.disabled = false;
+
+          this.innerHTML =
+            '<span class="menu-icon">🚪</span> Se déconnecter';
 
           return;
 
@@ -1459,15 +1628,14 @@
         window.location.href =
           "connexion.html";
 
-      }
-    );
+      });
 
 
-    /* =========================
-       INITIALISATION
-    ========================== */
+    /* =========================================
+       DÉMARRAGE
+    ========================================= */
 
-    loadUser();
+    loadProfile();
 
   </script>
 
