@@ -438,6 +438,7 @@ img{
   object-fit:cover;
   border-radius:15px;
   display:block;
+  background:#091525;
 }
 
 .post-location{
@@ -759,10 +760,6 @@ img{
 
 <body>
 
-<!-- =========================
-     TOPBAR
-========================= -->
-
 <header class="topbar">
 
   <div class="brand">
@@ -791,10 +788,6 @@ img{
 
 <div class="layout">
 
-  <!-- =========================
-       SIDEBAR
-  ========================= -->
-
   <aside class="sidebar">
 
     <div class="menu">
@@ -803,7 +796,7 @@ img{
         🏠 Accueil
       </button>
 
-      <button onclick="showComingSoon('👥 Membres')">
+      <button onclick="go('membres.html')">
         👥 Membres
       </button>
 
@@ -836,15 +829,9 @@ img{
   </aside>
 
 
-  <!-- =========================
-       MAIN
-  ========================= -->
-
   <main class="main">
 
     <div id="notice" class="notice"></div>
-
-    <!-- WELCOME -->
 
     <section class="card welcome">
 
@@ -859,10 +846,6 @@ img{
 
     </section>
 
-
-    <!-- =========================
-         COMPOSER
-    ========================= -->
 
     <section class="card composer">
 
@@ -880,8 +863,6 @@ img{
 
       </div>
 
-
-      <!-- LOCATION -->
 
       <div class="location-box" id="locationBox">
 
@@ -921,12 +902,11 @@ img{
       </div>
 
 
-      <!-- IMAGE PREVIEW -->
-
       <div
         id="preview"
         class="preview"
       >
+
         <button
           class="remove-preview"
           onclick="removeSelectedImage()"
@@ -938,10 +918,9 @@ img{
           id="previewImage"
           alt="Aperçu"
         >
+
       </div>
 
-
-      <!-- TOOLS -->
 
       <div class="composer-tools">
 
@@ -990,10 +969,6 @@ img{
     </section>
 
 
-    <!-- =========================
-         FEED
-    ========================= -->
-
     <section id="feed">
 
       <div class="loading">
@@ -1004,10 +979,6 @@ img{
 
   </main>
 
-
-  <!-- =========================
-       RIGHTBAR
-  ========================= -->
 
   <aside class="rightbar">
 
@@ -1043,10 +1014,6 @@ img{
 </div>
 
 
-<!-- =========================
-     MOBILE NAV
-========================= -->
-
 <nav class="mobile-nav">
 
   <button onclick="go('accueil.html')">
@@ -1054,7 +1021,7 @@ img{
     Accueil
   </button>
 
-  <button onclick="showComingSoon('👥 Membres')">
+  <button onclick="go('membres.html')">
     <span>👥</span>
     Membres
   </button>
@@ -1102,9 +1069,7 @@ const supabaseClient =
 
 let currentUser = null;
 let currentProfile = null;
-
 let selectedPhoto = null;
-
 let selectedLocation = null;
 
 
@@ -1114,14 +1079,14 @@ let selectedLocation = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  await checkAuth();
+  const authenticated = await checkAuth();
+
+  if(!authenticated) return;
 
   setupImageInput();
-
   setupSearch();
 
   await loadCurrentProfile();
-
   await loadPosts();
 
 });
@@ -1234,22 +1199,114 @@ function getInitials(name){
 }
 
 
-function getPublicImageUrl(bucket,path){
+/*
+   =====================================================
+   URL DES IMAGES
+   -----------------------------------------------------
+   Cette fonction accepte :
+   1. un chemin Supabase :
+      utilisateur/photo.jpg
+   2. une URL complète :
+      https://.../storage/v1/object/public/...
+   =====================================================
+*/
+
+function getPublicImageUrl(bucket, path){
 
   if(!path) return null;
+
+  const cleanPath =
+    String(path).trim();
+
+  if(!cleanPath) return null;
+
+
+  /*
+     Si l'ancienne publication contient
+     déjà une URL complète, on la conserve.
+  */
+
+  if(
+    cleanPath.startsWith("http://") ||
+    cleanPath.startsWith("https://")
+  ){
+
+    return cleanPath;
+  }
+
+
+  /*
+     Sinon, Supabase construit l'URL publique.
+  */
 
   const {
     data
   } = supabaseClient
     .storage
     .from(bucket)
-    .getPublicUrl(path);
+    .getPublicUrl(cleanPath);
 
-  if(!data?.publicUrl) return null;
 
-  return data.publicUrl +
-    "?v=" +
-    Date.now();
+  return data?.publicUrl || null;
+}
+
+
+/*
+   Fonction spécifique aux photos de publications.
+
+   Elle permet également de récupérer des photos
+   dont image_url aurait été enregistré avec
+   un chemin commençant par /.
+*/
+
+function getPostImageUrl(imagePath){
+
+  if(!imagePath) return null;
+
+  let path =
+    String(imagePath).trim();
+
+  if(!path) return null;
+
+
+  /*
+     URL complète
+  */
+
+  if(
+    path.startsWith("http://") ||
+    path.startsWith("https://")
+  ){
+
+    return path;
+  }
+
+
+  /*
+     Nettoyage des anciens formats éventuels
+  */
+
+  path =
+    path.replace(/^\/+/, "");
+
+  path =
+    path.replace(/^post-images\//i, "");
+
+
+  /*
+     Construction URL Supabase
+  */
+
+  const {
+    data
+  } =
+    supabaseClient
+      .storage
+      .from("post-images")
+      .getPublicUrl(path);
+
+
+  return data?.publicUrl || null;
 }
 
 
@@ -1420,11 +1477,8 @@ function useManualLocation(){
     selectedLocation = {
 
       name: value,
-
       lat: null,
-
       lng: null,
-
       type: "manual"
 
     };
@@ -1467,9 +1521,7 @@ function useMyLocation(){
           "Ma position actuelle",
 
         lat: lat,
-
         lng: lng,
-
         type: "gps"
 
       };
@@ -1518,7 +1570,6 @@ function updateLocationDisplay(){
   if(!selectedLocation){
 
     box.style.display = "none";
-
     box.innerHTML = "";
 
     return;
@@ -1590,18 +1641,12 @@ async function publishPost(){
     document.getElementById("publishBtn");
 
   button.disabled = true;
-
-  button.textContent =
-    "Publication...";
+  button.textContent = "Publication...";
 
   try{
 
     let imagePath = null;
 
-
-    /* =========================
-       UPLOAD PHOTO
-    ========================= */
 
     if(selectedPhoto){
 
@@ -1644,10 +1689,6 @@ async function publishPost(){
     }
 
 
-    /* =========================
-       INSERT POST
-    ========================= */
-
     const postData = {
 
       user_id:
@@ -1663,10 +1704,10 @@ async function publishPost(){
         selectedLocation?.name || null,
 
       location_lat:
-        selectedLocation?.lat || null,
+        selectedLocation?.lat ?? null,
 
       location_lng:
-        selectedLocation?.lng || null,
+        selectedLocation?.lng ?? null,
 
       location_type:
         selectedLocation?.type || "manual"
@@ -1695,10 +1736,6 @@ async function publishPost(){
       throw error;
     }
 
-
-    /* =========================
-       RESET
-    ========================= */
 
     document.getElementById(
       "postContent"
@@ -1736,9 +1773,7 @@ async function publishPost(){
   finally{
 
     button.disabled = false;
-
-    button.textContent =
-      "Publier";
+    button.textContent = "Publier";
   }
 }
 
@@ -1981,26 +2016,37 @@ async function renderPost(
 
 
   let avatarHTML =
-    initials;
+    escapeHtml(initials);
 
   if(avatarUrl){
 
     avatarHTML =
       `<img
-        src="${avatarUrl}"
+        src="${escapeHtml(avatarUrl)}"
         alt="Photo de ${escapeHtml(fullName)}"
-        onerror="this.remove()"
+        onerror="this.style.display='none'"
       >`;
   }
 
+
+  /*
+     =================================================
+     CORRECTION IMPORTANTE DES PHOTOS
+     =================================================
+
+     getPostImageUrl() accepte maintenant :
+     - URL complète
+     - chemin Supabase
+     - chemin commençant par /post-images/
+     - ancien chemin contenant post-images/
+  */
 
   let imageHTML = "";
 
   if(post.image_url){
 
     const imageUrl =
-      getPublicImageUrl(
-        "post-images",
+      getPostImageUrl(
         post.image_url
       );
 
@@ -2009,9 +2055,10 @@ async function renderPost(
       imageHTML =
         `<img
           class="post-image"
-          src="${imageUrl}"
+          src="${escapeHtml(imageUrl)}"
           alt="Photo de publication"
           loading="lazy"
+          onerror="handlePostImageError(this)"
         >`;
     }
   }
@@ -2025,7 +2072,9 @@ async function renderPost(
 
     if(
       post.location_lat !== null &&
-      post.location_lng !== null
+      post.location_lat !== undefined &&
+      post.location_lng !== null &&
+      post.location_lng !== undefined
     ){
 
       const lat =
@@ -2119,7 +2168,8 @@ async function renderPost(
 
       <span>
         ❤️ ${likeCount || 0}
-        ${commentCount || 0 > 0
+        ${
+          (commentCount || 0) > 0
           ? " • 💬 " + (commentCount || 0)
           : ""
         }
@@ -2192,6 +2242,22 @@ async function renderPost(
 
 
 /* =====================================================
+   ERREUR PHOTO
+===================================================== */
+
+function handlePostImageError(image){
+
+  if(!image) return;
+
+  console.warn(
+    "Impossible de charger cette photo de publication."
+  );
+
+  image.style.display = "none";
+}
+
+
+/* =====================================================
    LIKES
 ===================================================== */
 
@@ -2253,7 +2319,6 @@ async function toggleLike(
           .insert({
 
             post_id:postId,
-
             user_id:currentUser.id
 
           });
@@ -2542,9 +2607,7 @@ async function addComment(postId){
       .insert({
 
         post_id:postId,
-
         user_id:currentUser.id,
-
         content:content
 
       });
@@ -2646,9 +2709,7 @@ async function sharePost(postId){
 
   try{
 
-    if(
-      navigator.share
-    ){
+    if(navigator.share){
 
       await navigator.share(
         shareData
@@ -2658,9 +2719,7 @@ async function sharePost(postId){
     }
 
 
-    if(
-      navigator.clipboard
-    ){
+    if(navigator.clipboard){
 
       await navigator.clipboard.writeText(
         url
@@ -2871,13 +2930,28 @@ async function deletePost(postId){
   }
 
 
-  if(post?.image_url){
+  /*
+     On supprime la photo uniquement si
+     image_url correspond à un chemin Supabase.
+     Si c'est une ancienne URL complète,
+     on ne tente pas de supprimer une URL.
+  */
+
+  if(
+    post?.image_url &&
+    !String(post.image_url)
+      .startsWith("http://") &&
+    !String(post.image_url)
+      .startsWith("https://")
+  ){
 
     await supabaseClient
       .storage
       .from("post-images")
       .remove([
-        post.image_url
+        String(post.image_url)
+          .replace(/^\/+/, "")
+          .replace(/^post-images\//i,"")
       ]);
   }
 
@@ -2926,20 +3000,20 @@ function setupSearch(){
         data:posts,
         error
       } =
-        await supabaseClient
-          .from("posts")
-          .select("*")
-          .ilike(
-            "content",
-            `%${term}%`
-          )
-          .order(
-            "created_at",
-            {
-              ascending:false
-            }
-          )
-          .limit(50);
+      await supabaseClient
+        .from("posts")
+        .select("*")
+        .ilike(
+          "content",
+          `%${term}%`
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(50);
 
 
       if(error){
@@ -3032,8 +3106,10 @@ function formatDate(dateString){
 
 function escapeHtml(value){
 
-  if(value === null ||
-     value === undefined){
+  if(
+    value === null ||
+    value === undefined
+  ){
 
     return "";
   }
@@ -3049,7 +3125,10 @@ function escapeHtml(value){
 
 function friendlyError(error){
 
-  if(!error) return "Erreur inconnue.";
+  if(!error){
+
+    return "Erreur inconnue.";
+  }
 
   if(error.message){
 
