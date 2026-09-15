@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cercle des Agents — Notifications</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#f8fafc;
+  min-height:100vh;
+
+  background:
+    radial-gradient(
+      circle at top,
+      #075985 0%,
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #0f172a,
+      #172554
+    );
+}
+
+button{
+  font-family:inherit;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+/* ================= TOPBAR ================= */
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+
+  height:68px;
+
+  padding:8px 18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  background:rgba(15,23,42,.96);
+  backdrop-filter:blur(14px);
+
+  border-bottom:
+    1px solid rgba(255,255,255,.08);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border-radius:12px;
+}
+
+.brand-name{
+  font-size:17px;
+  font-weight:800;
+}
+
+.brand-slogan{
+  font-size:11px;
+  color:#cbd5e1;
+  margin-top:2px;
+}
+
+.top-actions{
+  display:flex;
+  gap:8px;
+}
+
+.top-btn{
+  border:
+    1px solid rgba(255,255,255,.1);
+
+  background:
+    rgba(255,255,255,.06);
+
+  color:#fff;
+
+  border-radius:10px;
+
+  padding:9px 12px;
+
+  cursor:pointer;
+}
+
+.top-btn:hover{
+  background:
+    rgba(255,255,255,.1);
+}
+
+/* ================= PAGE ================= */
+
+.page{
+  width:min(900px,100%);
+  margin:auto;
+
+  padding:
+    25px 15px 110px;
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:16px;
+
+  color:#cbd5e1;
+  font-size:14px;
+}
+
+.back:hover{
+  color:#facc15;
+}
+
+/* ================= HEADER ================= */
+
+.page-header{
+  background:
+    rgba(15,23,42,.88);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:22px;
+
+  padding:24px;
+
+  margin-bottom:18px;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.2);
+}
+
+.header-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.title-area{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.notification-icon{
+  width:54px;
+  height:54px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:27px;
+
+  border-radius:16px;
+
+  background:
+    rgba(250,204,21,.1);
+
+  border:
+    1px solid rgba(250,204,21,.25);
+}
+
+.title{
+  margin:0;
+  font-size:25px;
+}
+
+.subtitle{
+  margin-top:5px;
+  color:#94a3b8;
+  font-size:13px;
+}
+
+.unread-badge{
+  min-width:34px;
+  height:34px;
+
+  padding:0 10px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:999px;
+
+  background:#facc15;
+  color:#111827;
+
+  font-size:13px;
+  font-weight:800;
+}
+
+/* ================= ACTIONS ================= */
+
+.actions{
+  margin-top:20px;
+
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:0;
+  border-radius:12px;
+
+  padding:11px 15px;
+
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.primary{
+  background:#facc15;
+  color:#111827;
+}
+
+.secondary{
+  background:
+    rgba(255,255,255,.07);
+
+  color:#fff;
+
+  border:
+    1px solid rgba(255,255,255,.1);
+}
+
+.btn:hover{
+  opacity:.9;
+}
+
+/* ================= NOTIFICATIONS ================= */
+
+.notifications{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.notification{
+  position:relative;
+
+  display:flex;
+  align-items:flex-start;
+  gap:13px;
+
+  padding:16px;
+
+  border-radius:17px;
+
+  background:
+    rgba(15,23,42,.88);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  transition:.2s;
+}
+
+.notification:hover{
+  transform:translateY(-1px);
+
+  background:
+    rgba(30,41,59,.95);
+}
+
+.notification.unread{
+  border-left:
+    4px solid #facc15;
+
+  background:
+    rgba(30,41,59,.95);
+}
+
+.notification-icon-small{
+  width:46px;
+  height:46px;
+  min-width:46px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:21px;
+
+  border-radius:50%;
+
+  background:
+    rgba(255,255,255,.07);
+}
+
+.notification-content{
+  flex:1;
+  min-width:0;
+}
+
+.notification-text{
+  font-size:14px;
+  line-height:1.5;
+}
+
+.notification-text strong{
+  color:#fff;
+}
+
+.notification-date{
+  color:#94a3b8;
+  font-size:11px;
+  margin-top:6px;
+}
+
+.notification-dot{
+  width:9px;
+  height:9px;
+  min-width:9px;
+
+  margin-top:7px;
+
+  border-radius:50%;
+
+  background:#facc15;
+}
+
+.notification-link{
+  display:inline-block;
+
+  margin-top:8px;
+
+  color:#38bdf8;
+
+  font-size:12px;
+  font-weight:700;
+}
+
+.notification-link:hover{
+  color:#facc15;
+}
+
+/* ================= EMPTY ================= */
+
+.empty{
+  text-align:center;
+
+  padding:55px 20px;
+
+  border-radius:20px;
+
+  background:
+    rgba(15,23,42,.85);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  color:#94a3b8;
+}
+
+.empty-icon{
+  font-size:48px;
+  margin-bottom:12px;
+}
+
+.empty-title{
+  color:#fff;
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+/* ================= LOADING ================= */
+
+.loading{
+  text-align:center;
+  padding:55px 20px;
+  color:#cbd5e1;
+}
+
+.spinner{
+  width:38px;
+  height:38px;
+
+  margin:
+    0 auto 15px;
+
+  border:
+    4px solid rgba(255,255,255,.15);
+
+  border-top-color:#facc15;
+
+  border-radius:50%;
+
+  animation:
+    spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* ================= ERROR ================= */
+
+.error{
+  padding:25px;
+
+  border-radius:16px;
+
+  background:
+    rgba(127,29,29,.25);
+
+  border:
+    1px solid rgba(248,113,113,.2);
+
+  color:#fecaca;
+
+  line-height:1.5;
+}
+
+/* ================= MOBILE ================= */
+
+.mobile-nav{
+  display:none;
+
+  position:fixed;
+
+  left:10px;
+  right:10px;
+  bottom:10px;
+
+  z-index:200;
+
+  padding:8px;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  background:
+    rgba(15,23,42,.97);
+
+  backdrop-filter:blur(15px);
+
+  border:
+    1px solid rgba(255,255,255,.1);
+
+  border-radius:18px;
+}
+
+.mobile-nav a{
+  text-align:center;
+
+  padding:7px;
+
+  color:#cbd5e1;
+
+  font-size:11px;
+}
+
+.mobile-nav span{
+  display:block;
+
+  font-size:20px;
+
+  margin-bottom:2px;
+}
+
+.mobile-nav .active{
+  color:#facc15;
+
+  background:
+    rgba(250,204,21,.1);
+
+  border-radius:12px;
+}
+
+@media(max-width:600px){
+
+  .topbar{
+    padding:7px 10px;
+  }
+
+  .brand img{
+    width:42px;
+    height:42px;
+  }
+
+  .brand-name{
+    font-size:15px;
+  }
+
+  .brand-slogan{
+    font-size:9px;
+  }
+
+  .top-btn{
+    padding:8px;
+    font-size:12px;
+  }
+
+  .page{
+    padding:
+      18px 10px 105px;
+  }
+
+  .page-header{
+    padding:18px;
+  }
+
+  .header-row{
+    align-items:flex-start;
+  }
+
+  .title{
+    font-size:21px;
+  }
+
+  .notification-icon{
+    width:48px;
+    height:48px;
+  }
+
+  .actions{
+    flex-direction:column;
+  }
+
+  .btn{
+    width:100%;
+  }
+
+  .notification{
+    padding:14px 12px;
+  }
+
+  .notification-icon-small{
+    width:42px;
+    height:42px;
+    min-width:42px;
+  }
+
+  .mobile-nav{
+    display:grid;
+  }
+}
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ================= TOPBAR ================= -->
+
+<header class="topbar">
+
+  <a
+    href="accueil.html"
+    class="brand"
+  >
+
+    <img
+      src="logo-aigle.png"
+      alt="Cercle des Agents"
+    >
+
+    <div>
+
+      <div class="brand-name">
+        Cercle des Agents
+      </div>
+
+      <div class="brand-slogan">
+        Unis • Informés • Plus forts
+      </div>
+
+    </div>
+
+  </a>
+
+
+  <div class="top-actions">
+
+    <button
+      class="top-btn"
+      onclick="location.href='accueil.html'"
+    >
+      🏠 Accueil
+    </button>
+
+    <button
+      class="top-btn"
+      onclick="location.href='membres.html'"
+    >
+      👥 Membres
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- ================= PAGE ================= -->
+
+<main class="page">
+
+
+  <a
+    href="accueil.html"
+    class="back"
+  >
+    ← Retour à l'accueil
+  </a>
+
+
+  <!-- ================= HEADER ================= -->
+
+  <section class="page-header">
+
+    <div class="header-row">
+
+      <div class="title-area">
+
+        <div class="notification-icon">
+          🔔
+        </div>
+
+        <div>
+
+          <h1 class="title">
+            Notifications
+          </h1>
+
+          <div class="subtitle">
+            Retrouvez les dernières activités
+            concernant votre compte.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="unreadBadge"
+        class="unread-badge"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="actions">
+
+      <button
+        class="btn primary"
+        onclick="markAllAsRead()"
+      >
+        ✓ Tout marquer comme lu
+      </button>
+
+
+      <button
+        class="btn secondary"
+        onclick="loadNotifications()"
+      >
+        🔄 Actualiser
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= LISTE ================= -->
+
+  <section
+    id="notifications"
+    class="notifications"
+  >
+
+    <div class="loading">
+
+      <div class="spinner"></div>
+
+      Chargement des notifications...
+
+    </div>
+
+  </section>
+
+
+</main>
+
+
+<!-- ================= MOBILE NAV ================= -->
+
+<nav class="mobile-nav">
+
+  <a
+    href="accueil.html"
+    class="active"
+  >
+    <span>🏠</span>
+    Accueil
+  </a>
+
+
+  <a href="membres.html">
+
+    <span>👥</span>
+
+    Membres
+
+  </a>
+
+
+  <a href="notifications.html">
+
+    <span>🔔</span>
+
+    Notifications
+
+  </a>
+
+</nav>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://quzgphbougaujzqrhjza.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+let currentUser = null;
+
+
+/* =========================================================
+   UTILITAIRE
+========================================================= */
+
+function escapeHtml(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+function formatDate(value){
+
+  if(!value){
+    return "";
+  }
+
+  const date =
+    new Date(value);
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+    return "";
+  }
+
+  return date.toLocaleString(
+    "fr-FR",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+}
+
+
+/* =========================================================
+   TYPE NOTIFICATION
+========================================================= */
+
+function notificationInfo(notification){
+
+  const type =
+    notification.type ||
+    notification.notification_type ||
+    "system";
+
+
+  if(type === "like"){
+
+    return {
+      icon:"❤️",
+      text:"a aimé votre publication"
+    };
+
+  }
+
+
+  if(type === "comment"){
+
+    return {
+      icon:"💬",
+      text:"a commenté votre publication"
+    };
+
+  }
+
+
+  if(type === "profile"){
+
+    return {
+      icon:"👤",
+      text:"a consulté votre profil"
+    };
+
+  }
+
+
+  if(type === "message"){
+
+    return {
+      icon:"💬",
+      text:"vous a envoyé un message"
+    };
+
+  }
+
+
+  if(type === "member"){
+
+    return {
+      icon:"👥",
+      text:"a rejoint votre réseau"
+    };
+
+  }
+
+
+  return {
+    icon:"🔔",
+    text:"vous avez une nouvelle notification"
+  };
+
+}
+
+
+/* =========================================================
+   CHARGER UTILISATEUR
+========================================================= */
+
+async function checkAuth(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+
+  if(
+    error ||
+    !data?.user
+  ){
+
+    location.href =
+      "connexion.html";
+
+    return false;
+  }
+
+
+  currentUser =
+    data.user;
+
+
+  return true;
+}
+
+
+/* =========================================================
+   CHARGER NOTIFICATIONS
+========================================================= */
+
+async function loadNotifications(){
+
+  const container =
+    document.getElementById(
+      "notifications"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="loading">
+
+      <div class="spinner"></div>
+
+      Chargement des notifications...
+
+    </div>
+
+  `;
+
+
+  try{
+
+    /*
+     * La table notifications sera créée
+     * dans Supabase à l'étape suivante.
+     */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("notifications")
+        .select("*")
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(100);
+
+
+    if(error){
+      throw error;
+    }
+
+
+    const notifications =
+      data || [];
+
+
+    /*
+     * COMPTER LES NON LUES
+     */
+
+    const unread =
+      notifications.filter(
+        n =>
+          !n.is_read
+      ).length;
+
+
+    document.getElementById(
+      "unreadBadge"
+    ).textContent =
+      unread;
+
+
+    /*
+     * AUCUNE NOTIFICATION
+     */
+
+    if(
+      notifications.length === 0
+    ){
+
+      container.innerHTML = `
+
+        <div class="empty">
+
+          <div class="empty-icon">
+            🔔
+          </div>
+
+          <div class="empty-title">
+            Aucune notification
+          </div>
+
+          <div>
+            Vous serez informé ici des
+            nouvelles activités concernant
+            votre compte.
+          </div>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+
+    /*
+     * Récupérer les IDs des auteurs
+     */
+
+    const actorIds =
+      [
+        ...new Set(
+          notifications
+            .map(
+              n =>
+                n.actor_id
+            )
+            .filter(Boolean)
+        )
+      ];
+
+
+    let profiles = [];
+
+
+    if(
+      actorIds.length > 0
+    ){
+
+      const {
+        data:profileData
+      } =
+        await supabaseClient
+          .from("profiles")
+          .select(
+            "id,prenom,nom,avatar_path"
+          )
+          .in(
+            "id",
+            actorIds
+          );
+
+
+      profiles =
+        profileData || [];
+
+    }
+
+
+    /*
+     * INDEX DES PROFILS
+     */
+
+    const profileMap =
+      {};
+
+
+    profiles.forEach(
+      profile => {
+
+        profileMap[
+          profile.id
+        ] =
+          profile;
+
+      }
+    );
+
+
+    /*
+     * AFFICHER
+     */
+
+    container.innerHTML =
+      notifications
+        .map(
+          notification =>
+            renderNotification(
+              notification,
+              profileMap[
+                notification.actor_id
+              ]
+            )
+        )
+        .join("");
+
+
+  }catch(error){
+
+    console.error(
+      "Erreur notifications:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="error">
+
+        ❌ Impossible de charger
+        les notifications.
+
+        <br><br>
+
+        ${escapeHtml(
+          error.message ||
+          "Erreur inconnue"
+        )}
+
+        <br><br>
+
+        <small>
+          Si la table
+          <strong>notifications</strong>
+          n'a pas encore été créée dans
+          Supabase, nous allons la créer
+          à l'étape suivante.
+        </small>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   AFFICHER UNE NOTIFICATION
+========================================================= */
+
+function renderNotification(
+  notification,
+  actor
+){
+
+  const info =
+    notificationInfo(
+      notification
+    );
+
+
+  const actorName =
+    actor
+      ? (
+          `${actor.prenom || ""} ${actor.nom || ""}`
+            .trim()
+          || "Un agent"
+        )
+      : "Un agent";
+
+
+  const unread =
+    !notification.is_read;
+
+
+  const postId =
+    notification.post_id;
+
+
+  let link = "";
+
+
+  if(postId){
+
+    link = `
+
+      <a
+        class="notification-link"
+        href="accueil.html#post-${encodeURIComponent(postId)}"
+        onclick="markAsRead('${notification.id}')"
+      >
+        Voir la publication →
+      </a>
+
+    `;
+
+  }
+
+
+  return `
+
+    <article
+      class="
+        notification
+        ${unread ? "unread" : ""}
+      "
+    >
+
+
+      <div class="notification-icon-small">
+
+        ${info.icon}
+
+      </div>
+
+
+      <div class="notification-content">
+
+        <div class="notification-text">
+
+          <strong>
+            ${escapeHtml(actorName)}
+          </strong>
+
+          ${escapeHtml(info.text)}
+
+        </div>
+
+
+        <div class="notification-date">
+
+          🕐
+          ${escapeHtml(
+            formatDate(
+              notification.created_at
+            )
+          )}
+
+        </div>
+
+
+        ${link}
+
+      </div>
+
+
+      ${
+        unread
+          ? `<div class="notification-dot"></div>`
+          : ""
+      }
+
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================================
+   MARQUER UNE NOTIFICATION COMME LUE
+========================================================= */
+
+async function markAsRead(id){
+
+  try{
+
+    await supabaseClient
+      .from("notifications")
+      .update({
+        is_read:true
+      })
+      .eq(
+        "id",
+        id
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      );
+
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   TOUT MARQUER COMME LU
+========================================================= */
+
+async function markAllAsRead(){
+
+  try{
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("notifications")
+        .update({
+          is_read:true
+        })
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "is_read",
+          false
+        );
+
+
+    if(error){
+      throw error;
+    }
+
+
+    await loadNotifications();
+
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "Impossible de marquer les notifications comme lues."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   DÉMARRAGE
+========================================================= */
+
+async function start(){
+
+  const connected =
+    await checkAuth();
+
+
+  if(!connected){
+    return;
+  }
+
+
+  await loadNotifications();
+
+}
+
+
+start();
+
+</script>
+
+</body>
+</html>
