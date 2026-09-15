@@ -11,233 +11,945 @@
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #07111f;
+      --bg2: #0f172a;
+      --card: #111c2e;
+      --card2: #16243a;
+      --border: rgba(255,255,255,.09);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --yellow: #facc15;
+      --yellow2: #f59e0b;
+      --blue: #0ea5e9;
+      --blue2: #075985;
+      --green: #22c55e;
+      --danger: #ef4444;
     }
 
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, #075985 0%, transparent 35%),
-        linear-gradient(135deg, #07111f, #0f172a, #172554);
-      color: white;
       min-height: 100vh;
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+      color: var(--text);
+
+      background:
+        radial-gradient(
+          circle at 50% -10%,
+          rgba(14,165,233,.28),
+          transparent 38%
+        ),
+        radial-gradient(
+          circle at 100% 20%,
+          rgba(250,204,21,.08),
+          transparent 25%
+        ),
+        linear-gradient(
+          135deg,
+          #050b14 0%,
+          #07111f 45%,
+          #0f172a 100%
+        );
     }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================= */
 
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 20;
-      background: rgba(7, 17, 31, .95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      padding: 12px 16px;
+      z-index: 100;
+
+      height: 70px;
+
+      background: rgba(5,11,20,.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid var(--border);
     }
 
     .topbar-inner {
-      max-width: 1100px;
+      max-width: 1280px;
+      height: 100%;
       margin: auto;
+
+      padding: 0 18px;
+
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 13px;
     }
 
     .logo {
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
+
+      border-radius: 13px;
+
       object-fit: contain;
-      border-radius: 12px;
-      background: #0f172a;
+
+      background: #07111f;
+
+      box-shadow:
+        0 5px 18px rgba(0,0,0,.35);
     }
 
     .brand {
+      min-width: 0;
       flex: 1;
     }
 
-    .brand strong {
-      display: block;
+    .brand-title {
       font-size: 17px;
+      font-weight: 800;
+      letter-spacing: .2px;
     }
 
-    .brand span {
-      color: #cbd5e1;
-      font-size: 12px;
+    .brand-subtitle {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 11px;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px 14px 100px;
-    }
+    .home-btn {
+      width: 42px;
+      height: 42px;
 
-    .hero {
-      background: rgba(30, 41, 59, .82);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 20px;
-      padding: 22px;
-      margin-bottom: 18px;
-      box-shadow: 0 15px 40px rgba(0,0,0,.25);
-    }
+      border: 1px solid var(--border);
+      border-radius: 12px;
 
-    .hero h1 {
-      margin: 0 0 8px;
-      font-size: 25px;
-    }
-
-    .hero p {
-      margin: 0;
-      color: #cbd5e1;
-    }
-
-    .search-box {
-      margin-top: 18px;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 15px 17px;
-      border-radius: 14px;
-      border: 1px solid #334155;
-      background: #0f172a;
+      background: rgba(255,255,255,.04);
       color: white;
-      outline: none;
-      font-size: 15px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 20px;
     }
 
-    .search-box input:focus {
-      border-color: #facc15;
-      box-shadow: 0 0 0 3px rgba(250,204,21,.1);
+    .home-btn:active {
+      transform: scale(.95);
+    }
+
+    /* =========================
+       LAYOUT
+    ========================= */
+
+    .page {
+      max-width: 1280px;
+      margin: auto;
+
+      padding:
+        24px 18px
+        100px;
+    }
+
+    .layout {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        300px;
+
+      gap: 22px;
+    }
+
+    /* =========================
+       MAIN CARD
+    ========================= */
+
+    .main-card {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(17,28,46,.96),
+          rgba(11,22,38,.96)
+        );
+
+      border: 1px solid var(--border);
+
+      border-radius: 24px;
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.28);
+
+      overflow: hidden;
+    }
+
+    .main-header {
+      padding: 25px 24px 20px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      color: #cbd5e1;
+
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: 600;
+
+      margin-bottom: 18px;
+    }
+
+    .back-link:hover {
+      color: var(--yellow);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .title-icon {
+      width: 52px;
+      height: 52px;
+
+      border-radius: 16px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14,165,233,.22),
+          rgba(250,204,21,.14)
+        );
+
+      border: 1px solid rgba(14,165,233,.22);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 26px;
+    }
+
+    h1 {
+      font-size: 26px;
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      margin-top: 5px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .search-area {
+      padding: 18px 24px;
+
+      background: rgba(255,255,255,.018);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+
+      left: 15px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: #64748b;
+
+      font-size: 18px;
+
+      pointer-events: none;
+    }
+
+    #searchInput {
+      width: 100%;
+
+      height: 48px;
+
+      padding:
+        0 45px;
+
+      border-radius: 14px;
+
+      border: 1px solid #26364e;
+
+      outline: none;
+
+      background: #091322;
+
+      color: white;
+
+      font-size: 14px;
+
+      transition: .2s;
+    }
+
+    #searchInput::placeholder {
+      color: #64748b;
+    }
+
+    #searchInput:focus {
+      border-color: rgba(14,165,233,.65);
+
+      box-shadow:
+        0 0 0 3px rgba(14,165,233,.08);
+    }
+
+    .clear-search {
+      position: absolute;
+
+      right: 9px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      width: 31px;
+      height: 31px;
+
+      border: none;
+      border-radius: 9px;
+
+      background: rgba(255,255,255,.06);
+
+      color: #94a3b8;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    .status-area {
+      padding: 13px 24px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+
+      border-bottom: 1px solid var(--border);
     }
 
     .status {
-      margin: 15px 0;
-      padding: 13px 15px;
-      border-radius: 12px;
-      background: rgba(15,23,42,.8);
-      color: #cbd5e1;
-      font-size: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .status.success {
+      color: #86efac;
     }
 
     .status.error {
-      background: rgba(127,29,29,.4);
-      border: 1px solid rgba(248,113,113,.4);
       color: #fecaca;
-      white-space: pre-wrap;
-      word-break: break-word;
+    }
+
+    .counter {
+      color: #64748b;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* =========================
+       MEMBERS GRID
+    ========================= */
+
+    .members-container {
+      padding: 22px 24px 28px;
     }
 
     .members {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
       gap: 15px;
     }
 
-    .member {
-      background: rgba(30,41,59,.88);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
+    .member-card {
+      position: relative;
+
+      min-width: 0;
+
       padding: 17px;
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      transition: .2s;
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(22,36,58,.98),
+          rgba(13,25,43,.98)
+        );
+
+      border: 1px solid var(--border);
+
+      transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
     }
 
-    .member:hover {
+    .member-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(250,204,21,.35);
+
+      border-color:
+        rgba(14,165,233,.35);
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.22);
     }
 
-    .avatar {
-      width: 65px;
-      height: 65px;
-      min-width: 65px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: linear-gradient(135deg, #075985, #1e3a8a);
-      border: 2px solid rgba(250,204,21,.45);
+    .member-top {
       display: flex;
+
+      align-items: flex-start;
+
+      gap: 13px;
+    }
+
+    /* =========================
+       AVATAR
+    ========================= */
+
+    .avatar,
+    .avatar-placeholder {
+      width: 62px;
+      height: 62px;
+
+      min-width: 62px;
+
+      border-radius: 18px;
+
+      object-fit: cover;
+
+      border: 2px solid rgba(250,204,21,.38);
+
+      background:
+        linear-gradient(
+          135deg,
+          #075985,
+          #172554
+        );
+
+      box-shadow:
+        0 7px 20px rgba(0,0,0,.25);
+    }
+
+    .avatar-placeholder {
+      display: flex;
+
       align-items: center;
       justify-content: center;
-      font-size: 25px;
-      font-weight: bold;
+
+      color: #facc15;
+
+      font-size: 20px;
+      font-weight: 800;
     }
 
-    .member-info {
+    .member-heading {
       min-width: 0;
       flex: 1;
     }
 
     .member-name {
-      font-size: 17px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
+      font-size: 16px;
+      font-weight: 800;
 
-    .member-type {
-      color: #facc15;
-      font-size: 13px;
-      margin-bottom: 7px;
-    }
+      line-height: 1.25;
 
-    .detail {
-      color: #cbd5e1;
-      font-size: 13px;
-      margin: 4px 0;
       overflow-wrap: anywhere;
     }
 
+    .verified {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 17px;
+      height: 17px;
+
+      margin-left: 4px;
+
+      border-radius: 50%;
+
+      background: #0ea5e9;
+
+      color: white;
+
+      font-size: 10px;
+      vertical-align: 1px;
+    }
+
+    .member-type {
+      display: inline-flex;
+
+      margin-top: 6px;
+
+      padding: 5px 8px;
+
+      border-radius: 8px;
+
+      background: rgba(250,204,21,.08);
+
+      color: #fde68a;
+
+      border: 1px solid rgba(250,204,21,.13);
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .details {
+      margin-top: 14px;
+
+      display: grid;
+
+      gap: 7px;
+    }
+
+    .detail {
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 8px;
+
+      color: #cbd5e1;
+
+      font-size: 12px;
+
+      line-height: 1.35;
+    }
+
+    .detail-icon {
+      width: 18px;
+      min-width: 18px;
+
+      text-align: center;
+    }
+
+    .detail-text {
+      overflow-wrap: anywhere;
+    }
+
+    .presentation {
+      margin-top: 12px;
+
+      padding-top: 12px;
+
+      border-top: 1px solid rgba(255,255,255,.06);
+
+      color: #94a3b8;
+
+      font-size: 12px;
+
+      line-height: 1.45;
+    }
+
+    /* =========================
+       BUTTON
+    ========================= */
+
     .profile-btn {
-      margin-top: 10px;
+      width: 100%;
+
+      margin-top: 15px;
+
+      min-height: 42px;
+
       border: none;
-      border-radius: 10px;
-      padding: 9px 12px;
-      background: #facc15;
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #facc15,
+          #f59e0b
+        );
+
       color: #111827;
-      font-weight: bold;
-      cursor: pointer;
+
+      font-size: 13px;
+      font-weight: 800;
+
+      box-shadow:
+        0 6px 16px rgba(245,158,11,.13);
+
+      transition: .18s;
+    }
+
+    .profile-btn:hover {
+      filter: brightness(1.05);
     }
 
     .profile-btn:active {
-      transform: scale(.97);
+      transform: scale(.98);
     }
 
-    .empty {
-      text-align: center;
-      padding: 45px 20px;
+    /* =========================
+       RIGHT SIDEBAR
+    ========================= */
+
+    .side-card {
+      height: fit-content;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(17,28,46,.95),
+          rgba(11,22,38,.95)
+        );
+
+      border: 1px solid var(--border);
+
+      border-radius: 21px;
+
+      padding: 20px;
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,.22);
+    }
+
+    .side-title {
+      font-size: 15px;
+      font-weight: 800;
+
+      margin-bottom: 15px;
+    }
+
+    .side-item {
+      display: flex;
+
+      gap: 11px;
+
+      padding: 12px 0;
+
+      border-bottom: 1px solid rgba(255,255,255,.06);
+
       color: #cbd5e1;
-      background: rgba(30,41,59,.7);
+
+      font-size: 12px;
+
+      line-height: 1.4;
+    }
+
+    .side-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .side-item:first-of-type {
+      padding-top: 0;
+    }
+
+    .side-icon {
+      font-size: 19px;
+    }
+
+    .side-item strong {
+      display: block;
+
+      color: white;
+
+      margin-bottom: 2px;
+    }
+
+    /* =========================
+       LOADING
+    ========================= */
+
+    .loading {
+      grid-column: 1 / -1;
+
+      padding: 50px 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+    }
+
+    .spinner {
+      width: 38px;
+      height: 38px;
+
+      margin: 0 auto 14px;
+
+      border-radius: 50%;
+
+      border:
+        3px solid rgba(255,255,255,.08);
+
+      border-top-color: var(--yellow);
+
+      animation:
+        spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =========================
+       EMPTY
+    ========================= */
+
+    .empty {
+      grid-column: 1 / -1;
+
+      padding: 55px 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      background: rgba(255,255,255,.025);
+
+      border:
+        1px dashed rgba(255,255,255,.12);
+
       border-radius: 18px;
     }
 
-    .back {
-      display: inline-block;
-      margin-bottom: 15px;
-      color: #facc15;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .counter {
-      color: #94a3b8;
-      font-size: 13px;
+    .empty-icon {
+      font-size: 38px;
       margin-bottom: 12px;
     }
 
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px 10px 90px;
+    .empty h3 {
+      color: white;
+      margin-bottom: 7px;
+    }
+
+    /* =========================
+       ERROR
+    ========================= */
+
+    .error-box {
+      grid-column: 1 / -1;
+
+      padding: 18px;
+
+      border-radius: 15px;
+
+      background:
+        rgba(127,29,29,.25);
+
+      border:
+        1px solid rgba(248,113,113,.3);
+
+      color: #fecaca;
+
+      font-size: 13px;
+
+      white-space: pre-wrap;
+
+      overflow-wrap: anywhere;
+    }
+
+    /* =========================
+       MOBILE NAV
+    ========================= */
+
+    .mobile-nav {
+      position: fixed;
+
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+
+      z-index: 200;
+
+      height: 62px;
+
+      display: none;
+
+      align-items: center;
+      justify-content: space-around;
+
+      background:
+        rgba(5,11,20,.94);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border:
+        1px solid rgba(255,255,255,.1);
+
+      border-radius: 19px;
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,.45);
+    }
+
+    .mobile-nav a {
+      width: 58px;
+      height: 52px;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 3px;
+
+      color: #94a3b8;
+
+      text-decoration: none;
+
+      font-size: 10px;
+    }
+
+    .mobile-nav a span:first-child {
+      font-size: 20px;
+    }
+
+    .mobile-nav a.active {
+      color: var(--yellow);
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 900px) {
+
+      .layout {
+        grid-template-columns: 1fr;
       }
 
-      .hero {
-        padding: 18px;
+      .side-card {
+        display: none;
+      }
+    }
+
+    @media (max-width: 680px) {
+
+      .topbar {
+        height: 64px;
       }
 
-      .hero h1 {
-        font-size: 22px;
+      .topbar-inner {
+        padding: 0 12px;
+      }
+
+      .logo {
+        width: 42px;
+        height: 42px;
+      }
+
+      .brand-title {
+        font-size: 15px;
+      }
+
+      .brand-subtitle {
+        font-size: 10px;
+      }
+
+      .page {
+        padding:
+          14px 9px
+          88px;
+      }
+
+      .main-card {
+        border-radius: 20px;
+      }
+
+      .main-header {
+        padding: 20px 16px 17px;
+      }
+
+      .search-area {
+        padding: 14px 16px;
+      }
+
+      .status-area {
+        padding: 11px 16px;
+      }
+
+      .members-container {
+        padding: 16px;
       }
 
       .members {
         grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .title-icon {
+        width: 46px;
+        height: 46px;
+      }
+
+      .mobile-nav {
+        display: flex;
+      }
+    }
+
+    @media (max-width: 380px) {
+
+      .member-card {
+        padding: 14px;
+      }
+
+      .avatar,
+      .avatar-placeholder {
+        width: 55px;
+        height: 55px;
+        min-width: 55px;
+      }
+
+      .member-name {
+        font-size: 15px;
       }
     }
   </style>
@@ -245,54 +957,310 @@
 
 <body>
 
+  <!-- =========================
+       TOPBAR
+  ========================== -->
+
   <header class="topbar">
+
     <div class="topbar-inner">
+
       <img
         src="logo-aigle.png"
-        class="logo"
         alt="Cercle des Agents"
+        class="logo"
       >
 
       <div class="brand">
-        <strong>Cercle des Agents</strong>
-        <span>Unis • Informés • Plus forts</span>
+
+        <div class="brand-title">
+          Cercle des Agents
+        </div>
+
+        <div class="brand-subtitle">
+          Unis • Informés • Plus forts
+        </div>
+
       </div>
+
+      <button
+        class="home-btn"
+        onclick="window.location.href='accueil.html'"
+        aria-label="Accueil"
+      >
+        🏠
+      </button>
+
     </div>
+
   </header>
 
-  <main class="container">
 
-    <a href="accueil.html" class="back">
-      ← Retour à l'accueil
-    </a>
+  <!-- =========================
+       PAGE
+  ========================== -->
 
-    <section class="hero">
+  <main class="page">
 
-      <h1>👥 Les membres</h1>
+    <div class="layout">
 
-      <p>
-        Découvrez les agents inscrits sur le Cercle des Agents.
-      </p>
+      <!-- =====================
+           MAIN
+      ====================== -->
 
-      <div class="search-box">
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="🔎 Rechercher un agent, une ville ou une entreprise..."
-        >
-      </div>
+      <section class="main-card">
 
-    </section>
+        <div class="main-header">
 
-    <div id="status" class="status">
-      🔄 Chargement des membres...
+          <a
+            href="accueil.html"
+            class="back-link"
+          >
+            ← Retour à l'accueil
+          </a>
+
+
+          <div class="title-row">
+
+            <div class="title-icon">
+              👥
+            </div>
+
+            <div>
+
+              <h1>
+                Les membres
+              </h1>
+
+              <p class="subtitle">
+                Retrouvez les agents de sécurité
+                de votre communauté professionnelle.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =====================
+             SEARCH
+        ====================== -->
+
+        <div class="search-area">
+
+          <div class="search-wrapper">
+
+            <span class="search-icon">
+              🔎
+            </span>
+
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Rechercher un agent, une ville, une entreprise..."
+              autocomplete="off"
+            >
+
+            <button
+              id="clearSearch"
+              class="clear-search"
+              type="button"
+            >
+              ✕
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- =====================
+             STATUS
+        ====================== -->
+
+        <div class="status-area">
+
+          <div
+            id="status"
+            class="status"
+          >
+            🔄 Chargement des membres...
+          </div>
+
+          <div
+            id="counter"
+            class="counter"
+          >
+          </div>
+
+        </div>
+
+
+        <!-- =====================
+             MEMBERS
+        ====================== -->
+
+        <div class="members-container">
+
+          <div
+            id="members"
+            class="members"
+          >
+
+            <div class="loading">
+
+              <div class="spinner"></div>
+
+              <div>
+                Chargement des membres...
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================
+           SIDEBAR
+      ====================== -->
+
+      <aside class="side-card">
+
+        <div class="side-title">
+          🛡️ Communauté professionnelle
+        </div>
+
+
+        <div class="side-item">
+
+          <div class="side-icon">
+            👥
+          </div>
+
+          <div>
+
+            <strong>
+              Les agents du Cercle
+            </strong>
+
+            Découvrez les professionnels
+            inscrits sur la plateforme.
+
+          </div>
+
+        </div>
+
+
+        <div class="side-item">
+
+          <div class="side-icon">
+            🔎
+          </div>
+
+          <div>
+
+            <strong>
+              Recherche rapide
+            </strong>
+
+            Recherchez par nom, ville
+            ou entreprise.
+
+          </div>
+
+        </div>
+
+
+        <div class="side-item">
+
+          <div class="side-icon">
+            🤝
+          </div>
+
+          <div>
+
+            <strong>
+              Créer des contacts
+            </strong>
+
+            Échangez avec d'autres
+            professionnels de la sécurité.
+
+          </div>
+
+        </div>
+
+
+        <div class="side-item">
+
+          <div class="side-icon">
+            🔐
+          </div>
+
+          <div>
+
+            <strong>
+              Respect de la vie privée
+            </strong>
+
+            Seules les informations
+            renseignées dans les profils
+            sont affichées.
+
+          </div>
+
+        </div>
+
+      </aside>
+
     </div>
 
-    <div id="counter" class="counter"></div>
-
-    <section id="members" class="members"></section>
-
   </main>
+
+
+  <!-- =========================
+       MOBILE NAV
+  ========================== -->
+
+  <nav class="mobile-nav">
+
+    <a
+      href="accueil.html"
+    >
+      <span>🏠</span>
+      <span>Accueil</span>
+    </a>
+
+    <a
+      href="membres.html"
+      class="active"
+    >
+      <span>👥</span>
+      <span>Membres</span>
+    </a>
+
+    <a
+      href="profil.html"
+    >
+      <span>👤</span>
+      <span>Profil</span>
+    </a>
+
+    <a
+      href="modifier-profil.html"
+    >
+      <span>⚙️</span>
+      <span>Modifier</span>
+    </a>
+
+  </nav>
+
 
 <script>
 
@@ -318,6 +1286,7 @@
   ===================================================== */
 
   let currentUser = null;
+
   let allMembers = [];
 
 
@@ -333,19 +1302,24 @@
   const searchInput =
     document.getElementById("searchInput");
 
+  const clearSearch =
+    document.getElementById("clearSearch");
+
 
   /* =====================================================
-     MESSAGE
+     STATUS
   ===================================================== */
 
-  function showStatus(message, error = false) {
+  function showStatus(
+    message,
+    type = ""
+  ) {
 
     statusBox.textContent = message;
 
     statusBox.className =
-      error
-        ? "status error"
-        : "status";
+      "status " + type;
+
   }
 
 
@@ -357,18 +1331,25 @@
 
     try {
 
-      showStatus("🔐 Vérification de votre connexion...");
+      showStatus(
+        "🔐 Vérification de la connexion..."
+      );
+
 
       const {
-        data: { user },
+        data: {
+          user
+        },
         error: authError
-      } = await supabaseClient.auth.getUser();
+      } =
+        await supabaseClient
+          .auth
+          .getUser();
 
 
       if (authError) {
 
         throw new Error(
-          "Erreur d'authentification : " +
           authError.message
         );
 
@@ -378,27 +1359,42 @@
       if (!user) {
 
         showStatus(
-          "⚠️ Vous devez être connecté pour consulter les membres.",
-          true
+          "⚠️ Vous devez être connecté.",
+          "error"
         );
 
+
         membersContainer.innerHTML = `
+
           <div class="empty">
-            <h3>Connexion nécessaire</h3>
+
+            <div class="empty-icon">
+              🔐
+            </div>
+
+            <h3>
+              Connexion nécessaire
+            </h3>
+
             <p>
-              Connectez-vous pour accéder aux membres.
+              Connectez-vous pour consulter
+              les membres du Cercle.
             </p>
 
             <button
               class="profile-btn"
+              style="max-width:220px"
               onclick="window.location.href='connexion.html'"
             >
               Se connecter
             </button>
+
           </div>
+
         `;
 
         return;
+
       }
 
 
@@ -406,15 +1402,33 @@
 
       await loadMembers();
 
-    } catch (error) {
+    }
 
-      console.error("ERREUR INIT :", error);
+    catch(error) {
+
+      console.error(
+        "Erreur initialisation :",
+        error
+      );
+
 
       showStatus(
-        "❌ Impossible d'initialiser la page.\n\n" +
-        error.message,
-        true
+        "❌ " + error.message,
+        "error"
       );
+
+
+      membersContainer.innerHTML = `
+
+        <div class="error-box">
+
+          ❌ Impossible de charger les membres.
+
+          ${error.message}
+
+        </div>
+
+      `;
 
     }
 
@@ -429,83 +1443,100 @@
 
     try {
 
-      showStatus("🔄 Chargement des membres...");
+      showStatus(
+        "🔄 Chargement des membres..."
+      );
 
 
       /*
-       * IMPORTANT :
-       * On utilise select("*") afin d'éviter qu'un champ
-       * manquant dans la table profiles bloque toute la page.
+       * SELECT *
+       *
+       * Cette méthode est volontairement conservée
+       * car elle a permis de débloquer l'affichage
+       * des membres.
        */
 
       const {
         data,
         error
-      } = await supabaseClient
-        .from("profiles")
-        .select("*")
-        .order("created_at", {
-          ascending: false
-        });
+      } =
+        await supabaseClient
+          .from("profiles")
+          .select("*")
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
 
 
       if (error) {
 
         console.error(
-          "ERREUR SUPABASE PROFILES :",
+          "Erreur Supabase :",
           error
         );
 
+
         throw new Error(
-          "Supabase refuse l'accès aux profils.\n\n" +
-          "Message : " +
+          "Supabase : " +
           error.message +
-          "\n\n" +
-          "Code : " +
+          "\nCode : " +
           (error.code || "inconnu")
         );
 
       }
 
 
-      allMembers = data || [];
+      allMembers =
+        Array.isArray(data)
+          ? data
+          : [];
 
 
       console.log(
-        "MEMBRES CHARGÉS :",
+        "Membres récupérés :",
         allMembers
       );
 
 
       showStatus(
-        "✅ Membres chargés avec succès."
+        "✓ Membres disponibles.",
+        "success"
       );
 
 
-      renderMembers(allMembers);
+      renderMembers(
+        allMembers
+      );
 
-    } catch (error) {
+    }
+
+    catch(error) {
 
       console.error(
-        "ERREUR CHARGEMENT MEMBRES :",
+        "Erreur chargement :",
         error
       );
 
+
       showStatus(
-        "❌ ERREUR DE CHARGEMENT DES MEMBRES\n\n" +
-        error.message,
-        true
+        "❌ " + error.message,
+        "error"
       );
 
-      membersContainer.innerHTML = `
-        <div class="empty">
-          <h3>⚠️ Impossible d'afficher les membres</h3>
 
-          <p>
-            L'erreur exacte est affichée dans le message rouge
-            ci-dessus.
-          </p>
+      membersContainer.innerHTML = `
+
+        <div class="error-box">
+
+          ❌ ERREUR DE CHARGEMENT
+
+          ${error.message}
+
         </div>
+
       `;
 
     }
@@ -517,239 +1548,376 @@
      AFFICHER LES MEMBRES
   ===================================================== */
 
-  function renderMembers(members) {
+  function renderMembers(
+    members
+  ) {
 
     membersContainer.innerHTML = "";
 
+
     counter.textContent =
       members.length +
-      (members.length > 1
-        ? " membres"
-        : " membre");
+      (
+        members.length > 1
+          ? " membres"
+          : " membre"
+      );
 
 
-    if (members.length === 0) {
+    if (
+      members.length === 0
+    ) {
 
       membersContainer.innerHTML = `
+
         <div class="empty">
 
-          <h3>👥 Aucun membre trouvé</h3>
+          <div class="empty-icon">
+            👥
+          </div>
+
+          <h3>
+            Aucun membre trouvé
+          </h3>
 
           <p>
-            Aucun profil n'est actuellement disponible.
+            Aucun profil n'est actuellement
+            disponible.
           </p>
 
         </div>
+
       `;
 
       return;
+
     }
 
 
-    members.forEach(member => {
+    members.forEach(
+      member => {
 
-      const card =
-        document.createElement("article");
+        const card =
+          document.createElement(
+            "article"
+          );
 
-      card.className = "member";
-
-
-      /* -------------------------
-         NOM
-      ------------------------- */
-
-      const prenom =
-        member.prenom ||
-        member.first_name ||
-        "";
-
-      const nom =
-        member.nom ||
-        member.last_name ||
-        "";
-
-      const fullName =
-        `${prenom} ${nom}`.trim() ||
-        "Agent du Cercle";
+        card.className =
+          "member-card";
 
 
-      /* -------------------------
-         TYPE D'AGENT
-      ------------------------- */
+        /* ======================
+           NOM
+        ======================= */
 
-      const type =
-        formatAgentType(
-          member.type_agent ||
-          member.type ||
-          ""
-        );
+        const prenom =
+          member.prenom ||
+          member.first_name ||
+          "";
 
+        const nom =
+          member.nom ||
+          member.last_name ||
+          "";
 
-      /* -------------------------
-         VILLE
-      ------------------------- */
-
-      const ville =
-        member.ville ||
-        member.city ||
-        "";
+        const fullName =
+          `${prenom} ${nom}`.trim() ||
+          "Agent du Cercle";
 
 
-      /* -------------------------
-         ENTREPRISE
-      ------------------------- */
+        /* ======================
+           TYPE
+        ======================= */
 
-      const entreprise =
-        member.entreprise ||
-        member.company ||
-        "";
-
-
-      /* -------------------------
-         PRÉSENTATION
-      ------------------------- */
-
-      const presentation =
-        member.presentation ||
-        "";
+        const type =
+          formatAgentType(
+            member.type_agent ||
+            member.type ||
+            ""
+          );
 
 
-      /* -------------------------
-         AVATAR
-      ------------------------- */
+        /* ======================
+           INFOS
+        ======================= */
 
-      const avatarPath =
-        member.avatar_path ||
-        member.avatar ||
-        "";
+        const ville =
+          member.ville ||
+          member.city ||
+          "";
 
+        const entreprise =
+          member.entreprise ||
+          member.company ||
+          "";
 
-      let avatarHTML;
-
-
-      if (avatarPath) {
-
-        const {
-          data: avatarData
-        } = supabaseClient
-          .storage
-          .from("avatars")
-          .getPublicUrl(avatarPath);
+        const presentation =
+          member.presentation ||
+          "";
 
 
-        if (
-          avatarData &&
-          avatarData.publicUrl
-        ) {
+        /* ======================
+           AVATAR
+        ======================= */
+
+        const avatarPath =
+          member.avatar_path ||
+          member.avatar ||
+          "";
+
+
+        let avatarHTML = "";
+
+
+        if (avatarPath) {
+
+          const {
+            data: avatarData
+          } =
+            supabaseClient
+              .storage
+              .from("avatars")
+              .getPublicUrl(
+                avatarPath
+              );
+
+
+          if (
+            avatarData &&
+            avatarData.publicUrl
+          ) {
+
+            avatarHTML = `
+
+              <img
+                src="${escapeHTML(
+                  avatarData.publicUrl
+                )}"
+                class="avatar"
+                alt="Photo de ${escapeHTML(
+                  fullName
+                )}"
+                onerror="
+                  this.style.display='none';
+                  this.nextElementSibling.style.display='flex';
+                "
+              >
+
+              <div
+                class="avatar-placeholder"
+                style="display:none"
+              >
+                ${getInitials(
+                  fullName
+                )}
+              </div>
+
+            `;
+
+          }
+
+        }
+
+
+        if (!avatarHTML) {
 
           avatarHTML = `
-            <img
-              src="${escapeHTML(avatarData.publicUrl)}"
-              class="avatar"
-              alt="Photo de ${escapeHTML(fullName)}"
-              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-            >
 
-            <div
-              class="avatar"
-              style="display:none;"
-            >
-              ${getInitials(fullName)}
+            <div class="avatar-placeholder">
+
+              ${getInitials(
+                fullName
+              )}
+
             </div>
-          `;
 
-        } else {
-
-          avatarHTML = `
-            <div class="avatar">
-              ${getInitials(fullName)}
-            </div>
           `;
 
         }
 
-      } else {
 
-        avatarHTML = `
-          <div class="avatar">
-            ${getInitials(fullName)}
+        /* ======================
+           DETAILS
+        ======================= */
+
+        let detailsHTML = "";
+
+
+        if (ville) {
+
+          detailsHTML += `
+
+            <div class="detail">
+
+              <span class="detail-icon">
+                📍
+              </span>
+
+              <span class="detail-text">
+                ${escapeHTML(
+                  ville
+                )}
+              </span>
+
+            </div>
+
+          `;
+
+        }
+
+
+        if (entreprise) {
+
+          detailsHTML += `
+
+            <div class="detail">
+
+              <span class="detail-icon">
+                🏢
+              </span>
+
+              <span class="detail-text">
+                ${escapeHTML(
+                  entreprise
+                )}
+              </span>
+
+            </div>
+
+          `;
+
+        }
+
+
+        if (!detailsHTML) {
+
+          detailsHTML = `
+
+            <div class="detail">
+
+              <span class="detail-icon">
+                🛡️
+              </span>
+
+              <span class="detail-text">
+                Membre du Cercle des Agents
+              </span>
+
+            </div>
+
+          `;
+
+        }
+
+
+        /* ======================
+           PRESENTATION
+        ======================= */
+
+        let presentationHTML = "";
+
+
+        if (presentation) {
+
+          const shortText =
+            presentation.length > 130
+              ? presentation.substring(
+                  0,
+                  130
+                ) + "..."
+              : presentation;
+
+
+          presentationHTML = `
+
+            <div class="presentation">
+
+              💬 ${escapeHTML(
+                shortText
+              )}
+
+            </div>
+
+          `;
+
+        }
+
+
+        /* ======================
+           CARD
+        ======================= */
+
+        card.innerHTML = `
+
+          <div class="member-top">
+
+            ${avatarHTML}
+
+            <div class="member-heading">
+
+              <div class="member-name">
+
+                ${escapeHTML(
+                  fullName
+                )}
+
+                <span class="verified">
+                  ✓
+                </span>
+
+              </div>
+
+              ${
+                type
+                  ? `
+                    <div class="member-type">
+
+                      🛡️
+                      ${escapeHTML(
+                        type
+                      )}
+
+                    </div>
+                  `
+                  : ""
+              }
+
+            </div>
+
           </div>
-        `;
-
-      }
 
 
-      /* -------------------------
-         HTML
-      ------------------------- */
+          <div class="details">
 
-      card.innerHTML = `
+            ${detailsHTML}
 
-        ${avatarHTML}
-
-        <div class="member-info">
-
-          <div class="member-name">
-            ${escapeHTML(fullName)}
           </div>
 
-          ${
-            type
-              ? `
-                <div class="member-type">
-                  🛡️ ${escapeHTML(type)}
-                </div>
-              `
-              : ""
-          }
 
-          ${
-            ville
-              ? `
-                <div class="detail">
-                  📍 ${escapeHTML(ville)}
-                </div>
-              `
-              : ""
-          }
+          ${presentationHTML}
 
-          ${
-            entreprise
-              ? `
-                <div class="detail">
-                  🏢 ${escapeHTML(entreprise)}
-                </div>
-              `
-              : ""
-          }
-
-          ${
-            presentation
-              ? `
-                <div class="detail">
-                  💬 ${escapeHTML(
-                    presentation.substring(0, 100)
-                  )}${presentation.length > 100 ? "..." : ""}
-                </div>
-              `
-              : ""
-          }
 
           <button
             class="profile-btn"
-            onclick="openProfile('${escapeHTML(member.id || "")}')"
+            type="button"
+            onclick="openProfile('${escapeHTML(
+              member.id || ""
+            )}')"
           >
-            Voir le profil
+
+            👤 Voir le profil
+
           </button>
 
-        </div>
-
-      `;
+        `;
 
 
-      membersContainer.appendChild(card);
+        membersContainer.appendChild(
+          card
+        );
 
-    });
+      }
+    );
 
   }
 
@@ -762,44 +1930,81 @@
     "input",
     function() {
 
-      const search =
+      const value =
         this.value
           .toLowerCase()
           .trim();
 
 
-      if (!search) {
+      clearSearch.style.display =
+        value
+          ? "flex"
+          : "none";
 
-        renderMembers(allMembers);
+
+      if (!value) {
+
+        renderMembers(
+          allMembers
+        );
 
         return;
+
       }
 
 
       const filtered =
-        allMembers.filter(member => {
+        allMembers.filter(
+          member => {
 
-          const text = [
+            const searchableText = [
 
-            member.prenom,
-            member.nom,
-            member.ville,
-            member.entreprise,
-            member.type_agent,
-            member.presentation
+              member.prenom,
+              member.nom,
+              member.ville,
+              member.entreprise,
+              member.type_agent,
+              member.presentation
 
-          ]
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase();
-
-
-          return text.includes(search);
-
-        });
+            ]
+              .filter(Boolean)
+              .join(" ")
+              .toLowerCase();
 
 
-      renderMembers(filtered);
+            return searchableText
+              .includes(value);
+
+          }
+        );
+
+
+      renderMembers(
+        filtered
+      );
+
+    }
+  );
+
+
+  /* =====================================================
+     EFFACER RECHERCHE
+  ===================================================== */
+
+  clearSearch.addEventListener(
+    "click",
+    function() {
+
+      searchInput.value = "";
+
+      this.style.display =
+        "none";
+
+      renderMembers(
+        allMembers
+      );
+
+      searchInput.focus();
 
     }
   );
@@ -809,15 +2014,18 @@
      PROFIL
   ===================================================== */
 
-  function openProfile(id) {
+  function openProfile(
+    id
+  ) {
 
     if (!id) {
 
       alert(
-        "Ce membre ne possède pas encore d'identifiant de profil."
+        "Ce profil ne possède pas encore d'identifiant."
       );
 
       return;
+
     }
 
 
@@ -832,28 +2040,40 @@
      TYPE AGENT
   ===================================================== */
 
-  function formatAgentType(type) {
+  function formatAgentType(
+    type
+  ) {
 
     const types = {
 
-      surete: "Agent de sûreté",
+      surete:
+        "Agent de sûreté",
 
-      securite: "Agent de sécurité",
+      securite:
+        "Agent de sécurité",
 
-      surveillance: "Agent de surveillance",
+      surveillance:
+        "Agent de surveillance",
 
-      incendie: "Agent de sécurité incendie",
+      incendie:
+        "Agent de sécurité incendie",
 
-      cynophile: "Agent cynophile",
+      cynophile:
+        "Agent cynophile",
 
-      protection: "Agent de protection",
+      protection:
+        "Agent de protection",
 
-      autre: "Autre"
+      autre:
+        "Autre"
 
     };
 
 
-    return types[type] || type;
+    return (
+      types[type] ||
+      type
+    );
 
   }
 
@@ -862,16 +2082,27 @@
      INITIALES
   ===================================================== */
 
-  function getInitials(name) {
+  function getInitials(
+    name
+  ) {
 
     const parts =
-      name
+      String(name)
         .trim()
         .split(/\s+/)
         .filter(Boolean);
 
 
-    if (parts.length === 1) {
+    if (!parts.length) {
+
+      return "CA";
+
+    }
+
+
+    if (
+      parts.length === 1
+    ) {
 
       return parts[0]
         .substring(0, 2)
@@ -882,7 +2113,9 @@
 
     return (
       parts[0][0] +
-      parts[parts.length - 1][0]
+      parts[
+        parts.length - 1
+      ][0]
     ).toUpperCase();
 
   }
@@ -892,20 +2125,39 @@
      PROTECTION HTML
   ===================================================== */
 
-  function escapeHTML(value) {
+  function escapeHTML(
+    value
+  ) {
 
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+    return String(
+      value ?? ""
+    )
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
 
   }
 
 
   /* =====================================================
-     LANCER
+     DÉMARRAGE
   ===================================================== */
 
   init();
