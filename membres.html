@@ -72,6 +72,10 @@ header{
   font-weight:bold;
 }
 
+.back:hover{
+  background:#475569;
+}
+
 .container{
   max-width:1100px;
   margin:auto;
@@ -113,6 +117,10 @@ header{
   outline:none;
 }
 
+.search-box input::placeholder{
+  color:#94a3b8;
+}
+
 .search-box input:focus{
   border-color:#facc15;
   box-shadow:0 0 0 3px rgba(250,204,21,.12);
@@ -143,6 +151,7 @@ header{
   border-radius:18px;
   padding:18px;
   transition:.2s;
+  box-shadow:0 8px 25px rgba(0,0,0,.15);
 }
 
 .card:hover{
@@ -214,6 +223,7 @@ header{
   color:#111827;
   font-weight:bold;
   cursor:pointer;
+  font-size:14px;
 }
 
 .profile-btn:hover{
@@ -228,6 +238,7 @@ header{
   background:rgba(30,41,59,.8);
   border-radius:18px;
   color:#cbd5e1;
+  grid-column:1 / -1;
 }
 
 .error{
@@ -241,6 +252,7 @@ header{
 }
 
 @media(max-width:600px){
+
   .container{
     padding:15px 12px 35px;
   }
@@ -264,6 +276,11 @@ header{
   .brand h1{
     font-size:16px;
   }
+
+  .brand p{
+    font-size:11px;
+  }
+
 }
 </style>
 </head>
@@ -271,27 +288,44 @@ header{
 <body>
 
 <header>
+
   <div class="header-inner">
 
-    <img src="logo-aigle.png" class="logo" alt="Cercle des Agents">
+    <img
+      src="logo-aigle.png"
+      class="logo"
+      alt="Cercle des Agents"
+    >
 
     <div class="brand">
+
       <h1>Cercle des Agents</h1>
-      <p>Unis • Informés • Plus forts</p>
+
+      <p>
+        Unis • Informés • Plus forts
+      </p>
+
     </div>
 
-    <button class="back" onclick="window.location.href='accueil.html'">
+    <button
+      class="back"
+      onclick="window.location.href='accueil.html'"
+    >
       ← Accueil
     </button>
 
   </div>
+
 </header>
+
 
 <main class="container">
 
   <section class="hero">
 
-    <h2>👥 Membres du Cercle</h2>
+    <h2>
+      👥 Membres du Cercle
+    </h2>
 
     <p>
       Retrouvez les agents de sécurité privée inscrits sur le réseau.
@@ -299,7 +333,9 @@ header{
 
     <div class="search-box">
 
-      <span class="search-icon">🔎</span>
+      <span class="search-icon">
+        🔎
+      </span>
 
       <input
         type="search"
@@ -312,11 +348,19 @@ header{
 
   </section>
 
-  <div class="count" id="count">
+
+  <div
+    class="count"
+    id="count"
+  >
     Chargement des membres...
   </div>
 
-  <section id="members" class="members">
+
+  <section
+    id="members"
+    class="members"
+  >
 
     <div class="loading">
       ⏳ Chargement des membres...
@@ -326,44 +370,70 @@ header{
 
 </main>
 
+
 <script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
 
 const SUPABASE_URL =
   "https://quzgphbougaujzqrhjza.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_Zkqah5_D7E_LKWLMp6ZFm6A_7BOyjCu1"
-  .replace("Zkqah5_D7E_", "Zkqah5_D7E");
+  "sb_publishable_Zkqah5_D7E_LKWLMp6ZFm6A_7BOyjCu1";
 
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const supabase =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
 
 let allMembers = [];
 
 
-/* Vérifier la connexion */
+/* =========================================================
+   VÉRIFIER LA CONNEXION
+========================================================= */
+
 async function checkUser(){
 
-  const { data, error } = await supabase.auth.getUser();
+  const {
+    data,
+    error
+  } = await supabase.auth.getUser();
+
 
   if(error || !data.user){
 
-    window.location.href = "connexion.html";
+    window.location.href =
+      "connexion.html";
 
     return null;
   }
+
 
   return data.user;
 }
 
 
-/* Charger les membres */
+/* =========================================================
+   CHARGER LES MEMBRES
+========================================================= */
+
 async function loadMembers(){
 
-  const container = document.getElementById("members");
-  const count = document.getElementById("count");
+  const container =
+    document.getElementById("members");
+
+  const count =
+    document.getElementById("count");
+
 
   container.innerHTML = `
     <div class="loading">
@@ -371,7 +441,11 @@ async function loadMembers(){
     </div>
   `;
 
-  const { data, error } = await supabase
+
+  const {
+    data,
+    error
+  } = await supabase
     .from("profiles")
     .select(`
       id,
@@ -383,194 +457,324 @@ async function loadMembers(){
       presentation,
       avatar_path
     `)
-    .order("prenom", { ascending:true });
+    .order(
+      "prenom",
+      {
+        ascending:true
+      }
+    );
+
 
   if(error){
 
-    console.error(error);
+    console.error(
+      "Erreur membres :",
+      error
+    );
+
 
     container.innerHTML = `
       <div class="error">
-        ❌ Impossible de charger les membres.<br><br>
+
+        ❌ Impossible de charger les membres.
+
+        <br><br>
+
         ${escapeHtml(error.message)}
+
       </div>
     `;
+
 
     count.textContent = "";
 
     return;
   }
 
+
   allMembers = data || [];
 
-  renderMembers(allMembers);
+
+  renderMembers(
+    allMembers
+  );
+
 }
 
 
-/* Affichage */
+/* =========================================================
+   AFFICHER LES MEMBRES
+========================================================= */
+
 function renderMembers(members){
 
-  const container = document.getElementById("members");
-  const count = document.getElementById("count");
+  const container =
+    document.getElementById("members");
+
+  const count =
+    document.getElementById("count");
+
 
   count.textContent =
     `${members.length} membre${members.length > 1 ? "s" : ""}`;
+
 
   if(!members.length){
 
     container.innerHTML = `
       <div class="empty">
+
         🔎 Aucun membre trouvé.
+
       </div>
     `;
 
     return;
   }
 
-  container.innerHTML = members.map(member => {
 
-    const prenom = member.prenom || "";
-    const nom = member.nom || "";
+  container.innerHTML = members
+    .map(member => {
 
-    const fullName =
-      `${prenom} ${nom}`.trim() || "Agent";
+      const prenom =
+        member.prenom || "";
 
-    const firstLetter =
-      fullName.charAt(0).toUpperCase();
+      const nom =
+        member.nom || "";
 
-    let avatar = "";
 
-    if(member.avatar_path){
+      const fullName =
+        `${prenom} ${nom}`.trim() ||
+        "Agent";
 
-      avatar = `
-        <img
-          class="avatar"
-          src="${getAvatarUrl(member.avatar_path)}"
-          alt="Photo de ${escapeHtml(fullName)}"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-        >
 
-        <div class="avatar-letter" style="display:none;">
-          ${escapeHtml(firstLetter)}
-        </div>
-      `;
+      const firstLetter =
+        fullName
+          .charAt(0)
+          .toUpperCase();
 
-    }else{
 
-      avatar = `
-        <div class="avatar-letter">
-          ${escapeHtml(firstLetter)}
-        </div>
-      `;
-    }
+      let avatar = "";
 
-    return `
-      <article class="card">
 
-        ${avatar}
+      /* PHOTO */
 
-        <div class="name">
-          ${escapeHtml(fullName)}
-        </div>
+      if(member.avatar_path){
 
-        ${
-          member.type_agent
-          ? `<div class="type">
-               🛡️ ${escapeHtml(formatAgentType(member.type_agent))}
-             </div>`
-          : ""
-        }
+        avatar = `
 
-        <div class="info">
+          <img
+            class="avatar"
+            src="${getAvatarUrl(member.avatar_path)}"
+            alt="Photo de ${escapeHtml(fullName)}"
+            onerror="
+              this.style.display='none';
+              this.nextElementSibling.style.display='flex';
+            "
+          >
+
+          <div
+            class="avatar-letter"
+            style="display:none;"
+          >
+            ${escapeHtml(firstLetter)}
+          </div>
+
+        `;
+
+      }
+
+      else{
+
+        avatar = `
+
+          <div class="avatar-letter">
+            ${escapeHtml(firstLetter)}
+          </div>
+
+        `;
+
+      }
+
+
+      return `
+
+        <article class="card">
+
+          ${avatar}
+
+
+          <div class="name">
+
+            ${escapeHtml(fullName)}
+
+          </div>
+
 
           ${
-            member.ville
-            ? `📍 ${escapeHtml(member.ville)}<br>`
-            : ""
+            member.type_agent
+            ?
+            `
+              <div class="type">
+
+                🛡️
+                ${escapeHtml(
+                  formatAgentType(
+                    member.type_agent
+                  )
+                )}
+
+              </div>
+            `
+            :
+            ""
           }
+
+
+          <div class="info">
+
+            ${
+              member.ville
+              ?
+              `
+                📍
+                ${escapeHtml(member.ville)}
+                <br>
+              `
+              :
+              ""
+            }
+
+
+            ${
+              member.entreprise
+              ?
+              `
+                🏢
+                ${escapeHtml(member.entreprise)}
+              `
+              :
+              ""
+            }
+
+          </div>
+
 
           ${
-            member.entreprise
-            ? `🏢 ${escapeHtml(member.entreprise)}`
-            : ""
+            member.presentation
+            ?
+            `
+              <div class="presentation">
+
+                ${escapeHtml(
+                  member.presentation
+                )}
+
+              </div>
+            `
+            :
+            ""
           }
 
-        </div>
 
-        ${
-          member.presentation
-          ? `
-            <div class="presentation">
-              ${escapeHtml(member.presentation)}
-            </div>
-          `
-          : ""
-        }
+          <button
+            class="profile-btn"
+            onclick="openProfile('${member.id}')"
+          >
 
-        <button
-          class="profile-btn"
-          onclick="openProfile('${member.id}')"
-        >
-          👤 Voir le profil
-        </button>
+            👤 Voir le profil
 
-      </article>
-    `;
+          </button>
 
-  }).join("");
+
+        </article>
+
+      `;
+
+    })
+    .join("");
+
 }
 
 
-/* Recherche */
+/* =========================================================
+   RECHERCHE
+========================================================= */
+
 document
   .getElementById("searchInput")
-  .addEventListener("input", function(){
+  .addEventListener(
+    "input",
+    function(){
 
-    const search =
-      this.value.trim().toLowerCase();
+      const search =
+        this.value
+          .trim()
+          .toLowerCase();
 
-    if(!search){
 
-      renderMembers(allMembers);
+      if(!search){
 
-      return;
+        renderMembers(
+          allMembers
+        );
+
+        return;
+      }
+
+
+      const filtered =
+        allMembers.filter(
+          member => {
+
+            const text = [
+
+              member.prenom,
+              member.nom,
+              member.ville,
+              member.entreprise,
+              member.type_agent,
+              member.presentation
+
+            ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+            return text.includes(
+              search
+            );
+
+          }
+        );
+
+
+      renderMembers(
+        filtered
+      );
+
     }
-
-    const filtered =
-      allMembers.filter(member => {
-
-        const text = [
-
-          member.prenom,
-          member.nom,
-          member.ville,
-          member.entreprise,
-          member.type_agent,
-          member.presentation
-
-        ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-        return text.includes(search);
-
-      });
-
-    renderMembers(filtered);
-
-  });
+  );
 
 
-/* Photo avatar */
+/* =========================================================
+   URL PHOTO AVATAR
+========================================================= */
+
 function getAvatarUrl(path){
 
-  if(!path) return "";
+  if(!path){
+
+    return "";
+  }
+
 
   if(path.startsWith("http")){
 
     return path;
   }
+
 
   const {
     data
@@ -578,36 +782,53 @@ function getAvatarUrl(path){
     .from("avatars")
     .getPublicUrl(path);
 
+
   return data.publicUrl;
+
 }
 
 
-/* Type agent */
+/* =========================================================
+   TYPE D'AGENT
+========================================================= */
+
 function formatAgentType(type){
 
   const types = {
 
-    surete:"Agent de sûreté",
+    surete:
+      "Agent de sûreté",
 
-    securite:"Agent de sécurité",
+    securite:
+      "Agent de sécurité",
 
-    incendie:"Agent de sécurité incendie",
+    incendie:
+      "Agent de sécurité incendie",
 
-    cynophile:"Agent cynophile",
+    cynophile:
+      "Agent cynophile",
 
-    rondier:"Rondier",
+    rondier:
+      "Rondier",
 
-    gardiennage:"Agent de gardiennage",
+    gardiennage:
+      "Agent de gardiennage",
 
-    autre:"Autre"
+    autre:
+      "Autre"
 
   };
 
+
   return types[type] || type;
+
 }
 
 
-/* Ouvrir profil */
+/* =========================================================
+   OUVRIR LE PROFIL
+========================================================= */
+
 function openProfile(id){
 
   window.location.href =
@@ -616,25 +837,54 @@ function openProfile(id){
 }
 
 
-/* Protection HTML */
+/* =========================================================
+   PROTECTION HTML
+========================================================= */
+
 function escapeHtml(value){
 
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+  return String(
+    value ?? ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
 
-/* Démarrage */
+/* =========================================================
+   DÉMARRAGE
+========================================================= */
+
 (async function(){
 
-  const user = await checkUser();
+  const user =
+    await checkUser();
 
-  if(!user) return;
+
+  if(!user){
+
+    return;
+  }
+
 
   await loadMembers();
 
