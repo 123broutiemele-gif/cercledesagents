@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cercle des Agents - Nouveau mot de passe</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+
+      background:
+        radial-gradient(circle at top, #075985 0%, transparent 38%),
+        linear-gradient(135deg, #071426, #0f172a 55%, #172554);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.97);
+
+      border: 1px solid rgba(255,255,255,0.10);
+
+      border-radius: 24px;
+
+      padding: 30px 25px;
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.45),
+        0 0 30px rgba(14,165,233,0.10);
+    }
+
+    .logo {
+      width: 115px;
+      height: 115px;
+
+      object-fit: contain;
+
+      display: block;
+
+      margin: 0 auto 12px;
+
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.4));
+    }
+
+    .brand {
+      text-align: center;
+
+      font-size: 24px;
+
+      font-weight: 900;
+
+      letter-spacing: 1px;
+
+      background: linear-gradient(
+        90deg,
+        #facc15,
+        #fb923c,
+        #38bdf8
+      );
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      text-align: center;
+
+      color: #cbd5e1;
+
+      font-size: 14px;
+
+      margin-top: 7px;
+
+      line-height: 1.5;
+    }
+
+    .motto {
+      text-align: center;
+
+      color: #facc15;
+
+      font-weight: bold;
+
+      font-size: 13px;
+
+      margin-top: 8px;
+    }
+
+    h1 {
+      text-align: center;
+
+      font-size: 23px;
+
+      margin-top: 28px;
+
+      margin-bottom: 10px;
+    }
+
+    .description {
+      text-align: center;
+
+      color: #94a3b8;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+
+      margin-bottom: 24px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 14px;
+
+      font-weight: bold;
+
+      color: #e2e8f0;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+
+      padding: 14px 50px 14px 15px;
+
+      border-radius: 12px;
+
+      border: 1px solid #334155;
+
+      background: #0b1220;
+
+      color: white;
+
+      font-size: 15px;
+
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #38bdf8;
+
+      box-shadow:
+        0 0 0 3px rgba(56,189,248,0.12);
+    }
+
+    .toggle {
+      position: absolute;
+
+      right: 7px;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      background: transparent;
+
+      border: none;
+
+      color: #94a3b8;
+
+      font-size: 19px;
+
+      padding: 8px;
+
+      cursor: pointer;
+    }
+
+    .toggle:hover {
+      color: white;
+    }
+
+    .requirements {
+      color: #94a3b8;
+
+      font-size: 12px;
+
+      line-height: 1.6;
+
+      margin-top: -7px;
+
+      margin-bottom: 20px;
+    }
+
+    button.submit {
+      width: 100%;
+
+      border: none;
+
+      border-radius: 13px;
+
+      padding: 15px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #facc15,
+          #fb923c
+        );
+
+      color: #111827;
+
+      font-size: 16px;
+
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    button.submit:disabled {
+      opacity: 0.6;
+
+      cursor: not-allowed;
+    }
+
+    #message {
+      display: none;
+
+      margin-top: 17px;
+
+      padding: 12px 14px;
+
+      border-radius: 10px;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+
+      text-align: center;
+    }
+
+    #message.success {
+      display: block;
+
+      background: rgba(34,197,94,0.12);
+
+      border: 1px solid rgba(34,197,94,0.30);
+
+      color: #86efac;
+    }
+
+    #message.error {
+      display: block;
+
+      background: rgba(239,68,68,0.12);
+
+      border: 1px solid rgba(239,68,68,0.30);
+
+      color: #fca5a5;
+    }
+
+    .back {
+      display: block;
+
+      text-align: center;
+
+      margin-top: 20px;
+
+      color: #94a3b8;
+
+      text-decoration: none;
+
+      font-size: 13px;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    .footer {
+      text-align: center;
+
+      margin-top: 20px;
+
+      color: #64748b;
+
+      font-size: 11px;
+    }
+
+    @media (max-width: 480px) {
+
+      .card {
+        padding: 25px 18px;
+      }
+
+      .logo {
+        width: 100px;
+        height: 100px;
+      }
+
+      .brand {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <section class="card">
+
+      <img
+        src="logo-aigle.png"
+        alt="Logo Cercle des Agents"
+        class="logo"
+      >
+
+      <div class="brand">
+        CERCLE DES AGENTS
+      </div>
+
+      <div class="subtitle">
+        Le réseau professionnel des agents de sécurité privée
+      </div>
+
+      <div class="motto">
+        Unis • Informés • Plus forts
+      </div>
+
+
+      <h1>
+        🔐 Nouveau mot de passe
+      </h1>
+
+      <p class="description">
+        Choisissez un nouveau mot de passe sécurisé
+        pour accéder à votre compte.
+      </p>
+
+
+      <form id="passwordForm">
+
+        <div class="field">
+
+          <label for="password">
+            Nouveau mot de passe
+          </label>
+
+          <div class="password-wrapper">
+
+            <input
+              type="password"
+              id="password"
+              minlength="6"
+              placeholder="Nouveau mot de passe"
+              required
+            >
+
+            <button
+              type="button"
+              class="toggle"
+              id="togglePassword"
+            >
+              👁️
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="confirmPassword">
+            Confirmer le mot de passe
+          </label>
+
+          <div class="password-wrapper">
+
+            <input
+              type="password"
+              id="confirmPassword"
+              minlength="6"
+              placeholder="Répétez le mot de passe"
+              required
+            >
+
+            <button
+              type="button"
+              class="toggle"
+              id="toggleConfirm"
+            >
+              👁️
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="requirements">
+          • Minimum 6 caractères<br>
+          • Les deux mots de passe doivent être identiques
+        </div>
+
+
+        <button
+          type="submit"
+          class="submit"
+          id="submitButton"
+        >
+          Enregistrer mon nouveau mot de passe
+        </button>
+
+      </form>
+
+
+      <div id="message"></div>
+
+
+      <a
+        href="connexion.html"
+        class="back"
+      >
+        ← Retour à la connexion
+      </a>
+
+
+      <div class="footer">
+        © 2026 Cercle des Agents
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    // ==========================================
+    // SUPABASE
+    // ==========================================
+
+    const SUPABASE_URL =
+      "https://quzgphbougaujzqrhjza.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_Zkqah5_D7eLKWLMp6ZFm6A_7BOyjCu1";
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const form =
+      document.getElementById("passwordForm");
+
+    const password =
+      document.getElementById("password");
+
+    const confirmPassword =
+      document.getElementById("confirmPassword");
+
+    const submitButton =
+      document.getElementById("submitButton");
+
+    const message =
+      document.getElementById("message");
+
+
+    // ==========================================
+    // MESSAGE
+    // ==========================================
+
+    function showMessage(text, type) {
+
+      message.textContent = text;
+
+      message.className = type;
+
+    }
+
+
+    // ==========================================
+    // AFFICHER / MASQUER MOT DE PASSE
+    // ==========================================
+
+    document
+      .getElementById("togglePassword")
+      .addEventListener("click", function () {
+
+        if (password.type === "password") {
+
+          password.type = "text";
+
+          this.textContent = "🙈";
+
+        } else {
+
+          password.type = "password";
+
+          this.textContent = "👁️";
+
+        }
+
+      });
+
+
+    document
+      .getElementById("toggleConfirm")
+      .addEventListener("click", function () {
+
+        if (confirmPassword.type === "password") {
+
+          confirmPassword.type = "text";
+
+          this.textContent = "🙈";
+
+        } else {
+
+          confirmPassword.type = "password";
+
+          this.textContent = "👁️";
+
+        }
+
+      });
+
+
+    // ==========================================
+    // DETECTION DE LA RECUPERATION
+    // ==========================================
+
+    let recoveryDetected = false;
+
+
+    supabaseClient.auth.onAuthStateChange(
+      function (event, session) {
+
+        console.log(
+          "Auth event:",
+          event
+        );
+
+        if (event === "PASSWORD_RECOVERY") {
+
+          recoveryDetected = true;
+
+          showMessage(
+            "Vous pouvez maintenant choisir votre nouveau mot de passe.",
+            "success"
+          );
+
+        }
+
+      }
+    );
+
+
+    // ==========================================
+    // CHANGEMENT DU MOT DE PASSE
+    // ==========================================
+
+    form.addEventListener(
+      "submit",
+      async function (event) {
+
+        event.preventDefault();
+
+
+        const newPassword =
+          password.value;
+
+        const confirmation =
+          confirmPassword.value;
+
+
+        if (newPassword.length < 6) {
+
+          showMessage(
+            "Le mot de passe doit contenir au moins 6 caractères.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        if (newPassword !== confirmation) {
+
+          showMessage(
+            "Les deux mots de passe ne sont pas identiques.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        submitButton.disabled = true;
+
+        submitButton.textContent =
+          "Enregistrement…";
+
+
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth.updateUser({
+              password: newPassword
+            });
+
+
+          if (error) {
+
+            console.error(
+              "Erreur changement mot de passe:",
+              error
+            );
+
+            showMessage(
+              "Impossible de modifier le mot de passe. Le lien de récupération peut avoir expiré.",
+              "error"
+            );
+
+            return;
+          }
+
+
+          if (data && data.user) {
+
+            showMessage(
+              "✅ Votre mot de passe a été modifié avec succès !",
+              "success"
+            );
+
+
+            password.value = "";
+
+            confirmPassword.value = "";
+
+
+            setTimeout(
+              function () {
+
+                window.location.href =
+                  "connexion.html";
+
+              },
+              1800
+            );
+
+          }
+
+        }
+
+        catch (error) {
+
+          console.error(error);
+
+          showMessage(
+            "Une erreur inattendue est survenue.",
+            "error"
+          );
+
+        }
+
+        finally {
+
+          submitButton.disabled = false;
+
+          submitButton.textContent =
+            "Enregistrer mon nouveau mot de passe";
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
