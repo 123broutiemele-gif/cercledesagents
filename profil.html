@@ -41,7 +41,7 @@
       top: 0;
       z-index: 100;
       height: 68px;
-      background: rgba(15, 23, 42, 0.94);
+      background: rgba(15, 23, 42, .94);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255,255,255,.08);
       display: flex;
@@ -99,13 +99,13 @@
     }
 
     /* =========================
-       LAYOUT
+       PAGE
     ========================= */
 
     .page {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: auto;
-      padding: 25px 15px 100px;
+      padding: 25px 15px 110px;
     }
 
     .back {
@@ -125,6 +125,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) 300px;
       gap: 20px;
+      align-items: start;
     }
 
     /* =========================
@@ -159,21 +160,21 @@
       height: 130px;
     }
 
-    .avatar {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 5px solid #0f172a;
-      background: #1e293b;
-      display: block;
-    }
-
+    .avatar,
     .avatar-placeholder {
       width: 130px;
       height: 130px;
       border-radius: 50%;
       border: 5px solid #0f172a;
+    }
+
+    .avatar {
+      object-fit: cover;
+      background: #1e293b;
+      display: block;
+    }
+
+    .avatar-placeholder {
       background: linear-gradient(135deg, #1e40af, #0f172a);
       display: flex;
       align-items: center;
@@ -335,6 +336,177 @@
     }
 
     /* =========================
+       PUBLICATIONS
+    ========================= */
+
+    .posts-section {
+      margin-top: 20px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .section-count {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .post-card {
+      background: rgba(15,23,42,.86);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+    }
+
+    .post-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .post-avatar,
+    .post-avatar-placeholder {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      flex: 0 0 44px;
+      border: 2px solid rgba(255,255,255,.08);
+    }
+
+    .post-avatar {
+      object-fit: cover;
+    }
+
+    .post-avatar-placeholder {
+      background: #1e3a8a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .post-author-info {
+      min-width: 0;
+    }
+
+    .post-author-name {
+      font-weight: 800;
+      font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .post-date {
+      color: #94a3b8;
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    .post-menu {
+      color: #94a3b8;
+      font-size: 20px;
+    }
+
+    .post-content {
+      padding: 0 15px 15px;
+      line-height: 1.65;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .post-image-wrap {
+      background: #020617;
+      width: 100%;
+    }
+
+    .post-image {
+      width: 100%;
+      max-height: 560px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .image-error {
+      display: none;
+      padding: 35px 15px;
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .post-location {
+      padding: 0 15px 12px;
+      color: #7dd3fc;
+      font-size: 13px;
+    }
+
+    .post-location a {
+      color: #7dd3fc;
+    }
+
+    .post-stats {
+      padding: 11px 15px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .post-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .post-action {
+      border: 0;
+      background: transparent;
+      color: #cbd5e1;
+      padding: 12px 5px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .post-action:hover {
+      background: rgba(255,255,255,.05);
+      color: #facc15;
+    }
+
+    .empty-posts {
+      background: rgba(15,23,42,.75);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 45px 20px;
+      text-align: center;
+      color: #94a3b8;
+    }
+
+    .empty-icon {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    /* =========================
        SIDEBAR
     ========================= */
 
@@ -344,6 +516,8 @@
       border-radius: 20px;
       padding: 20px;
       height: fit-content;
+      position: sticky;
+      top: 88px;
     }
 
     .side-title {
@@ -366,7 +540,7 @@
     }
 
     /* =========================
-       LOADING / ERROR
+       LOADING
     ========================= */
 
     .loading {
@@ -454,6 +628,7 @@
     }
 
     @media (max-width: 600px) {
+
       .topbar {
         padding: 7px 10px;
       }
@@ -477,7 +652,7 @@
       }
 
       .page {
-        padding: 18px 10px 100px;
+        padding: 18px 10px 105px;
       }
 
       .cover {
@@ -515,6 +690,10 @@
         width: 100%;
       }
 
+      .post-image {
+        max-height: 450px;
+      }
+
       .mobile-nav {
         display: grid;
       }
@@ -539,8 +718,15 @@
       >
 
       <div class="brand-text">
-        <div class="brand-name">Cercle des Agents</div>
-        <div class="brand-slogan">Unis • Informés • Plus forts</div>
+
+        <div class="brand-name">
+          Cercle des Agents
+        </div>
+
+        <div class="brand-slogan">
+          Unis • Informés • Plus forts
+        </div>
+
       </div>
 
     </a>
@@ -572,11 +758,18 @@
 
   <main class="page">
 
-    <a href="membres.html" class="back">
+    <a
+      href="membres.html"
+      class="back"
+    >
       ← Retour aux membres
     </a>
 
-    <div id="loading" class="loading">
+
+    <div
+      id="loading"
+      class="loading"
+    >
 
       <div class="spinner"></div>
 
@@ -585,201 +778,271 @@
     </div>
 
 
-    <div id="errorBox" style="display:none;"></div>
+    <div
+      id="errorBox"
+      style="display:none;"
+    ></div>
 
 
-    <div id="profileContent" style="display:none;">
+    <div
+      id="profileContent"
+      style="display:none;"
+    >
 
       <div class="grid">
 
+
         <!-- =========================
-             PROFIL
+             COLONNE PRINCIPALE
         ========================= -->
 
-        <section class="profile-card">
-
-          <div class="cover"></div>
-
-          <div class="profile-main">
-
-            <div class="avatar-wrapper">
-
-              <div
-                id="avatarPlaceholder"
-                class="avatar-placeholder"
-              >
-                👤
-              </div>
-
-              <img
-                id="avatar"
-                class="avatar"
-                alt="Photo de profil"
-                style="display:none;"
-              >
-
-              <div class="online"></div>
-
-            </div>
+        <div>
 
 
-            <h1 class="profile-name">
+          <!-- =========================
+               PROFIL
+          ========================= -->
 
-              <span id="fullName">
-                Agent
-              </span>
+          <section class="profile-card">
 
-              <span class="verified">
-                ✓
-              </span>
+            <div class="cover"></div>
 
-            </h1>
+            <div class="profile-main">
 
 
-            <div
-              id="agentType"
-              class="agent-type"
-            >
-              🛡️ Agent de sécurité privée
-            </div>
+              <!-- AVATAR -->
 
-
-            <!-- INFORMATIONS -->
-
-            <div class="info-list">
-
-              <div class="info">
-
-                <div class="info-label">
-                  📍 Ville
-                </div>
+              <div class="avatar-wrapper">
 
                 <div
-                  id="ville"
-                  class="info-value"
+                  id="avatarPlaceholder"
+                  class="avatar-placeholder"
                 >
-                  Non renseignée
+                  👤
                 </div>
 
-              </div>
-
-
-              <div class="info">
-
-                <div class="info-label">
-                  🏢 Entreprise
-                </div>
-
-                <div
-                  id="entreprise"
-                  class="info-value"
+                <img
+                  id="avatar"
+                  class="avatar"
+                  alt="Photo de profil"
+                  style="display:none;"
                 >
-                  Non renseignée
-                </div>
 
-              </div>
-
-            </div>
-
-
-            <!-- PRÉSENTATION -->
-
-            <div class="presentation">
-
-              <div class="presentation-title">
-                📝 Présentation
-              </div>
-
-              <div
-                id="presentation"
-                class="presentation-text"
-              >
-                Aucune présentation renseignée.
-              </div>
-
-            </div>
-
-
-            <!-- STATISTIQUES -->
-
-            <div class="stats">
-
-              <div class="stat">
-
-                <div
-                  id="postCount"
-                  class="stat-number"
-                >
-                  0
-                </div>
-
-                <div class="stat-label">
-                  Publications
-                </div>
+                <div class="online"></div>
 
               </div>
 
 
-              <div class="stat">
+              <!-- NOM -->
 
-                <div class="stat-number">
-                  🛡️
-                </div>
+              <h1 class="profile-name">
 
-                <div class="stat-label">
-                  Profession
-                </div>
+                <span id="fullName">
+                  Agent
+                </span>
 
-              </div>
-
-
-              <div class="stat">
-
-                <div class="stat-number">
+                <span class="verified">
                   ✓
+                </span>
+
+              </h1>
+
+
+              <!-- TYPE -->
+
+              <div
+                id="agentType"
+                class="agent-type"
+              >
+                🛡️ Agent de sécurité privée
+              </div>
+
+
+              <!-- INFORMATIONS -->
+
+              <div class="info-list">
+
+                <div class="info">
+
+                  <div class="info-label">
+                    📍 Ville
+                  </div>
+
+                  <div
+                    id="ville"
+                    class="info-value"
+                  >
+                    Non renseignée
+                  </div>
+
                 </div>
 
-                <div class="stat-label">
-                  Membre
+
+                <div class="info">
+
+                  <div class="info-label">
+                    🏢 Entreprise
+                  </div>
+
+                  <div
+                    id="entreprise"
+                    class="info-value"
+                  >
+                    Non renseignée
+                  </div>
+
                 </div>
+
+              </div>
+
+
+              <!-- PRÉSENTATION -->
+
+              <div class="presentation">
+
+                <div class="presentation-title">
+                  📝 Présentation
+                </div>
+
+                <div
+                  id="presentation"
+                  class="presentation-text"
+                >
+                  Aucune présentation renseignée.
+                </div>
+
+              </div>
+
+
+              <!-- STATISTIQUES -->
+
+              <div class="stats">
+
+                <div class="stat">
+
+                  <div
+                    id="postCount"
+                    class="stat-number"
+                  >
+                    0
+                  </div>
+
+                  <div class="stat-label">
+                    Publications
+                  </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                  <div class="stat-number">
+                    🛡️
+                  </div>
+
+                  <div class="stat-label">
+                    Profession
+                  </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                  <div class="stat-number">
+                    ✓
+                  </div>
+
+                  <div class="stat-label">
+                    Membre
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <!-- ACTIONS -->
+
+              <div class="actions">
+
+                <button
+                  id="editBtn"
+                  class="btn btn-primary"
+                  style="display:none;"
+                  onclick="location.href='modifier-profil.html'"
+                >
+                  ✏️ Modifier mon profil
+                </button>
+
+                <button
+                  id="messageBtn"
+                  class="btn btn-secondary"
+                  style="display:none;"
+                  onclick="showComingSoon('La messagerie privée arrive dans la prochaine étape.')"
+                >
+                  💬 Contacter
+                </button>
+
+                <button
+                  class="btn btn-secondary"
+                  onclick="location.href='membres.html'"
+                >
+                  👥 Voir les membres
+                </button>
+
+                <button
+                  class="btn btn-secondary"
+                  onclick="location.href='accueil.html'"
+                >
+                  🏠 Accueil
+                </button>
 
               </div>
 
             </div>
 
+          </section>
 
-            <!-- ACTIONS -->
 
-            <div class="actions">
+          <!-- =========================
+               PUBLICATIONS
+          ========================= -->
 
-              <button
-                id="editBtn"
-                class="btn btn-primary"
-                style="display:none;"
-                onclick="location.href='modifier-profil.html'"
+          <section class="posts-section">
+
+            <div class="section-header">
+
+              <div class="section-title">
+                📰 Publications
+              </div>
+
+              <div
+                id="sectionCount"
+                class="section-count"
               >
-                ✏️ Modifier mon profil
-              </button>
-
-              <button
-                class="btn btn-secondary"
-                onclick="location.href='membres.html'"
-              >
-                👥 Voir les membres
-              </button>
-
-              <button
-                class="btn btn-secondary"
-                onclick="location.href='accueil.html'"
-              >
-                🏠 Accueil
-              </button>
+                0 publication
+              </div>
 
             </div>
 
-          </div>
 
-        </section>
+            <div id="postsContainer">
+
+              <div class="loading">
+
+                <div class="spinner"></div>
+
+                Chargement des publications...
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+        </div>
 
 
         <!-- =========================
@@ -791,6 +1054,7 @@
           <div class="side-title">
             🛡️ Cercle des Agents
           </div>
+
 
           <div class="side-item">
 
@@ -841,8 +1105,22 @@
             </div>
 
             <div>
-              Votre profil affiche uniquement
-              les informations renseignées sur votre compte.
+              Les informations affichées
+              correspondent aux données du profil.
+            </div>
+
+          </div>
+
+
+          <div class="side-item">
+
+            <div class="side-icon">
+              📰
+            </div>
+
+            <div>
+              Retrouvez ici les publications
+              de cet agent.
             </div>
 
           </div>
@@ -875,7 +1153,7 @@
       Membres
     </a>
 
-    <a href="profil.html">
+    <a id="mobileProfileLink" href="profil.html">
       <span>👤</span>
       Profil
     </a>
@@ -885,9 +1163,9 @@
 
   <script>
 
-    /* =========================
+    /* =====================================================
        SUPABASE
-    ========================= */
+    ===================================================== */
 
     const SUPABASE_URL =
       "https://quzgphbougaujzqrhjza.supabase.co";
@@ -904,15 +1182,19 @@
 
     let currentUser = null;
     let profileUserId = null;
+    let currentProfile = null;
 
 
-    /* =========================
-       ÉCHAPPER HTML
-    ========================= */
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
 
     function escapeHtml(value) {
 
-      if (value === null || value === undefined) {
+      if (
+        value === null ||
+        value === undefined
+      ) {
         return "";
       }
 
@@ -922,12 +1204,13 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+
     }
 
 
-    /* =========================
+    /* =====================================================
        NOM COMPLET
-    ========================= */
+    ===================================================== */
 
     function getFullName(profile) {
 
@@ -940,45 +1223,84 @@
       const full =
         `${prenom} ${nom}`.trim();
 
-      return full || "Agent du Cercle";
+      return full ||
+        "Agent du Cercle";
+
     }
 
 
-    /* =========================
+    /* =====================================================
+       INITIALES
+    ===================================================== */
+
+    function getInitials(profile) {
+
+      const prenom =
+        (profile.prenom || "").trim();
+
+      const nom =
+        (profile.nom || "").trim();
+
+      const first =
+        prenom.charAt(0);
+
+      const second =
+        nom.charAt(0);
+
+      return (
+        first +
+        second
+      ).toUpperCase() || "A";
+
+    }
+
+
+    /* =====================================================
        TYPE AGENT
-    ========================= */
+    ===================================================== */
 
     function formatAgentType(type) {
 
       const types = {
 
-        "surete": "Agent de sûreté",
+        "surete":
+          "Agent de sûreté",
 
-        "securite": "Agent de sécurité",
+        "securite":
+          "Agent de sécurité",
 
-        "gardiennage": "Agent de gardiennage",
+        "gardiennage":
+          "Agent de gardiennage",
 
-        "controle": "Agent de contrôle",
+        "controle":
+          "Agent de contrôle",
 
-        "vigile": "Agent de surveillance",
+        "vigile":
+          "Agent de surveillance",
 
-        "chef": "Chef d'équipe",
+        "chef":
+          "Chef d'équipe",
 
-        "superviseur": "Superviseur",
+        "superviseur":
+          "Superviseur",
 
-        "autre": "Professionnel de la sécurité"
+        "autre":
+          "Professionnel de la sécurité"
 
       };
 
-      return types[type] ||
+      return (
+        types[type] ||
         type ||
-        "Agent de sécurité privée";
+        "Agent de sécurité privée"
+      );
+
     }
 
 
-    /* =========================
+    /* =====================================================
        AVATAR URL
-    ========================= */
+    ===================================================== */
 
     function getAvatarUrl(path) {
 
@@ -993,9 +1315,9 @@
         return null;
       }
 
+
       /*
-       * Si c'est déjà une URL complète,
-       * on la conserve.
+       * URL déjà complète
        */
 
       if (
@@ -1005,13 +1327,14 @@
         return cleanPath;
       }
 
-      /*
-       * Nettoyage des différentes formes
-       * possibles du chemin.
-       */
 
       cleanPath =
         cleanPath.replace(/^\/+/, "");
+
+
+      /*
+       * Formats possibles
+       */
 
       cleanPath =
         cleanPath.replace(
@@ -1025,6 +1348,7 @@
           ""
         );
 
+
       const {
         data
       } =
@@ -1033,63 +1357,244 @@
           .from("avatars")
           .getPublicUrl(cleanPath);
 
-      return data?.publicUrl || null;
+
+      return (
+        data?.publicUrl ||
+        null
+      );
+
     }
 
 
-    /* =========================
-       AFFICHER AVATAR
-    ========================= */
+    /* =====================================================
+       POST IMAGE URL
+    ===================================================== */
+
+    function getPostImageUrl(path) {
+
+      if (!path) {
+        return null;
+      }
+
+      let cleanPath =
+        String(path).trim();
+
+      if (!cleanPath) {
+        return null;
+      }
+
+
+      /*
+       * URL complète
+       */
+
+      if (
+        cleanPath.startsWith("http://") ||
+        cleanPath.startsWith("https://")
+      ) {
+        return cleanPath;
+      }
+
+
+      cleanPath =
+        cleanPath.replace(/^\/+/, "");
+
+
+      /*
+       * Nettoyage des différentes formes
+       */
+
+      cleanPath =
+        cleanPath.replace(
+          /^storage\/v1\/object\/public\/post-images\//,
+          ""
+        );
+
+      cleanPath =
+        cleanPath.replace(
+          /^post-images\//,
+          ""
+        );
+
+      cleanPath =
+        cleanPath.replace(
+          /^public\/post-images\//,
+          ""
+        );
+
+
+      const {
+        data
+      } =
+        supabaseClient
+          .storage
+          .from("post-images")
+          .getPublicUrl(cleanPath);
+
+
+      return (
+        data?.publicUrl ||
+        null
+      );
+
+    }
+
+
+    /* =====================================================
+       DATE
+    ===================================================== */
+
+    function formatDate(dateString) {
+
+      if (!dateString) {
+        return "";
+      }
+
+      const date =
+        new Date(dateString);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "";
+      }
+
+      return date.toLocaleString(
+        "fr-FR",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      );
+
+    }
+
+
+    /* =====================================================
+       AVATAR PRINCIPAL
+    ===================================================== */
 
     function displayAvatar(profile) {
 
       const avatar =
-        document.getElementById("avatar");
+        document.getElementById(
+          "avatar"
+        );
 
       const placeholder =
-        document.getElementById("avatarPlaceholder");
+        document.getElementById(
+          "avatarPlaceholder"
+        );
 
       const url =
-        getAvatarUrl(profile.avatar_path);
+        getAvatarUrl(
+          profile.avatar_path
+        );
+
 
       if (!url) {
 
-        avatar.style.display = "none";
+        avatar.style.display =
+          "none";
 
         placeholder.style.display =
           "flex";
+
+        placeholder.textContent =
+          getInitials(profile);
 
         return;
       }
 
+
       avatar.src = url;
 
-      avatar.onload = function() {
 
-        avatar.style.display =
-          "block";
+      avatar.onload =
+        function() {
 
-        placeholder.style.display =
-          "none";
+          avatar.style.display =
+            "block";
 
-      };
+          placeholder.style.display =
+            "none";
 
-      avatar.onerror = function() {
+        };
 
-        avatar.style.display =
-          "none";
 
-        placeholder.style.display =
-          "flex";
+      avatar.onerror =
+        function() {
 
-      };
+          avatar.style.display =
+            "none";
+
+          placeholder.style.display =
+            "flex";
+
+          placeholder.textContent =
+            getInitials(profile);
+
+        };
 
     }
 
 
-    /* =========================
-       CHARGER PROFIL
-    ========================= */
+    /* =====================================================
+       AVATAR PUBLICATION
+    ===================================================== */
+
+    function createPostAvatar(profile) {
+
+      const url =
+        getAvatarUrl(
+          profile?.avatar_path
+        );
+
+
+      if (url) {
+
+        return `
+          <img
+            class="post-avatar"
+            src="${escapeHtml(url)}"
+            alt="Photo de ${escapeHtml(
+              getFullName(profile)
+            )}"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          >
+
+          <div
+            class="post-avatar-placeholder"
+            style="display:none;"
+          >
+            ${escapeHtml(
+              getInitials(profile)
+            )}
+          </div>
+        `;
+
+      }
+
+
+      return `
+        <div class="post-avatar-placeholder">
+          ${escapeHtml(
+            getInitials(profile)
+          )}
+        </div>
+      `;
+
+    }
+
+
+    /* =====================================================
+       AUTH + PROFIL
+    ===================================================== */
 
     async function loadProfile() {
 
@@ -1099,7 +1604,9 @@
           data: authData,
           error: authError
         } =
-          await supabaseClient.auth.getUser();
+          await supabaseClient
+            .auth
+            .getUser();
 
 
         if (
@@ -1120,11 +1627,13 @@
 
 
         /*
-         * Si l'URL contient ?id=...
-         * on affiche ce membre.
+         * ID présent dans l'URL ?
          *
-         * Sinon on affiche le profil
-         * de l'utilisateur connecté.
+         * profil.html?id=XXXX
+         *
+         * Sinon :
+         *
+         * profil.html
          */
 
         const params =
@@ -1132,13 +1641,33 @@
             window.location.search
           );
 
+
         profileUserId =
           params.get("id") ||
           currentUser.id;
 
 
         /*
-         * Récupération du profil
+         * Lien profil mobile
+         */
+
+        const mobileProfileLink =
+          document.getElementById(
+            "mobileProfileLink"
+          );
+
+        if (mobileProfileLink) {
+
+          mobileProfileLink.href =
+            `profil.html?id=${encodeURIComponent(
+              currentUser.id
+            )}`;
+
+        }
+
+
+        /*
+         * Charger le profil
          */
 
         const {
@@ -1148,7 +1677,10 @@
           await supabaseClient
             .from("profiles")
             .select("*")
-            .eq("id", profileUserId)
+            .eq(
+              "id",
+              profileUserId
+            )
             .maybeSingle();
 
 
@@ -1168,14 +1700,18 @@
         }
 
 
+        currentProfile =
+          profile;
+
+
         renderProfile(profile);
 
 
         /*
-         * Compter les publications
+         * Charger publications
          */
 
-        await loadPostCount(
+        await loadPosts(
           profileUserId
         );
 
@@ -1183,9 +1719,10 @@
       } catch (error) {
 
         console.error(
-          "Erreur profil:",
+          "Erreur profil :",
           error
         );
+
 
         showError(
           "Impossible de charger ce profil.<br><br>" +
@@ -1200,9 +1737,9 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        AFFICHER PROFIL
-    ========================= */
+    ===================================================== */
 
     function renderProfile(profile) {
 
@@ -1252,17 +1789,25 @@
 
 
       /*
-       * Si c'est notre propre profil,
-       * afficher le bouton Modifier.
+       * Notre propre profil
        */
 
-      if (
+      const isOwnProfile =
         currentUser &&
-        profile.id === currentUser.id
-      ) {
+        profile.id === currentUser.id;
+
+
+      if (isOwnProfile) {
 
         document.getElementById(
           "editBtn"
+        ).style.display =
+          "inline-block";
+
+      } else {
+
+        document.getElementById(
+          "messageBtn"
         ).style.display =
           "inline-block";
 
@@ -1283,20 +1828,411 @@
     }
 
 
-    /* =========================
-       NOMBRE PUBLICATIONS
-    ========================= */
+    /* =====================================================
+       CHARGER PUBLICATIONS
+    ===================================================== */
 
-    async function loadPostCount(userId) {
+    async function loadPosts(userId) {
+
+      const container =
+        document.getElementById(
+          "postsContainer"
+        );
+
 
       try {
 
+        /*
+         * Récupération des publications
+         * de cet agent uniquement.
+         */
+
         const {
-          count,
+          data: posts,
           error
         } =
           await supabaseClient
             .from("posts")
+            .select(`
+              id,
+              user_id,
+              content,
+              image_url,
+              created_at,
+              location_name,
+              location_lat,
+              location_lng,
+              location_type
+            `)
+            .eq(
+              "user_id",
+              userId
+            )
+            .order(
+              "created_at",
+              {
+                ascending: false
+              }
+            )
+            .limit(50);
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        const safePosts =
+          posts || [];
+
+
+        document.getElementById(
+          "postCount"
+        ).textContent =
+          safePosts.length;
+
+
+        document.getElementById(
+          "sectionCount"
+        ).textContent =
+          safePosts.length +
+          (
+            safePosts.length <= 1
+              ? " publication"
+              : " publications"
+          );
+
+
+        if (!safePosts.length) {
+
+          container.innerHTML = `
+            <div class="empty-posts">
+
+              <div class="empty-icon">
+                📰
+              </div>
+
+              <strong>
+                Aucune publication pour le moment
+              </strong>
+
+              <div style="margin-top:8px;">
+                Les publications de cet agent
+                apparaîtront ici.
+              </div>
+
+            </div>
+          `;
+
+          return;
+        }
+
+
+        /*
+         * Profil de l'auteur
+         */
+
+        let authorProfile =
+          currentProfile;
+
+
+        /*
+         * Afficher toutes les publications
+         */
+
+        const htmlParts = [];
+
+
+        for (
+          const post of safePosts
+        ) {
+
+          const html =
+            await renderPost(
+              post,
+              authorProfile
+            );
+
+          htmlParts.push(html);
+
+        }
+
+
+        container.innerHTML =
+          htmlParts.join("");
+
+
+        /*
+         * Récupérer les statistiques
+         */
+
+        for (
+          const post of safePosts
+        ) {
+
+          await refreshPostStats(
+            post.id
+          );
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur publications:",
+          error
+        );
+
+
+        container.innerHTML = `
+          <div class="error">
+
+            ❌ Impossible de charger
+            les publications.
+
+            <br><br>
+
+            ${escapeHtml(
+              error.message ||
+              "Erreur inconnue"
+            )}
+
+          </div>
+        `;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       RENDRE UNE PUBLICATION
+    ===================================================== */
+
+    async function renderPost(
+      post,
+      profile
+    ) {
+
+      const fullName =
+        getFullName(profile);
+
+
+      const imageUrl =
+        getPostImageUrl(
+          post.image_url
+        );
+
+
+      let imageHtml = "";
+
+
+      if (imageUrl) {
+
+        imageHtml = `
+          <div class="post-image-wrap">
+
+            <img
+              class="post-image"
+              src="${escapeHtml(imageUrl)}"
+              alt="Photo de publication"
+              onerror="handlePostImageError(this)"
+            >
+
+            <div class="image-error">
+              🖼️ Photo indisponible
+            </div>
+
+          </div>
+        `;
+
+      }
+
+
+      let locationHtml = "";
+
+
+      if (
+        post.location_name &&
+        String(post.location_name).trim()
+      ) {
+
+        /*
+         * On affiche le nom du lieu.
+         *
+         * On n'expose pas automatiquement
+         * les coordonnées GPS exactes.
+         */
+
+        locationHtml = `
+          <div class="post-location">
+            📍 ${escapeHtml(
+              post.location_name
+            )}
+          </div>
+        `;
+
+      }
+
+
+      return `
+        <article
+          class="post-card"
+          id="post-${escapeHtml(post.id)}"
+        >
+
+          <div class="post-header">
+
+            <div class="post-author">
+
+              ${createPostAvatar(profile)}
+
+              <div class="post-author-info">
+
+                <div class="post-author-name">
+                  ${escapeHtml(fullName)}
+                  <span class="verified">
+                    ✓
+                  </span>
+                </div>
+
+                <div class="post-date">
+                  ${escapeHtml(
+                    formatDate(
+                      post.created_at
+                    )
+                  )}
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="post-menu">
+              ⋮
+            </div>
+
+          </div>
+
+
+          ${
+            post.content
+              ? `
+                <div class="post-content">
+                  ${escapeHtml(
+                    post.content
+                  )}
+                </div>
+              `
+              : ""
+          }
+
+
+          ${imageHtml}
+
+
+          ${locationHtml}
+
+
+          <div
+            class="post-stats"
+            id="stats-${escapeHtml(post.id)}"
+          >
+            ❤️ 0 • 💬 0
+          </div>
+
+
+          <div class="post-actions">
+
+            <button
+              class="post-action"
+              onclick="likePost('${escapeJs(post.id)}')"
+            >
+              ❤️ J'aime
+            </button>
+
+            <button
+              class="post-action"
+              onclick="commentPost('${escapeJs(post.id)}')"
+            >
+              💬 Commenter
+            </button>
+
+            <button
+              class="post-action"
+              onclick="sharePost('${escapeJs(post.id)}')"
+            >
+              📤 Partager
+            </button>
+
+          </div>
+
+        </article>
+      `;
+
+    }
+
+
+    /* =====================================================
+       ESCAPE JAVASCRIPT
+    ===================================================== */
+
+    function escapeJs(value) {
+
+      return String(value)
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r");
+
+    }
+
+
+    /* =====================================================
+       IMAGE ERREUR
+    ===================================================== */
+
+    function handlePostImageError(img) {
+
+      img.style.display =
+        "none";
+
+
+      const errorBox =
+        img.parentElement
+          ?.querySelector(
+            ".image-error"
+          );
+
+
+      if (errorBox) {
+
+        errorBox.style.display =
+          "block";
+
+      }
+
+    }
+
+
+    /* =====================================================
+       STATISTIQUES PUBLICATION
+    ===================================================== */
+
+    async function refreshPostStats(
+      postId
+    ) {
+
+      try {
+
+        const {
+          count: likeCount,
+          error: likeError
+        } =
+          await supabaseClient
+            .from("likes")
             .select(
               "id",
               {
@@ -1305,30 +2241,63 @@
               }
             )
             .eq(
-              "user_id",
-              userId
+              "post_id",
+              postId
             );
 
 
-        if (error) {
+        const {
+          count: commentCount,
+          error: commentError
+        } =
+          await supabaseClient
+            .from("comments")
+            .select(
+              "id",
+              {
+                count: "exact",
+                head: true
+              }
+            )
+            .eq(
+              "post_id",
+              postId
+            );
+
+
+        if (
+          likeError ||
+          commentError
+        ) {
+
           console.error(
-            "Erreur compteur:",
-            error
+            likeError ||
+            commentError
           );
 
+          return;
+
+        }
+
+
+        const stats =
+          document.getElementById(
+            `stats-${postId}`
+          );
+
+
+        if (!stats) {
           return;
         }
 
 
-        document.getElementById(
-          "postCount"
-        ).textContent =
-          count || 0;
-
+        stats.textContent =
+          `❤️ ${likeCount || 0} • 💬 ${commentCount || 0}`;
 
       } catch (error) {
 
         console.error(
+          "Erreur stats:",
           error
         );
 
@@ -1337,11 +2306,298 @@
     }
 
 
-    /* =========================
-       ERREUR
-    ========================= */
+    /* =====================================================
+       LIKE
+    ===================================================== */
 
-    function showError(message) {
+    async function likePost(postId) {
+
+      if (!currentUser) {
+        return;
+      }
+
+
+      try {
+
+        const {
+          data: existing,
+          error: findError
+        } =
+          await supabaseClient
+            .from("likes")
+            .select("id")
+            .eq(
+              "post_id",
+              postId
+            )
+            .eq(
+              "user_id",
+              currentUser.id
+            )
+            .maybeSingle();
+
+
+        if (findError) {
+          throw findError;
+        }
+
+
+        if (existing) {
+
+          const {
+            error
+          } =
+            await supabaseClient
+              .from("likes")
+              .delete()
+              .eq(
+                "id",
+                existing.id
+              );
+
+
+          if (error) {
+            throw error;
+          }
+
+        } else {
+
+          const {
+            error
+          } =
+            await supabaseClient
+              .from("likes")
+              .insert({
+
+                post_id:
+                  postId,
+
+                user_id:
+                  currentUser.id
+
+              });
+
+
+          if (error) {
+            throw error;
+          }
+
+        }
+
+
+        await refreshPostStats(
+          postId
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur like:",
+          error
+        );
+
+
+        alert(
+          "Impossible de modifier le J'aime."
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       COMMENTAIRE
+    ===================================================== */
+
+    async function commentPost(
+      postId
+    ) {
+
+      if (!currentUser) {
+        return;
+      }
+
+
+      const text =
+        prompt(
+          "Écris ton commentaire :"
+        );
+
+
+      if (
+        text === null
+      ) {
+        return;
+      }
+
+
+      const content =
+        text.trim();
+
+
+      if (!content) {
+
+        alert(
+          "Le commentaire ne peut pas être vide."
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("comments")
+            .insert({
+
+              post_id:
+                postId,
+
+              user_id:
+                currentUser.id,
+
+              content:
+                content
+
+            });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        await refreshPostStats(
+          postId
+        );
+
+
+        alert(
+          "Commentaire publié."
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur commentaire:",
+          error
+        );
+
+
+        alert(
+          "Impossible de publier le commentaire."
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       PARTAGE
+    ===================================================== */
+
+    async function sharePost(
+      postId
+    ) {
+
+      const url =
+        `${window.location.origin}${window.location.pathname}#post-${postId}`;
+
+
+      try {
+
+        if (
+          navigator.share
+        ) {
+
+          await navigator.share({
+
+            title:
+              "Cercle des Agents",
+
+            text:
+              "Publication sur Cercle des Agents",
+
+            url:
+              url
+
+          });
+
+          return;
+
+        }
+
+
+        if (
+          navigator.clipboard
+        ) {
+
+          await navigator.clipboard.writeText(
+            url
+          );
+
+          alert(
+            "Lien copié."
+          );
+
+          return;
+
+        }
+
+
+        prompt(
+          "Copie ce lien :",
+          url
+        );
+
+
+      } catch (error) {
+
+        /*
+         * L'utilisateur peut avoir
+         * simplement fermé la fenêtre
+         * de partage.
+         */
+
+        console.log(
+          "Partage annulé.",
+          error
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       MESSAGE — PRÉPARATION
+    ===================================================== */
+
+    function showComingSoon(message) {
+
+      alert(
+        message
+      );
+
+    }
+
+
+    /* =====================================================
+       ERREUR GÉNÉRALE
+    ===================================================== */
+
+    function showError(
+      message
+    ) {
 
       document.getElementById(
         "loading"
@@ -1357,8 +2613,11 @@
 
       box.innerHTML = `
         <div class="error">
+
           ❌<br><br>
+
           ${message}
+
           <br><br>
 
           <button
@@ -1367,6 +2626,7 @@
           >
             ← Retour aux membres
           </button>
+
         </div>
       `;
 
@@ -1377,9 +2637,9 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        DÉMARRAGE
-    ========================= */
+    ===================================================== */
 
     loadProfile();
 
